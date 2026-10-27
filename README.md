@@ -62,7 +62,8 @@ A inteligência de subscrição é unificada e opera em múltiplos canais com ba
 * **Etapa 1 (Casa Gêmea)**: concluída. Modelo de área log-linear (`log(IPTU)`, `log(energia)`, tipo de imóvel e município) treinado na base de desenvolvimento com validação cruzada:
   * Erro percentual mediano: 13,4% (erro médio absoluto: 22,7 m²; R² = 0,86);
   * Faixa de 80% cobre a área real em 79,9% dos casos.
-* **Próximos Passos**: motor de perguntas mínimas e geração dos arquivos de recomendação final.
+* **Etapa 2 (Regras do seguro)**: concluída. Elegibilidade, plano por pontuação, faixas de LMI por cobertura (custo de reconstrução via CUB), justificativa, confiança, semáforo e canal. Na base de teste: 135 elegíveis e 3 condicionados; Total 50%, Prático 40%, Essencial 10%. Ver `docs/02_regras_seguro.md`.
+* **Próximos Passos**: motor de perguntas mínimas (Etapa 3), contrato JSON, conversão para os templates oficiais e demo.
 
 ---
 
@@ -82,21 +83,24 @@ A inteligência de subscrição é unificada e opera em múltiplos canais com ba
 
 ```text
 datathon_horus/
+├── README.md
+├── requirements.txt               # [em breve] dependências
 ├── docs/
-│   └── 01_casa_gemea.md            # Relatório técnico da Etapa 1
+│   ├── 01_casa_gemea.md           # Etapa 1: relatório da Casa Gêmea
+│   ├── 02_regras_seguro.md        # Etapa 2: elegibilidade, plano, faixas, canal
+│   └── fontes_externas.md         # Fontes públicas usadas (CUB, CG, Monitor Mercantil)
 ├── scripts/
-│   ├── 01_construir_casa_gemea.py   # Construção da Casa Gêmea
-│   └── 02_recomendar.py            # [em breve] Motor de recomendação
-├── src/                            # [em breve] Pacote Python da solução
-│   └── casa_gemea/                 # [em breve] Módulos de inferência e área
-├── saidas/                         # [em breve] CSVs das Casas Gêmeas
-├── template_resultado_times.csv    # [em breve] Entrega final
-├── template_coberturas_times.csv   # [em breve] Entrega final
-├── requirements.txt                # [em breve] Dependências do projeto
-└── README.md
+│   ├── 01_construir_casa_gemea.py # Etapa 1
+│   ├── 02_aplicar_regras.py       # Etapa 2
+│   └── 03_motor_perguntas.py      # [em breve] Etapa 3: perguntas mínimas
+├── src/
+│   └── casa_gemea/                # [em breve] pacote Python (carregar, área, inferências, regras, pipeline)
+├── dados_externos/                # [em breve] CUB por UF, fatores de padrão, Condições Gerais
+├── saidas/                        # CSVs gerados pelos scripts
+└── entrega/                       # [em breve] template_resultado_times.csv e template_coberturas_times.csv
 ```
 
----
+Os scripts rodam na raiz do projeto, em ordem numérica. As bases originais da organização ficam fora do repositório.
 
 ## Como Executar
 
