@@ -13,7 +13,7 @@ import { ClientReport, HouseHero } from './Story'
 import { ManagerFlow, type PassoGerente } from './Gerente'
 import { SacFlow, type PassoSac } from './Sac'
 import { ComoUsar } from './Ajuda'
-import { CANAIS, Entrada } from './Entrada'
+import { Abertura, CANAIS, Entrada } from './Entrada'
 import './story.css'
 import './app.css'
 
@@ -170,7 +170,7 @@ export default function App() {
   return <div className={`app ${presentation ? `presentation focus-${step}` : ''}`}>
     <a className="skip-link" href="#conteudo">Pular para o conteúdo</a>
     <header className="topbar"><div className="topbar-inner"><a href="#conteudo" className="brand" aria-label="Horus, Casa Gêmea"><img src="/horus.svg" alt="" width="38" height="38" /><span>horus<span className="brand-divider" /><small>Casa Gêmea</small></span></a><div className="header-actions"><PwaControls /><div className="font-controls" role="group" aria-label="Tamanho do texto"><button onClick={() => setFont(f => Math.max(90, f - 10))} aria-label="A− Diminuir texto" disabled={font <= 90}>A−</button><button onClick={() => setFont(f => Math.min(130, f + 10))} aria-label="A+ Aumentar texto" disabled={font >= 130}>A+</button></div><button className="presentation-toggle" onClick={() => setAjuda(true)} aria-haspopup="dialog" aria-label="Como usar" title="Como usar"><Icon name="info" size={17} /><span>Como usar</span></button></div></div></header>
-    <main id="conteudo"><section className="intro"><div><div className="breadcrumb">Proteção inteligente <span>/</span> Seguro residencial</div><h1>Menos perguntas.<br /><span>Mais sentido para sua proteção.</span></h1></div><div className="intro-stamp"><Icon name="shield" size={24} /><span>Cada decisão<br /><b>tem uma explicação.</b></span></div></section>
+    <main id="conteudo">{!entrou && <Abertura onCotar={() => { setChannel('Cliente'); setEntrou(true) }} />}
       {!entrou ? <Entrada list={list} selected={selected} busy={busy} onChoose={choose} onEnter={c => { setChannel(c); setEntrou(true) }} />
         : <section className="session-bar" aria-label="Sessão"><div><span className="session-icon"><Icon name={CANAIS.find(c => c.label === channel)?.icon ?? 'home'} size={18} /></span><span><b>{channel}</b><small>{CANAIS.find(c => c.label === channel)?.note}</small></span><span className="session-case">{selected.replace('IMO_', '')} · {item?.municipio}/{item?.uf}</span></div><div><button className="text-button reset" disabled={busy || !data} onClick={() => { setReportOpen(false); irPara(1); irParaSac(1); void load(selected, [], 'Reinício') }}><Icon name="reset" size={16} />Recomeçar</button><button className="button secondary" onClick={() => { setPresentation(false); setEntrou(false) }}>Trocar de canal</button></div></section>}
       {presentation && <div className="presentation-bar"><span><Icon name="play" size={17} />Apresentação <b>{step + 1} / 3</b></span><strong>{steps[step]}</strong><div><button aria-label="Etapa anterior" disabled={step === 0} onClick={() => setStep(s => s - 1)}>←</button><button aria-label="Próxima etapa" disabled={step === 2} onClick={() => setStep(s => s + 1)}>→</button><button onClick={() => setPresentation(false)}>Sair</button></div>{!mobile && <small>Setas navegam · números respondem · Esc sai</small>}</div>}

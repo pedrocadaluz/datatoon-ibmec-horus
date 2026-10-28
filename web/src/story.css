@@ -252,3 +252,19 @@ details.why-card[open] > summary { margin-bottom: 6px; }
 /* Sem a barra de canais embaixo (a entrada escolhe o perfil), o resumo do plano desce até a borda. */
 @media (max-width: 767px) { html:root { --bottom-nav: 0px; } }
 .session-bar, .journey-strip { max-width: 1100px; margin-left: auto; margin-right: auto; }
+
+/* Abertura no estilo da página do produto: amarelo forte, título azul, chamada para cotação. */
+.abertura { display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(0, .7fr); align-items: center; gap: 24px; max-width: 1100px; margin: 18px auto 22px; padding: 34px 40px; border-radius: 8px; background: #FCFC30; color: #212529; }
+.abertura-marca { display: flex; align-items: center; gap: 8px; font-size: .9rem; color: #2F3FB0; }
+.abertura-marca b { font-size: 1.05rem; letter-spacing: -.02em; }
+.abertura-marca span { color: #212529; }
+.abertura-logo-bb { height: 28px; width: auto; }
+.abertura h1 { margin: 16px 0 6px; font-size: 2.6rem; line-height: 1.05; letter-spacing: -.04em; color: #2F3FB0; }
+.abertura-lema { font-size: 1.15rem; font-weight: 700; color: #212529; margin-bottom: 10px; }
+.abertura p { max-width: 560px; font-size: .9rem; line-height: 1.55; }
+.abertura-cta { display: inline-flex; align-items: center; gap: 10px; margin-top: 18px; min-height: 48px; padding: 10px 22px; border-radius: 4px; background: #FF6F68; color: #212529; font-weight: 800; font-size: .9rem; text-transform: uppercase; letter-spacing: .03em; transition: transform .18s, background .18s; }
+.abertura-cta:hover { background: #FF8A84; transform: translateY(-1px); }
+.abertura-arte { width: 100%; max-height: 240px; }
+@media (max-width: 767px) { .abertura { grid-template-columns: 1fr; padding: 24px 20px; margin-top: 10px; } .abertura h1 { font-size: 2rem; } .abertura-arte { display: none; } }
+.entrada-icone, .session-icon { background: #465EFF; color: #FFFFFF; }
+.entrada-perfil { border-top: 3px solid #465EFF; }
