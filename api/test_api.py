@@ -41,8 +41,9 @@ class ContratoHTTP(unittest.TestCase):
                     self.assertEqual(data["recomendacao"]["plano"], row["plano_recomendado"])
                     self.assertEqual(data["recomendacao"]["confianca_geral"], row["confianca_geral"])
                     self.assertEqual(data["elegibilidade"]["status"], {"SIM": "ELEGIVEL", "PENDENTE_VALIDACAO": "ELEGIVEL_CONDICIONADO", "NAO": "INELEGIVEL"}[row["elegivel"]])
-                    self.assertEqual({c["cobertura"] for c in data["coberturas"]}, set(row["coberturas_recomendadas"].split(" | ")))
-                    for cobertura in data["coberturas"]:
+                    todas = data["coberturas"] + data["coberturas_adicionais"]
+                    self.assertEqual({c["cobertura"] for c in todas}, set(row["coberturas_recomendadas"].split(" | ")))
+                    for cobertura in todas:
                         original = faixas[row["imovel_id"], cobertura["cobertura"]]
                         for campo in ("faixa_valor_min", "faixa_valor_max"):
                             self.assertEqual(cobertura[campo], float(original[campo]))

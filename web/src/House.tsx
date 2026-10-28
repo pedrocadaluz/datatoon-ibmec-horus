@@ -1,5 +1,6 @@
 import type { Casa, Campo } from './types'
-import { confianca, nomes, valorCampo } from './format'
+import { confianca, nomes, numero } from './format'
+import { origemCliente, valorCliente } from './cliente'
 import { Icon } from './Icons'
 
 const selos: Record<string, string> = { OBSERVADO: 'Observado', ESTIMADO: 'Estimado', A_CONFIRMAR: 'A confirmar', CONFIRMADO: 'Confirmado' }
@@ -7,46 +8,68 @@ export function Selo({ campo }: { campo: Campo }) {
   return <span className={`data-status status-${campo.selo.toLowerCase()}`}><span>{selos[campo.selo] ?? campo.selo}</span><span className="status-separator">·</span><span>Confiança {confianca[campo.confianca]?.toLowerCase()}</span></span>
 }
 
-export function House({ casa, location, imovel }: { casa: Casa; location: string; imovel: string }) {
-  const confirmados = Object.values(casa).filter(c => !Array.isArray(c) && c.selo === 'CONFIRMADO').length
-  const field = (chave: string, i: number) => {
-    const campo = casa[chave as keyof Casa] as Campo
-    return <details className="field" key={chave} style={{ animationDelay: `${i * 35}ms` }}>
-      <summary><span className="field-label">{nomes[chave]}</span><strong>{valorCampo(chave, campo, casa)}</strong><Selo campo={campo} /></summary>
-      <p className="evidence">{campo.evidencia.replace(/[\u2013\u2014]/g, ', ')}</p>
-    </details>
-  }
+const CAMPOS = ['tipo_imovel', 'area_m2', 'vinculo', 'conteudo', 'uso_imovel', 'padrao_construtivo', 'material_parede', 'alerta_obra'] as const
+const OBRA_PENDENTE = ['REFORMA_MODERADA', 'POSSIVEL_OBRA_RELEVANTE']
+const firme = (c: Campo) => c.selo === 'OBSERVADO' || c.selo === 'CONFIRMADO'
+
+/** Quanto da Casa Gêmea já é dado do banco ou confirmado pelo cliente. A declaração conta como mais um dado. */
+export function progressoCasa(casa: Casa, aplicadas: string[] = []) {
+  const firmes = CAMPOS.filter(c => firme(casa[c])).length + (aplicadas.includes('declaracao_unica') ? 1 : 0)
+  return { firmes, total: CAMPOS.length + 1 }
+}
+
+// Três tons: dado do banco ou confirmado ganha a cor da marca; estimativa de confiança alta, azul-claro;
+// estimativa incerta, cinza. Assim a casa nunca mostra uma estimativa como fato.
+const CINZA = { fill: '#EEF0F6', stroke: '#C5CAD9' }
+const cor = (c: Campo, fill: string, claro: string, stroke = '#3548CA') =>
+  firme(c) ? { fill, stroke } : c.confianca === 'ALTA' ? { fill: claro, stroke: '#9AA8F5' } : CINZA
+
+/** Casa vista de frente que cresce com as respostas. Cada parte é ligada a um dado da Casa Gêmea. */
+export function HouseArt({ casa, aplicadas = [], status }: { casa: Casa; aplicadas?: string[]; status?: string }) {
+  const { firmes, total } = progressoCasa(casa, aplicadas)
+  const escala = 0.82 + 0.18 * firmes / total
+  const uso = String(casa.uso_imovel.valor)
+  const luz = uso === 'MORADIA_HABITUAL' ? '#FCFC30' : uso === 'ALUGADO_A_TERCEIROS' ? '#FFF6A8' : '#D5D9E6'
+  const obra = (OBRA_PENDENTE.includes(String(casa.alerta_obra.valor)) && casa.alerta_obra.selo !== 'CONFIRMADO') || casa.alerta_obra.valor === 'OBRA_ESTRUTURAL'
+  const area = firme(casa.area_m2) ? `${numero(Number(casa.area_m2.valor))} m²` : `${numero(casa.area_faixa_m2[0])} a ${numero(casa.area_faixa_m2[1])} m²`
+  const paredes = cor(casa.material_parede, '#FFFFFF', '#F4F6FF')
+  const telhado = cor(casa.tipo_imovel, '#5A6FFF', '#C9D1FF')
+  const porta = cor(casa.vinculo, '#FCFC30', '#FFFBC8')
+  const janela = firme(casa.uso_imovel) ? { fill: luz, stroke: '#3548CA' } : cor(casa.uso_imovel, luz, '#F7F8E8')
+  return <svg className="house-art" viewBox="0 0 600 280" role="img" data-progresso={`${firmes}/${total}`}
+    aria-label={`Ilustração da sua Casa Gêmea, com ${firmes} de ${total} dados confirmados. Cores mais claras e cinza indicam estimativas. Não representa a planta real do imóvel.`}>
+    <rect x="40" y="236" width="520" height="14" rx="7" fill="#E6E9F7" />
+    <g className={`house-grow ${status === 'RECOMENDACAO_CONFIRMADA' ? 'complete' : ''}`} style={{ transform: `scale(${escala})` }}>
+      <g key={`paredes-${paredes.fill}`} className="part"><rect x="190" y="118" width="220" height="118" rx="4" {...paredes} strokeWidth="3" /></g>
+      <g key={`telhado-${telhado.fill}`} className="part"><path d="M168 124 300 42l132 82Z" {...telhado} strokeWidth="3" strokeLinejoin="round" /></g>
+      <g key={`porta-${porta.fill}`} className="part"><rect x="278" y="168" width="44" height="68" rx="3" {...porta} strokeWidth="3" /><circle cx="312" cy="204" r="3" fill={porta.stroke} /></g>
+      <g key={`janelas-${janela.fill}`} className="part">
+        <rect x="212" y="146" width="48" height="42" rx="3" {...janela} strokeWidth="3" /><path d="M236 146v42M212 167h48" stroke={janela.stroke} strokeWidth="2" />
+        <rect x="340" y="146" width="48" height="42" rx="3" {...janela} strokeWidth="3" /><path d="M364 146v42M340 167h48" stroke={janela.stroke} strokeWidth="2" />
+      </g>
+      {casa.conteudo.selo === 'CONFIRMADO' && <g className="part"><rect x="350" y="158" width="28" height="18" rx="2" fill="#3548CA" /><path d="M358 180h12" stroke="#3548CA" strokeWidth="3" /></g>}
+      {aplicadas.includes('declaracao_unica') && <g className="part house-seal"><circle cx="300" cy="96" r="20" fill="#FCFC30" stroke="#3548CA" strokeWidth="3" /><path d="m290 96 7 7 13-14" stroke="#3548CA" strokeWidth="3.5" fill="none" strokeLinecap="round" /></g>}
+    </g>
+    {obra && <g className="part scaffold"><path d="m470 236 16-58 16 58Z" fill="#F29D38" stroke="#805300" strokeWidth="2" /><path d="M476 214h20M481 196h10" stroke="#FFFFFF" strokeWidth="4" /></g>}
+    <g className="area-label"><path d="M190 262h220M190 256v12M410 256v12" stroke={firme(casa.area_m2) ? '#3548CA' : '#C5CAD9'} strokeWidth="2" />
+      <rect x="252" y="252" width="96" height="20" rx="10" fill="#FFFFFF" /><text x="300" y="267" textAnchor="middle" fontSize="14" fontWeight="600" fill={firme(casa.area_m2) ? '#3548CA' : '#5B6175'}>{area}</text></g>
+  </svg>
+}
+
+/** Os oito dados da Casa Gêmea em linguagem do cliente: o valor e de onde ele veio. */
+export function HouseFacts({ casa, imovel }: { casa: Casa; imovel: string }) {
+  return <ul className="house-facts" key={imovel}>{CAMPOS.map(chave => {
+    const campo = casa[chave]
+    return <li key={chave} className={firme(campo) ? 'firm' : 'estimated'}>
+      <span className="field-label">{nomes[chave]}</span><strong>{valorCliente(chave, campo, casa)}</strong><span className="fact-origin">{origemCliente(chave, campo, casa)}</span>
+    </li>
+  })}</ul>
+}
+
+/** Cartão da Casa Gêmea usado no celular, dentro do painel recolhível. */
+export function House({ casa, imovel }: { casa: Casa; location?: string; imovel: string; aplicadas?: string[]; status?: string }) {
   return <section className="card twin" aria-labelledby="twin-heading">
-    <div className="section-heading"><div><span className="eyebrow">01 / A sua Casa Gêmea</span><h2 id="twin-heading">Sua casa já conta uma história.</h2></div><span className="live-pill"><i />Motor conectado</span></div>
-    <div className="house-scene">
-      <div className="scene-grid" />
-      <div className="scene-location"><Icon name="pin" size={15} /><span>{location}</span></div>
-      <svg className="house-art" viewBox="0 0 500 290" role="img" aria-label="Ilustração conceitual da Casa Gêmea. A geometria não representa uma planta real do imóvel.">
-        <defs><pattern id="wall-lines" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M0 10 10 0" stroke="#DDE4FC" strokeWidth=".8" /></pattern></defs>
-        <path d="m52 222 201-112 194 112-201 112Z" fill="#ECEEFD" transform="translate(0,-34)" />
-        <path d="m104 162 149-83 140 81-149 84Z" fill="#FFF" stroke="#5A6FFF" strokeWidth="2" />
-        <path d="M104 162v67l140 81v-66Z" fill="#EDF0FF" stroke="#5A6FFF" strokeWidth="2" transform="translate(0,-22)" />
-        <path d="M244 244v66l149-83v-67Z" fill="#FFF" stroke="#5A6FFF" strokeWidth="2" transform="translate(0,-22)" />
-        <path d="m97 144 63-99 147 84-63 98Z" fill="#5A6FFF" stroke="#4355CE" strokeWidth="2" />
-        <path d="m160 45 156-27 88 126-97-15Z" fill="#7D8DFF" stroke="#4355CE" strokeWidth="2" />
-        <path d="m244 227 63-98 97 15-11 61-149 83Z" fill="#F9F7FF" stroke="#5A6FFF" strokeWidth="2" />
-        <path d="m306 132-36 56 73-41Z" fill="url(#wall-lines)" />
-        <path d="m135 179 33 19v35l-33-19Z" fill="#FCFC30" stroke="#4355CE" strokeWidth="2" />
-        <path d="m151 188 0 36m-16-27 33 19" stroke="#4355CE" strokeWidth="1.5" />
-        <path d="m286 225 32-18v54l-32 18Z" fill={confirmados > 0 ? '#FCFC30' : '#DDE4FC'} stroke="#5A6FFF" strokeWidth="2" className="house-door" />
-        <path d="m345 192 26-15v31l-26 15Z" fill="#FCFC30" stroke="#4355CE" strokeWidth="2" />
-        <path d="m358 184 0 31" stroke="#4355CE" strokeWidth="1.5" />
-        <path d="m79 238 21 12m297-4 22-13" stroke="#5A6FFF" strokeWidth="2" />
-        <circle cx="82" cy="132" r="5" fill="#5A6FFF" /><path d="M82 132h-36v-31" stroke="#5A6FFF" strokeDasharray="3 3" fill="none" />
-        <circle cx="406" cy="197" r="5" fill="#5A6FFF" /><path d="M406 197h42v-39" stroke="#5A6FFF" strokeDasharray="3 3" fill="none" />
-      </svg>
-      <div className="scene-note"><Icon name="spark" size={14} />Dados que viram proteção</div>
-      <span className="scene-caption">Visual conceitual do imóvel</span>
-    </div>
-    <div className="house-fields" key={imovel}>
-      {['tipo_imovel', 'area_m2', 'vinculo', 'conteudo'].map(field)}
-    </div>
-    <details className="more-house-fields"><summary>Ver os outros dados da casa <span>4</span></summary><div className="house-fields">{['uso_imovel', 'padrao_construtivo', 'material_parede', 'alerta_obra'].map(field)}</div></details>
-    <div className="twin-foot"><Icon name="info" size={15} /><span>Toque em um dado para ver sua origem. Estimativa sempre vem com selo e confiança.</span></div>
-  </section>
+    <div className="section-heading"><div><span className="eyebrow">A sua Casa Gêmea</span><h2 id="twin-heading">O que já sabemos da sua casa</h2></div></div>
+    <HouseFacts casa={casa} imovel={imovel} />
+      </section>
 }

@@ -218,6 +218,12 @@ class Motor:
                  "justificativa": f["justificativa"], "a_confirmar": f["informacao_a_confirmar"], "observacao": f["observacao"]}
                 for f in faixas
             ],
+            "coberturas_adicionais": [
+                {"cobertura": f["cobertura"], "faixa_valor_min": f["faixa_valor_min"], "faixa_valor_max": f["faixa_valor_max"],
+                 "confianca": f["confianca_estimativa"], "regra": f["regra_calculo_utilizada"],
+                 "justificativa": f["justificativa"], "a_confirmar": f["informacao_a_confirmar"], "observacao": f["observacao"]}
+                for f in personalizacao.coberturas_adicionais(r, plano, elegibilidade, adicionais_resp)
+            ],
             "proximas_perguntas": [
                 {"id": p["campo"], "pergunta": perguntas.enunciado(p["campo"], r),
                  "opcoes": [{"valor": v, "rotulo": t} for v, t in perguntas.OPCOES[perguntas.chave_opcoes(p["campo"], r)]],
@@ -232,6 +238,7 @@ class Motor:
                 "percentual_evitado": round(100 * evitadas / regras.CAMPOS_FORMULARIO_TRADICIONAL),
             },
             "canal": {"semaforo": cor, "sugerido": canal},
+            "comparacao_planos": personalizacao.comparacao_planos(r, pontuacao, plano, todas, self.coberturas_do_plano, pers["necessidades"]),
             "personalizacao": pers,
             "explicacao": explica,
             "respostas_aplicadas": respondidas + list(adicionais_resp),

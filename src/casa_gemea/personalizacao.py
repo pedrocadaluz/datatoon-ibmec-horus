@@ -13,7 +13,7 @@ import numpy as np
 import pandas as pd
 
 from .regras import (
-    ELEGIVEL, ELEGIVEL_CONDICIONADO, INELEGIVEL, NOME_PLANO, ORDEM_PLANOS, _arred, _reais,
+    ELEGIVEL, ELEGIVEL_CONDICIONADO, INELEGIVEL, NOME_PLANO, ORDEM_PLANOS, _arred, _reais, comparar_planos,
 )
 
 # --------------------------------------------------------------------------- jornada
@@ -151,7 +151,7 @@ def necessidades(r: pd.Series, plano: str, coberturas_do_plano: list[str]) -> li
     if pet:
         somar("RESPONSABILIDADE_CIVIL_FAMILIAR", 30, "pet em casa")
     if dependentes:
-        somar("RESPONSABILIDADE_CIVIL_FAMILIAR", min(15 * dependentes, 40), f"{dependentes} dependente(s) em casa")
+        somar("RESPONSABILIDADE_CIVIL_FAMILIAR", min(15 * dependentes, 40), f"{dependentes} {'dependente' if dependentes == 1 else 'dependentes'} em casa")
         somar("DESPESAS_EMERGENCIAIS", min(8 * dependentes, 24), "mais pessoas para abrigar em caso de interdição")
     if vinculo == "INQUILINO":
         somar("PERDA_PAGAMENTO_ALUGUEL", 65, "paga aluguel: se o imóvel ficar inabitável, a dívida continua")
@@ -245,15 +245,47 @@ def adicionais(r: pd.Series, plano: str, elegibilidade: str, respostas: dict | N
     return sorted(saida, key=lambda x: -x["necessidade"])[:3]
 
 
+# Adicionais que entram no template de coberturas: só os que têm faixa em reais.
+# Bicicleta tem confiança baixa: "itens de lazer" não são necessariamente bicicleta.
+CONFIANCA_ADICIONAL = {"EQUIPAMENTOS_PORTATEIS": "MEDIA", "BICICLETA": "BAIXA"}
+A_CONFIRMAR_ADICIONAL = {
+    "EQUIPAMENTOS_PORTATEIS": "quais notebooks, tablets ou câmeras há no imóvel e o valor (os itens são listados na contratação)",
+    "BICICLETA": "se há bicicleta guardada dentro do imóvel e o valor",
+}
+
+
+def coberturas_adicionais(r: pd.Series, plano: str, elegibilidade: str, respostas: dict | None = None) -> list[dict]:
+    """Adicionais sugeridos com faixa, no formato de linha do template de coberturas."""
+    linhas = []
+    for a in adicionais(r, plano, elegibilidade, respostas):
+        if a["id"] not in CONFIANCA_ADICIONAL or "faixa_valor_min" not in a:
+            continue
+        linhas.append({
+            "cobertura": a["id"],
+            "faixa_valor_min": a["faixa_valor_min"],
+            "faixa_valor_max": a["faixa_valor_max"],
+            "confianca_estimativa": CONFIANCA_ADICIONAL[a["id"]],
+            "dados_utilizados": a["dados_usados"],
+            "regra_calculo_utilizada": a["regra_da_faixa"],
+            "justificativa": f"Cobertura adicional, fora das fixas do plano: {a['por_que_para_voce']} ({a['clausula']})",
+            "informacao_a_confirmar": A_CONFIRMAR_ADICIONAL[a["id"]],
+            "observacao": a["cuidado"],
+        })
+    return linhas
+
+
 # --------------------------------------------------------------------------- assistências
+# Pacotes do guia (seção 9.2). O benefício premium do Total é tratado à parte.
+PACOTES_ASSISTENCIA = {
+    "ESSENCIAL": ["Casa em Apuros"],
+    "PRATICO": ["Casa em Apuros", "Casa Funcionando", "Casa Arrumada", "Casa Limpa"],
+    "TOTAL": ["Casa em Apuros", "Casa Funcionando", "Casa Arrumada", "Casa Limpa", "Casa sem Insetos e Pragas", "Casa Segura"],
+}
+
+
 def assistencias(r: pd.Series, plano: str) -> dict:
     """Assistência em destaque entre as do plano; benefício premium só no Total."""
-    pacotes = {
-        "ESSENCIAL": ["Casa em Apuros"],
-        "PRATICO": ["Casa em Apuros", "Casa Funcionando", "Casa Limpa"],
-        "TOTAL": ["Casa em Apuros", "Casa Funcionando", "Casa Arrumada", "Casa Limpa", "Casa sem Insetos e Pragas", "Casa Segura"],
-    }
-    do_plano = pacotes.get(plano, [])
+    do_plano = PACOTES_ASSISTENCIA.get(plano, [])
     fr = _num(r, "fracao_conteudo_do_cliente", 1.0)
     eletro = _num(r, "eletronicos_eletro_max") * fr
     candidatos = []
@@ -412,3 +444,73 @@ def explicacao(r: pd.Series, elegibilidade: str, motivo: str, pontuacao: dict, i
             "O motor decide e calcula com regras; IA generativa, quando usada, só redige texto.",
         ],
     }
+
+
+# --------------------------------------------------------------------------- comparação dos três planos
+NOME_COBERTURA = {
+    "INCENDIO_RAIO_EXPLOSAO_FUMACA": "incêndio, raio, explosão e fumaça", "DANOS_POR_AGUA": "danos por água",
+    "VENDAVAL_GRANIZO": "vendaval e granizo", "IMPACTO_VEICULOS_TERRESTRES": "impacto de veículos",
+    "QUEDA_AERONAVE": "queda de aeronave", "DANOS_ELETRICOS": "danos elétricos",
+    "ROUBO_FURTO_ARROMBAMENTO": "roubo e furto com arrombamento", "QUEBRA_DE_VIDROS": "quebra de vidros",
+    "RESPONSABILIDADE_CIVIL_FAMILIAR": "responsabilidade civil familiar", "PERDA_PAGAMENTO_ALUGUEL": "perda ou pagamento de aluguel",
+    "DESPESAS_EMERGENCIAIS": "despesas emergenciais",
+}
+
+
+def _lista(itens: list[str]) -> str:
+    return itens[0] if len(itens) == 1 else ", ".join(itens[:-1]) + " e " + itens[-1]
+
+
+def comparacao_planos(r: pd.Series, pontuacao: dict, plano: str, faixas: list[dict],
+                      coberturas_do_plano: dict, necessidades: list[dict]) -> list[dict]:
+    """Os três planos lado a lado: o que cada um cobre, o que falta ou sobra em relação ao recomendado e por quê.
+
+    A comparação é por lacuna de cobertura (não há preço na base). Para um plano dois degraus
+    acima ou abaixo, os motivos de cada degrau são encadeados com a mesma regra de comparar_planos.
+    """
+    if not plano:
+        return []
+    i = ORDEM_PLANOS.index(plano)
+    faixa = {f["cobertura"]: f for f in faixas}
+    nec = {n["cobertura"]: n for n in necessidades}
+    do_recomendado = coberturas_do_plano[plano]
+    degrau = lambda p: comparar_planos(r, {**pontuacao, "plano_recomendado": p})
+
+    saida = []
+    for j, p in enumerate(ORDEM_PLANOS):
+        coberturas = coberturas_do_plano[p]
+        if j == i:
+            situacao, diferenca = "RECOMENDADO", []
+            motivos = {"TOTAL": pontuacao["motivos_total"] + pontuacao["motivos_pratico"],
+                       "PRATICO": pontuacao["motivos_pratico"]}.get(p, [])
+        elif j < i:
+            situacao, diferenca = "ABAIXO", [c for c in do_recomendado if c not in coberturas]
+            motivos = [degrau(ORDEM_PLANOS[k])[0] for k in range(j + 1, i + 1)]
+        else:
+            situacao, diferenca = "ACIMA", [c for c in coberturas if c not in do_recomendado]
+            motivos = [degrau(ORDEM_PLANOS[k])[1] for k in range(i, j)]
+        nomes_dif = [NOME_COBERTURA.get(c, c) for c in diferenca]
+        resumo = {
+            "RECOMENDADO": "Cobre as necessidades identificadas na sua casa, sem incluir coberturas que os dados não pedem.",
+            "ABAIXO": f"Deixaria sem proteção {_lista(nomes_dif)}." if nomes_dif else "",
+            "ACIMA": f"Acrescentaria {_lista(nomes_dif)}, que pelos dados não são prioridade para este imóvel." if nomes_dif else "",
+        }[situacao]
+        saida.append({
+            "plano": p,
+            "nome": NOME_PLANO[p],
+            "situacao": situacao,
+            "coberturas": coberturas,
+            "assistencias": PACOTES_ASSISTENCIA[p] + (["Benefício premium"] if p == "TOTAL" else []),
+            "resumo": resumo,
+            "motivos": [m for m in motivos if m],
+            "diferenca": [
+                {"cobertura": c, "nome": NOME_COBERTURA.get(c, c),
+                 "faixa_valor_min": faixa[c]["faixa_valor_min"] if c in faixa else None,
+                 "faixa_valor_max": faixa[c]["faixa_valor_max"] if c in faixa else None,
+                 "necessidade": nec[c]["nivel"] if c in nec else "",
+                 "sinais": [f["fator"] for f in nec.get(c, {}).get("fatores", [])][:3],
+                 "papel": "FICARIA_SEM" if situacao == "ABAIXO" else "ACRESCENTARIA"}
+                for c in diferenca
+            ],
+        })
+    return saida

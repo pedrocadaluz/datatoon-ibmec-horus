@@ -1,0 +1,116 @@
+/* Visão Cliente no desktop: a casa no topo; perguntas e, no fim, o relatório logo abaixo. */
+.house-hero { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); gap: 28px; align-items: center; padding: 22px 28px; margin-bottom: 20px; border-top: 3px solid var(--blue); }
+.hero-art { min-width: 0; }
+.house-hero .house-art { position: static; display: block; width: 100%; height: auto; overflow: visible; }
+.house-hero .house-art { max-height: 300px; }
+.hero-side { display: grid; gap: 14px; min-width: 0; }
+.hero-side h2 { font-size: 1.3rem; }
+.hero-progress { display: grid; gap: 6px; }
+.hero-progress strong { color: var(--ink-blue); font-size: .85rem; }
+.hero-progress span { color: var(--muted); font-size: .74rem; }
+.house-progress-bar { height: 8px; border-radius: 4px; background: #EEF0FA; overflow: hidden; }
+.house-progress-bar i { display: block; height: 100%; background: var(--ink-blue); border-radius: 4px; transition: width .6s; }
+.hero-plan { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding: 14px 16px; border-radius: 4px; background: var(--paper); border: .8px solid var(--line); }
+.hero-plan > div:not(.hero-step) { display: grid; gap: 2px; }
+.hero-plan > div > span { font-size: .7rem; color: var(--muted); }
+.hero-plan strong { color: var(--ink-blue); font-size: 1rem; }
+.hero-plan strong[data-testid="plano-atual"] { font-size: 1.6rem; letter-spacing: -.04em; line-height: 1.1; }
+.hero-step { grid-column: 1 / -1; display: flex; align-items: center; gap: 8px; font-size: .78rem; padding: 8px 10px; border-radius: 4px; background: #EFF8F3; color: var(--green); }
+.hero-step .traffic-light { margin-top: 0; }
+.hero-step.channel-amarelo { background: #FFF7E6; color: #805300; }
+.hero-step.channel-amarelo .traffic-light { background: #B07400; }
+.hero-step.channel-vermelho { background: #FFF1EF; color: #934342; }
+.hero-step.channel-vermelho .traffic-light { background: var(--red); }
+.hero-plan .button { grid-column: 1 / -1; justify-self: start; }
+.hero-facts > summary { color: var(--ink-blue); font-size: .76rem; font-weight: 600; min-height: 44px; display: flex; align-items: center; gap: 8px; }
+.hero-facts > summary::after { content: '+'; margin-left: auto; }
+.hero-facts[open] > summary::after { content: '−'; }
+.workspace.story { display: block; max-width: 860px; margin: 0 auto; }
+
+/* A casa cresce com os dados confirmados; cada parte que muda entra com uma transição curta. */
+.house-grow { transform-box: view-box; transform-origin: 50% 85%; transition: transform .6s cubic-bezier(.2, .8, .2, 1); }
+.house-art .part { transform-box: fill-box; transform-origin: 50% 100%; animation: part-in .45s cubic-bezier(.2, .8, .2, 1) both; }
+.house-art .house-seal { animation: seal-in .6s cubic-bezier(.3, 1.4, .5, 1) both; transform-origin: 50% 50%; }
+@keyframes part-in { from { opacity: .3; transform: translateY(-6px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes seal-in { from { opacity: 0; transform: scale(.4); } to { opacity: 1; transform: scale(1); } }
+.kicker-house { display: inline-flex; width: 64px; flex-shrink: 0; }
+.kicker-house .house-art { position: static; width: 64px; height: 30px; overflow: visible; }
+
+/* Relatório no lugar das perguntas. */
+.client-report { display: flex; flex-direction: column; gap: 16px; min-width: 0; animation: question-in .4s both; }
+.report-head { display: grid; grid-template-columns: auto 1fr; gap: 4px 16px; align-items: start; }
+.report-head .finish-icon { margin-bottom: 0; }
+.report-head h2 { margin: 4px 0 6px; }
+.report-head p { color: var(--muted); font-size: .8rem; }
+.report-head .button { grid-column: 2; justify-self: start; margin-top: 8px; }
+.client-report .recommendation { scroll-margin-top: 16px; }
+
+@media (max-width: 1000px) { .house-hero { grid-template-columns: 1fr; } }
+@media (prefers-reduced-motion: reduce) {
+  .house-grow, .house-art .part, .house-art .house-seal, .house-progress-bar i, .client-report { transition: none !important; animation: none !important; }
+}
+
+/* Comparação dos três planos no relatório (cards como na página do produto). */
+.plan-compare { display: grid; gap: 14px; padding: 18px 0 4px; border-top: 1px solid #EEF0FA; margin-top: 6px; }
+.plan-compare h3 { font-size: 1.05rem; color: var(--dark); }
+.plan-cards { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+.plan-card { display: grid; gap: 4px; align-content: start; padding: 14px; border: .8px solid #DDE4FC; border-radius: 4px; background: #F9F7FF; }
+.plan-card strong { font-size: 1.2rem; color: #3548CA; letter-spacing: -.03em; }
+.plan-card-tag { font-size: .58rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: #4C4C4C; }
+.plan-card-count { font-size: .66rem; color: #4C4C4C; }
+.plan-card p { font-size: .7rem; color: var(--dark); margin-top: 4px; }
+.plan-card.chosen { border: 2px solid #3548CA; background: white; }
+.plan-card.chosen .plan-card-tag { color: #3548CA; }
+.matrix-wrap { overflow-x: auto; border: .8px solid #DDE4FC; border-radius: 4px; }
+.coverage-matrix { width: 100%; border-collapse: collapse; font-size: .72rem; }
+.coverage-matrix th, .coverage-matrix td { padding: 8px 10px; border-bottom: 1px solid #EEF0FA; text-align: center; }
+.coverage-matrix thead th { font-size: .68rem; color: #3548CA; background: #F9F7FF; }
+.coverage-matrix tbody th { text-align: left; font-weight: 500; }
+.coverage-matrix tbody th small { display: block; color: var(--muted); font-size: .62rem; font-weight: 400; }
+.coverage-matrix .chosen { background: #F0F2FF; color: #3548CA; font-weight: 700; }
+.coverage-matrix tr:last-child th, .coverage-matrix tr:last-child td { border-bottom: 0; }
+.why-card { display: grid; gap: 8px; padding: 14px 16px; border-radius: 4px; border: 1px solid #DDE4FC; background: white; font-size: .76rem; }
+.why-card h4 { display: flex; align-items: center; gap: 8px; font-size: .86rem; margin: 0; }
+.why-card ul { margin: 0; padding-left: 18px; display: grid; gap: 4px; }
+.why-chosen { border-left: 4px solid #3548CA; }
+.why-chosen h4 { color: #3548CA; }
+.why-below { border-left: 4px solid #B07400; }
+.why-above { border-left: 4px solid #626776; }
+.why-summary { font-weight: 600; }
+.gap-list { list-style: none; padding: 0 !important; display: grid; gap: 8px; }
+.gap-list li { display: grid; gap: 2px; padding: 10px 12px; background: #F9F7FF; border-radius: 4px; }
+.gap-list li > div { display: flex; flex-wrap: wrap; gap: 6px 10px; align-items: center; }
+.gap-range { color: #3548CA; font-weight: 600; }
+.gap-signal { color: var(--muted); }
+.need { font-size: .6rem; font-weight: 700; padding: 2px 7px; border-radius: 3px; }
+.need-alta { background: #FFF1EF; color: #934342; }
+.need-media { background: #FFF7E6; color: #805300; }
+.need-baixa { background: #EEF0FA; color: #3548CA; }
+@media (max-width: 767px) { .plan-cards { grid-template-columns: 1fr; } }
+.presentation.focus-0 .house-hero { outline: 3px solid #FCFC30; outline-offset: 4px; }
+
+/* Dados da casa em linguagem do cliente: valor e origem, sem selos. */
+.house-facts { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 0 16px; }
+.house-facts li { display: grid; gap: 2px; padding: 10px 0; border-bottom: 1px solid #EEF0FA; min-width: 0; }
+.house-facts strong { font-size: .82rem; font-weight: 600; }
+.fact-origin { font-size: .7rem; color: var(--muted); }
+.house-facts li.firm .fact-origin { color: var(--green); }
+.recommendation.client .eligibility strong { margin-left: 0; }
+.sim-reasons { margin: 4px 0 8px; padding-left: 18px; display: grid; gap: 4px; font-size: .8rem; }
+@media (max-width: 767px) { .house-facts { grid-template-columns: 1fr; } }
+
+/* Dúvidas sobre o relatório: conversa com respostas montadas pelo motor. */
+.duvidas { display: grid; gap: 12px; margin-top: 8px; padding: 16px; border: 1px solid var(--line); border-radius: 6px; background: var(--paper); }
+.duvidas-head { display: flex; gap: 12px; align-items: flex-start; }
+.duvidas-head h3 { font-size: .95rem; margin: 0; }
+.duvidas-head p { font-size: .72rem; color: var(--muted); }
+.duvidas-avatar { display: grid; place-items: center; width: 34px; height: 34px; border-radius: 50%; background: var(--ink-blue); color: #FCFC30; flex-shrink: 0; }
+.duvidas-log { display: grid; gap: 10px; }
+.duvida-par { display: grid; gap: 6px; animation: question-in .3s both; }
+.bolha { max-width: 88%; padding: 10px 14px; border-radius: 12px; font-size: .78rem; line-height: 1.5; }
+.bolha.cliente { justify-self: end; background: var(--ink-blue); color: white; border-bottom-right-radius: 4px; }
+.bolha.resposta { justify-self: start; background: white; border: 1px solid var(--line); border-bottom-left-radius: 4px; display: grid; gap: 4px; }
+.duvidas-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.chip-duvida { min-height: 40px; padding: 8px 14px; border: 1px solid #C3CCF5; border-radius: 20px; background: white; color: var(--ink-blue); font-size: .74rem; font-weight: 600; text-align: left; display: inline-flex; align-items: center; gap: 6px; }
+.chip-duvida:hover { background: #F0F2FF; }
+.chip-duvida.humano { border-color: var(--ink-blue); }

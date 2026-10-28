@@ -2,7 +2,7 @@
 
 import pandas as pd
 
-from . import perguntas, regras
+from . import perguntas, personalizacao, regras
 
 
 def recomendar(casa: pd.DataFrame, ref: regras.Referencias, catalogo: pd.DataFrame):
@@ -22,6 +22,7 @@ def recomendar(casa: pd.DataFrame, ref: regras.Referencias, catalogo: pd.DataFra
 
         faixas = regras.calcular_coberturas(r, ref) if plano else []
         do_plano = [f for f in faixas if f["cobertura"] in coberturas_do_plano.get(plano, [])]
+        do_plano += personalizacao.coberturas_adicionais(r, plano, elegibilidade)
         for f in do_plano:
             coberturas.append({"cliente_id": r["cliente_id"], "imovel_id": r["imovel_id"], **f})
 

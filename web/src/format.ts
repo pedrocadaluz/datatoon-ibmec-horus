@@ -30,8 +30,8 @@ export const coberturas: Record<string, string> = {
   DESPESAS_EMERGENCIAIS: 'Despesas emergenciais',
 }
 export function valorCampo(chave: string, campo: Campo, casa: Casa) {
-  if (chave === 'area_m2') return `${numero(casa.area_faixa_m2[0])} a ${numero(casa.area_faixa_m2[1])} m²`
-  if (chave === 'conteudo') return `${reais(casa.conteudo_faixa[0])} a ${reais(casa.conteudo_faixa[1])}`
+  if (chave === 'area_m2') return casa.area_faixa_m2[0] === casa.area_faixa_m2[1] ? `${numero(casa.area_faixa_m2[0])} m²` : `${numero(casa.area_faixa_m2[0])} a ${numero(casa.area_faixa_m2[1])} m²`
+  if (chave === 'conteudo') return casa.conteudo_faixa[0] === casa.conteudo_faixa[1] ? reais(casa.conteudo_faixa[0]) : `${reais(casa.conteudo_faixa[0])} a ${reais(casa.conteudo_faixa[1])}`
   return valores[String(campo.valor)] ?? texto(campo.valor)
 }
 

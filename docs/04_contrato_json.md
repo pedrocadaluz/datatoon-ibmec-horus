@@ -177,6 +177,7 @@ Saída (coberturas resumidas):
       "...": "uma entrada por cobertura do plano"
     }
   ],
+  "coberturas_adicionais": [],
   "proximas_perguntas": [
     {
       "id": "obra",
@@ -247,7 +248,7 @@ Saída (coberturas resumidas):
     },
     {
       "id": "declaracao_unica",
-      "pergunta": "Confirmo que o imóvel fica em área urbana, tem paredes de alvenaria, não está em obra estrutural e não é tombado.",
+      "pergunta": "Confirmo que o imóvel fica em área urbana, fora de comunidade carente e sem ligação com atividade rural, tem paredes de alvenaria e não está em construção, reconstrução nem obra estrutural. Ele também não é tombado, desapropriado nem condenado, e o endereço ainda não tem seguro residencial da BB Seguros.",
       "opcoes": [
         {
           "valor": "SIM",
@@ -273,6 +274,180 @@ Saída (coberturas resumidas):
     "semaforo": "VERMELHO",
     "sugerido": "GERENTE"
   },
+  "comparacao_planos": [
+    {
+      "plano": "ESSENCIAL",
+      "nome": "Essencial",
+      "situacao": "ABAIXO",
+      "coberturas": [
+        "INCENDIO_RAIO_EXPLOSAO_FUMACA",
+        "DANOS_POR_AGUA",
+        "VENDAVAL_GRANIZO",
+        "IMPACTO_VEICULOS_TERRESTRES",
+        "QUEDA_AERONAVE",
+        "DANOS_ELETRICOS"
+      ],
+      "assistencias": [
+        "Casa em Apuros"
+      ],
+      "resumo": "Deixaria sem proteção roubo e furto com arrombamento, quebra de vidros, responsabilidade civil familiar, perda ou pagamento de aluguel e despesas emergenciais.",
+      "motivos": [
+        "O Essencial não cobre roubo nem quebra de vidros, que protegem os bens e os acessos citados acima.",
+        "O Prático não cobre aluguel, RC familiar nem despesas emergenciais, que respondem aos sinais citados acima. Em reais: o cliente recebe cerca de R$ 8.350/mês de aluguel, então até R$ 25.050 a R$ 50.100 ficariam sem proteção se o imóvel ficasse inabitável."
+      ],
+      "diferenca": [
+        {
+          "cobertura": "ROUBO_FURTO_ARROMBAMENTO",
+          "nome": "roubo e furto com arrombamento",
+          "faixa_valor_min": 2000,
+          "faixa_valor_max": 3900,
+          "necessidade": "BAIXA",
+          "sinais": [
+            "casa: mais acessos expostos a arrombamento"
+          ],
+          "papel": "FICARIA_SEM"
+        },
+        {
+          "cobertura": "QUEBRA_DE_VIDROS",
+          "nome": "quebra de vidros",
+          "faixa_valor_min": 5200,
+          "faixa_valor_max": 13300,
+          "necessidade": "BAIXA",
+          "sinais": [
+            "casa: mais janelas e portas de vidro"
+          ],
+          "papel": "FICARIA_SEM"
+        },
+        {
+          "cobertura": "RESPONSABILIDADE_CIVIL_FAMILIAR",
+          "nome": "responsabilidade civil familiar",
+          "faixa_valor_min": 25000,
+          "faixa_valor_max": 60000,
+          "necessidade": "BAIXA",
+          "sinais": [
+            "1 dependente em casa"
+          ],
+          "papel": "FICARIA_SEM"
+        },
+        {
+          "cobertura": "PERDA_PAGAMENTO_ALUGUEL",
+          "nome": "perda ou pagamento de aluguel",
+          "faixa_valor_min": 25000,
+          "faixa_valor_max": 50100,
+          "necessidade": "ALTA",
+          "sinais": [
+            "recebe aluguel: a renda para após um sinistro"
+          ],
+          "papel": "FICARIA_SEM"
+        },
+        {
+          "cobertura": "DESPESAS_EMERGENCIAIS",
+          "nome": "despesas emergenciais",
+          "faixa_valor_min": 10000,
+          "faixa_valor_max": 30000,
+          "necessidade": "BAIXA",
+          "sinais": [
+            "mais pessoas para abrigar em caso de interdição"
+          ],
+          "papel": "FICARIA_SEM"
+        }
+      ]
+    },
+    {
+      "plano": "PRATICO",
+      "nome": "Prático",
+      "situacao": "ABAIXO",
+      "coberturas": [
+        "INCENDIO_RAIO_EXPLOSAO_FUMACA",
+        "DANOS_POR_AGUA",
+        "VENDAVAL_GRANIZO",
+        "IMPACTO_VEICULOS_TERRESTRES",
+        "QUEDA_AERONAVE",
+        "DANOS_ELETRICOS",
+        "ROUBO_FURTO_ARROMBAMENTO",
+        "QUEBRA_DE_VIDROS"
+      ],
+      "assistencias": [
+        "Casa em Apuros",
+        "Casa Funcionando",
+        "Casa Arrumada",
+        "Casa Limpa"
+      ],
+      "resumo": "Deixaria sem proteção responsabilidade civil familiar, perda ou pagamento de aluguel e despesas emergenciais.",
+      "motivos": [
+        "O Prático não cobre aluguel, RC familiar nem despesas emergenciais, que respondem aos sinais citados acima. Em reais: o cliente recebe cerca de R$ 8.350/mês de aluguel, então até R$ 25.050 a R$ 50.100 ficariam sem proteção se o imóvel ficasse inabitável."
+      ],
+      "diferenca": [
+        {
+          "cobertura": "RESPONSABILIDADE_CIVIL_FAMILIAR",
+          "nome": "responsabilidade civil familiar",
+          "faixa_valor_min": 25000,
+          "faixa_valor_max": 60000,
+          "necessidade": "BAIXA",
+          "sinais": [
+            "1 dependente em casa"
+          ],
+          "papel": "FICARIA_SEM"
+        },
+        {
+          "cobertura": "PERDA_PAGAMENTO_ALUGUEL",
+          "nome": "perda ou pagamento de aluguel",
+          "faixa_valor_min": 25000,
+          "faixa_valor_max": 50100,
+          "necessidade": "ALTA",
+          "sinais": [
+            "recebe aluguel: a renda para após um sinistro"
+          ],
+          "papel": "FICARIA_SEM"
+        },
+        {
+          "cobertura": "DESPESAS_EMERGENCIAIS",
+          "nome": "despesas emergenciais",
+          "faixa_valor_min": 10000,
+          "faixa_valor_max": 30000,
+          "necessidade": "BAIXA",
+          "sinais": [
+            "mais pessoas para abrigar em caso de interdição"
+          ],
+          "papel": "FICARIA_SEM"
+        }
+      ]
+    },
+    {
+      "plano": "TOTAL",
+      "nome": "Total",
+      "situacao": "RECOMENDADO",
+      "coberturas": [
+        "INCENDIO_RAIO_EXPLOSAO_FUMACA",
+        "DANOS_POR_AGUA",
+        "VENDAVAL_GRANIZO",
+        "IMPACTO_VEICULOS_TERRESTRES",
+        "QUEDA_AERONAVE",
+        "DANOS_ELETRICOS",
+        "ROUBO_FURTO_ARROMBAMENTO",
+        "QUEBRA_DE_VIDROS",
+        "RESPONSABILIDADE_CIVIL_FAMILIAR",
+        "PERDA_PAGAMENTO_ALUGUEL",
+        "DESPESAS_EMERGENCIAIS"
+      ],
+      "assistencias": [
+        "Casa em Apuros",
+        "Casa Funcionando",
+        "Casa Arrumada",
+        "Casa Limpa",
+        "Casa sem Insetos e Pragas",
+        "Casa Segura",
+        "Benefício premium"
+      ],
+      "resumo": "Cobre as necessidades identificadas na sua casa, sem incluir coberturas que os dados não pedem.",
+      "motivos": [
+        "recebe cerca de R$ 8.350/mês de aluguel: renda que pararia após um sinistro",
+        "1 dependente: danos a terceiros e despesas de hospedagem da família",
+        "casa: mais portas e janelas expostas a arrombamento"
+      ],
+      "diferenca": []
+    }
+  ],
   "personalizacao": {
     "perfil": {
       "arquetipo": "LOCADOR",
@@ -380,7 +555,7 @@ Saída (coberturas resumidas):
         "fatores": [
           {
             "pontos": 15,
-            "fator": "1 dependente(s) em casa"
+            "fator": "1 dependente em casa"
           }
         ]
       },

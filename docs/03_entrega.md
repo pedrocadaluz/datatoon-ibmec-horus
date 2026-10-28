@@ -6,7 +6,7 @@ Arquivos em `entrega/`, com o mesmo nome, colunas e ordem de linhas dos template
 | Arquivo | Linhas |
 |---|---|
 | `template_resultado_times.csv` | 138 imóveis |
-| `template_coberturas_times.csv` | 1283 coberturas |
+| `template_coberturas_times.csv` | 1393 coberturas |
 
 ## Testes de formato e coerência
 
@@ -17,8 +17,10 @@ Arquivos em `entrega/`, com o mesmo nome, colunas e ordem de linhas dos template
 | cliente_id igual ao do template | ✅ |  |
 | Campos obrigatórios preenchidos | ✅ |  |
 | Motivo preenchido quando não é elegível sem ressalvas | ✅ |  |
-| Coberturas de cada imóvel = coberturas fixas do plano no catálogo | ✅ | 1283 linhas de cobertura |
-| Nomes de cobertura iguais ao catálogo | ✅ |  |
+| Cada imóvel tem todas as coberturas fixas do plano no catálogo, e só adicionais além delas | ✅ | 1393 linhas de cobertura |
+| Nomes de cobertura iguais ao catálogo ou à lista de adicionais | ✅ | 110 linhas de adicionais |
+| coberturas_recomendadas = linhas do template de coberturas | ✅ |  |
+| Nenhum adicional em imóvel não elegível | ✅ |  |
 | Sem cobertura duplicada por imóvel | ✅ |  |
 | Faixas são números inteiros positivos | ✅ |  |
 | Mínimo ≤ máximo em todas as faixas | ✅ |  |
@@ -38,7 +40,7 @@ Os campos dos templates são de formato livre e documentado (dicionário de dado
 | `uso_imovel_sugerido` | `MORADIA_HABITUAL` · `TEMPORADA_OU_SEGUNDA_RESIDENCIA` · `ALUGADO_A_TERCEIROS` |
 | `tipo_vinculo_sugerido` | `INQUILINO` · `PROPRIETARIO_FINANCIADO` · `PROPRIETARIO_QUITADO` (sem financiamento ativo) · `PROPRIETARIO_LOCADOR` |
 | `plano_recomendado` | `ESSENCIAL` · `PRATICO` · `TOTAL` (nomes do catálogo) |
-| `coberturas_recomendadas` | Coberturas fixas do plano, separadas por ` \| ` |
+| `coberturas_recomendadas` | Coberturas fixas do plano e adicionais aplicáveis com faixa (`EQUIPAMENTOS_PORTATEIS`, `BICICLETA`), separadas por ` \| ` |
 | `confianca_geral` | `ALTA` (nenhuma resposta plausível muda o plano) · `MEDIA` (um campo pode mudar) · `BAIXA` (dois ou mais, ou elegibilidade pendente) |
 | `justificativa_recomendacao` | Recomendação inicial → Casa Gêmea com selos → por que este plano → por que não o de baixo → por que não o de cima → o que pode mudar o plano |
 | `perguntas_confirmacao` | Perguntas fechadas em ordem de impacto, com opções e o porquê, separadas por ` \| `; a última é sempre a declaração única de elegibilidade |
@@ -86,9 +88,9 @@ A recomendação é **inicial**: usa só os dados que o banco já tem. As pergun
 
 | valor | coberturas | % |
 |---|---|---|
-| MEDIA | 740 | 57,7 |
-| ALTA | 355 | 27,7 |
-| BAIXA | 188 | 14,7 |
+| MEDIA | 826 | 59,3 |
+| ALTA | 355 | 25,5 |
+| BAIXA | 212 | 15,2 |
 
 ## Exemplos (um por nível de confiança)
 
@@ -99,7 +101,7 @@ A recomendação é **inicial**: usa só os dados que o banco já tem. As pergun
 **Perguntas de confirmação:**
 
 -   1) A área construída do imóvel fica entre 202 e 345 m²? (Sim / Menor / Maior / Não sei) [por quê: área define o custo de reconstrução]
--   2) Confirmo que o imóvel fica em área urbana, tem paredes de alvenaria, não está em obra estrutural e não é tombado. (Sim / Não — o atendimento segue com o gerente)
+-   2) Confirmo que o imóvel fica em área urbana, fora de comunidade carente e sem ligação com atividade rural, tem paredes de alvenaria e não está em construção, reconstrução nem obra estrutural. Ele também não é tombado, desapropriado nem condenado, e o endereço ainda não tem seguro residencial da BB Seguros. (Sim / Não — o atendimento segue com o gerente)
 
 | Cobertura | Mín (R$) | Máx (R$) | Confiança |
 |---|---|---|---|
@@ -111,6 +113,7 @@ A recomendação é **inicial**: usa só os dados que o banco já tem. As pergun
 | DANOS_ELETRICOS | 6.800 | 13.600 | MEDIA |
 | ROUBO_FURTO_ARROMBAMENTO | 11.400 | 22.700 | MEDIA |
 | QUEBRA_DE_VIDROS | 8.100 | 20.700 | MEDIA |
+| EQUIPAMENTOS_PORTATEIS | 1.900 | 4.500 | MEDIA |
 
 ### IMO_CASO_00013_01 — PRATICO · confiança MEDIA · elegível: SIM
 
@@ -119,7 +122,7 @@ A recomendação é **inicial**: usa só os dados que o banco já tem. As pergun
 **Perguntas de confirmação:**
 
 -   1) Somando móveis, eletrônicos e eletrodomésticos, quanto valem os bens neste imóvel? Estimamos entre R$ 14.000 e R$ 28.000. (Menos que isso / Nessa faixa / Mais que isso / Não sei) [por quê: valor dos bens define a necessidade de cobertura de roubo e a faixa de incêndio]
--   2) Confirmo que o imóvel fica em área urbana, tem paredes de alvenaria, não está em obra estrutural e não é tombado. (Sim / Não — o atendimento segue com o gerente)
+-   2) Confirmo que o imóvel fica em área urbana, fora de comunidade carente e sem ligação com atividade rural, tem paredes de alvenaria e não está em construção, reconstrução nem obra estrutural. Ele também não é tombado, desapropriado nem condenado, e o endereço ainda não tem seguro residencial da BB Seguros. (Sim / Não — o atendimento segue com o gerente)
 
 | Cobertura | Mín (R$) | Máx (R$) | Confiança |
 |---|---|---|---|
@@ -131,6 +134,7 @@ A recomendação é **inicial**: usa só os dados que o banco já tem. As pergun
 | DANOS_ELETRICOS | 4.400 | 8.800 | ALTA |
 | ROUBO_FURTO_ARROMBAMENTO | 7.000 | 14.000 | ALTA |
 | QUEBRA_DE_VIDROS | 3.800 | 5.700 | ALTA |
+| EQUIPAMENTOS_PORTATEIS | 1.200 | 2.800 | MEDIA |
 
 ### IMO_CASO_00003_01 — TOTAL · confiança BAIXA · elegível: SIM
 
@@ -141,7 +145,7 @@ A recomendação é **inicial**: usa só os dados que o banco já tem. As pergun
 -   1) Há obra ou reforma em andamento no imóvel? (Não / Reforma pequena, como pintura ou piso / Obra estrutural ou ampliação) [por quê: define a elegibilidade: imóvel em reforma ou construção fica fora da cobertura (CG 7.1 w/x)]
 -   2) Este imóvel está alugado para outra pessoa? Identificamos um crédito mensal de cerca de R$ 8.350. (Sim, está alugado / Não, eu moro nele / Não, está vazio) [por quê: muda o plano: quem recebe aluguel precisa da cobertura de perda de aluguel]
 -   3) A área construída do imóvel fica entre 130 e 221 m²? (Sim / Menor / Maior / Não sei) [por quê: área define o custo de reconstrução]
--   4) Confirmo que o imóvel fica em área urbana, tem paredes de alvenaria, não está em obra estrutural e não é tombado. (Sim / Não — o atendimento segue com o gerente)
+-   4) Confirmo que o imóvel fica em área urbana, fora de comunidade carente e sem ligação com atividade rural, tem paredes de alvenaria e não está em construção, reconstrução nem obra estrutural. Ele também não é tombado, desapropriado nem condenado, e o endereço ainda não tem seguro residencial da BB Seguros. (Sim / Não — o atendimento segue com o gerente)
 
 | Cobertura | Mín (R$) | Máx (R$) | Confiança |
 |---|---|---|---|

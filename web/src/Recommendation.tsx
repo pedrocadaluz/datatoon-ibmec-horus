@@ -1,26 +1,30 @@
 import { useState } from 'react'
-import type { Cobertura, Resultado } from './types'
+import type { Cobertura, Registro, Resultado } from './types'
 import { coberturas, confianca, planos, reais, texto } from './format'
 import { Icon } from './Icons'
+import { PlanCompare } from './PlanCompare'
+import { Duvidas } from './Duvidas'
+import { ajusteCliente, descricaoCobertura, elegibilidadeCliente, estabilidadeCliente, paraVoce, passoCliente } from './cliente'
 
 const elegibilidade: Record<string, string> = { ELEGIVEL: 'Elegível', ELEGIVEL_CONDICIONADO: 'Elegível condicionado', INELEGIVEL: 'Inelegível' }
 const lights: Record<string, string> = { VERDE: 'Verde', AMARELO: 'Amarelo', VERMELHO: 'Vermelho' }
 
-function Range({ coverage, initial }: { coverage: Cobertura; initial?: Cobertura }) {
+function Range({ coverage, initial, client }: { coverage: Cobertura; initial?: Cobertura; client?: boolean }) {
   // Eixo fixo por imóvel e cobertura: a confirmação reduz a faixa no mesmo eixo.
   const scale = Math.max((initial?.faixa_valor_max ?? coverage.faixa_valor_max) * 1.3, coverage.faixa_valor_max * 1.05, 1)
   const left = coverage.faixa_valor_min / scale * 100
   const width = Math.max(.4, (coverage.faixa_valor_max - coverage.faixa_valor_min) / scale * 100)
   return <><div className="range-values"><strong>{reais(coverage.faixa_valor_min)}</strong><span>a</span><strong>{reais(coverage.faixa_valor_max)}</strong></div>
     {coverage.faixa_valor_max / Math.max(coverage.faixa_valor_min, 1) > 4 && <p className="wide-range"><Icon name="info" size={14} />Faixa larga: confirme para estreitar</p>}
-    <div className="range-track" role="img" aria-label={`Faixa de cobertura de ${reais(coverage.faixa_valor_min)} a ${reais(coverage.faixa_valor_max)}. Confiança ${confianca[coverage.confianca]}.`}>
+    <div className="range-track" role="img" aria-label={`Faixa de cobertura de ${reais(coverage.faixa_valor_min)} a ${reais(coverage.faixa_valor_max)}.${client ? '' : ` Confiança ${confianca[coverage.confianca]}.`}`}>
       {initial && <div className="range-initial" style={{ left: `${initial.faixa_valor_min / scale * 100}%`, width: `${(initial.faixa_valor_max - initial.faixa_valor_min) / scale * 100}%` }} />}
       <div className="range-current" style={{ left: `${left}%`, width: `${width}%` }}><i /><i /></div>
     </div><div className="range-scale"><span>R$ 0</span><span>{reais(scale)}</span></div></>
 }
 
-export function Recommendation({ data, initial, pending }: { data: Resultado; initial: Resultado | null; pending: boolean }) {
+export function Recommendation({ data, initial, pending, full, history }: { data: Resultado; initial: Resultado | null; pending: boolean; full?: boolean; history?: Registro[] }) {
   const [demo, setDemo] = useState(false)
+  if (full) return <ClientRecommendation data={data} initial={initial} pending={pending} history={history} />
   const rec = data.recomendacao
   const fire = data.coberturas.find(c => c.cobertura === 'INCENDIO_RAIO_EXPLOSAO_FUMACA')
   const firstFire = initial?.coberturas.find(c => c.cobertura === fire?.cobertura)
@@ -43,5 +47,27 @@ export function Recommendation({ data, initial, pending }: { data: Resultado; in
     {rec.plano === 'TOTAL' && ['INQUILINO', 'PROPRIETARIO_LOCADOR'].includes(String(data.casa_gemea.vinculo.valor)) && <div className="rental-highlight"><span className="eyebrow">O que o Prático deixaria sem proteção</span><p>{texto(rec.por_que_nao_plano_abaixo).split(/(R\$\s?[\d.,]+)/g).map((part, i) => part.startsWith('R$') ? <strong key={i}>{part}</strong> : part)}</p></div>}
     {rec.plano && <details className="reason-details"><summary>Ver detalhes da recomendação <Icon name="info" size={16} /></summary><div className="why-plan"><h3>Por que este plano?</h3>{rec.por_que_este_plano.length ? <ul>{rec.por_que_este_plano.map((reason, i) => <li key={i}><Icon name="check" size={15} /><span>{texto(reason)}</span></li>)}</ul> : <p>O motor não identificou sinais suficientes para ampliar as coberturas além do Essencial.</p>}</div><div className="compare"><div><span className="mini-label">Por que não o plano de baixo?</span><p>{texto(rec.por_que_nao_plano_abaixo)}</p></div><div><span className="mini-label">E o plano de cima?</span><p>{texto(rec.por_que_nao_plano_acima)}</p></div><span className="small-note">A comparação considera lacunas de cobertura.</span></div></details>}
     {data.coberturas.length > 0 && <details className="all-coverages"><summary>Todas as coberturas <span>{data.coberturas.length}</span></summary>{data.coberturas.map(c => <details className="coverage-detail" key={c.cobertura} data-cobertura={c.cobertura}><summary><span>{coberturas[c.cobertura] ?? texto(c.cobertura)}</span><strong>{reais(c.faixa_valor_min)} a {reais(c.faixa_valor_max)}</strong><small>Estimativa · Confiança {confianca[c.confianca]?.toLowerCase()}</small>{c.cobertura === 'RESPONSABILIDADE_CIVIL_FAMILIAR' && <small className="rc-rule">{texto(c.regra)}</small>}</summary><Range coverage={c} initial={initial?.coberturas.find(i => i.cobertura === c.cobertura)} /><p>{texto(c.justificativa)}</p><p><b>Cálculo:</b> {texto(c.regra)}</p>{c.a_confirmar && <p><b>A confirmar:</b> {texto(c.a_confirmar)}</p>}{c.observacao && <p>{texto(c.observacao)}</p>}</details>)}</details>}
+  </aside>
+}
+
+/** Relatório para o cliente: o mesmo resultado do motor, sem selos, cores de semáforo, códigos nem fórmulas. */
+function ClientRecommendation({ data, initial, pending, history }: { data: Resultado; initial: Resultado | null; pending: boolean; history?: Registro[] }) {
+  const [demo, setDemo] = useState(false)
+  const rec = data.recomendacao
+  const fire = data.coberturas.find(c => c.cobertura === 'INCENDIO_RAIO_EXPLOSAO_FUMACA')
+  const firstFire = initial?.coberturas.find(c => c.cobertura === fire?.cobertura)
+  const completed = data.status === 'RECOMENDACAO_CONFIRMADA' && data.canal.semaforo === 'VERDE'
+  return <aside className={`recommendation client ${pending ? 'updating' : ''}`} id="recomendacao" aria-label="Sua recomendação" aria-busy={pending}>
+    <div className="eligibility"><Icon name="shield" size={19} /><strong className={`elig-${data.elegibilidade.status.toLowerCase()}`}>{elegibilidadeCliente[data.elegibilidade.status]}</strong></div>
+    {data.elegibilidade.motivo && <p className="eligibility-reason">{paraVoce(data.elegibilidade.motivo)}</p>}
+    <div className="plan-header"><div><span className="mini-label">Plano recomendado para você</span><h2 data-testid="plano-atual">{planos[rec.plano] ?? 'Sem plano'}</h2></div><span className="plan-icon"><Icon name="shield" size={30} /></span></div>
+    {rec.plano && <p className="small-note">{estabilidadeCliente(data)}</p>}
+    {fire && <section className="main-coverage" data-testid="faixa-incendio"><div className="coverage-title"><span><Icon name="home" size={18} />Proteção para incêndio e reconstrução</span></div><Range coverage={fire} initial={firstFire} client /><p className="small-note">É o valor máximo que o seguro pagaria. Não é o preço do seguro.</p><div className="range-legend"><i />Agora<span /><i />Antes das suas respostas</div></section>}
+    <div className={`channel channel-${data.canal.semaforo.toLowerCase()}`} data-testid="semaforo"><span className="traffic-light" /><div><span className="mini-label">Próximo passo</span><strong>{passoCliente(data)}</strong></div></div>
+    {completed && <button className="button primary demo-cta" onClick={() => setDemo(true)}>Simular próximo passo <Icon name="arrow" size={18} /></button>}
+    {demo && completed && <p className="demo-message" role="status">Demonstração concluída. Nenhuma contratação foi realizada. Esta interface não envia propostas.</p>}
+    {rec.plano && <PlanCompare data={data} />}
+    {data.coberturas.length > 0 && <details className="all-coverages"><summary>O que o seu plano cobre <span>{data.coberturas.length}</span></summary>{data.coberturas.map(c => <details className="coverage-detail" key={c.cobertura} data-cobertura={c.cobertura}><summary><span>{coberturas[c.cobertura] ?? texto(c.cobertura)}</span><strong>{reais(c.faixa_valor_min)} a {reais(c.faixa_valor_max)}</strong></summary><Range coverage={c} initial={initial?.coberturas.find(i => i.cobertura === c.cobertura)} client /><p>{descricaoCobertura[c.cobertura] ?? ''}</p>{ajusteCliente(c.a_confirmar) && <p>{ajusteCliente(c.a_confirmar)}</p>}</details>)}</details>}
+    <Duvidas data={data} history={history} />
   </aside>
 }

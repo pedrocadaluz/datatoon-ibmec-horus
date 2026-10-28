@@ -22,9 +22,17 @@ export interface Resultado {
     por_que_nao_plano_abaixo: string; por_que_nao_plano_acima: string;
     campos_que_podem_mudar_o_plano: string[];
   };
-  coberturas: Cobertura[]; proximas_perguntas: Pergunta[];
+  coberturas: Cobertura[]; proximas_perguntas: Pergunta[]; comparacao_planos?: ComparacaoPlano[];
   canal: { semaforo: string; sugerido: string }; respostas_aplicadas: string[];
   jornada: { campos_formulario_tradicional: number; perguntas_necessarias: number; perguntas_evitadas: number; percentual_evitado: number };
+}
+export interface DiferencaPlano {
+  cobertura: string; nome: string; faixa_valor_min: number | null; faixa_valor_max: number | null;
+  necessidade: string; sinais: string[]; papel: 'FICARIA_SEM' | 'ACRESCENTARIA';
+}
+export interface ComparacaoPlano {
+  plano: string; nome: string; situacao: 'RECOMENDADO' | 'ABAIXO' | 'ACIMA'; coberturas: string[];
+  assistencias: string[]; resumo: string; motivos: string[]; diferenca: DiferencaPlano[];
 }
 export interface Imovel { imovel_id: string; cliente_id: string; municipio: string; uf: string }
 export interface Lista { imoveis: Imovel[]; campos_perguntaveis: string[]; versao_contrato: string }

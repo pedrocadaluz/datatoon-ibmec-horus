@@ -9,7 +9,8 @@ for (const device of ['Pixel 7', 'iPhone 14'] as const) {
       await page.goto('/')
       await expect(page.getByRole('navigation', { name: 'Canal de atendimento' })).toHaveAttribute('data-mobile', 'true')
       await expect(page.getByTestId('resumo-movel')).toContainText('Total')
-      await expect(page.getByTestId('metadados-pergunta').getByText('A confirmar', { exact: true })).toBeVisible()
+      // A visão Cliente não mostra selos na pergunta; eles ficam no painel da Casa Gêmea, no Gerente e no SAC.
+      await expect(page.getByTestId('metadados-pergunta')).toHaveCount(0)
       const unknown = await page.getByTestId('resposta-NAO_SEI').boundingBox()
       const summary = await page.getByTestId('resumo-movel').boundingBox()
       expect(unknown!.y + unknown!.height).toBeLessThanOrEqual(summary!.y)
