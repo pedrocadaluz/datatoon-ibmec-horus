@@ -7,6 +7,12 @@ Contexto para continuar o trabalho em qualquer sessão. Idioma do projeto: **por
 - **Entrega obrigatória: 29/10 até 10h** (meta interna: 9h). Sem ela o time não apresenta.
 - Vídeo ≤ 5 min · pitch 5 min · perguntas da banca 5 min.
 
+## Repositório
+- GitHub: https://github.com/pedrocadaluz/datatoon-ibmec-horus (time **Horus**: Ludmila, Milton, Anna, Isabella, Pedro). Branch `main`; a pasta local é o clone.
+- `.gitignore` do repositório exclui as bases originais (`Seguro_Residencial_*`) e o guia em PDF. As saídas tratadas (`saidas/`, `entrega/`) são versionadas.
+- CSVs da entrega ficam em `entrega/` (raiz), como previsto na estrutura do Pedro.
+- Antes de commitar: rodar scripts 01 a 04 do zero; dar `git pull` antes de começar (outros membros também fazem push).
+
 ## Materiais recebidos
 - `DatathonBBDW-GuiaDosTimes.pdf` — regras, entregáveis, critérios (fonte principal).
 - `Seguro_Residencial_Desenvolvimento/` — 2.200 clientes, 2.578 imóveis. Para explorar e calibrar.
