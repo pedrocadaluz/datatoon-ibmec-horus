@@ -139,13 +139,14 @@ Saída (coberturas resumidas):
   },
   "recomendacao": {
     "plano": "TOTAL",
+    "justificativa_curta": "Total: recebe cerca de R$ 8.350/mês de aluguel: renda que pararia após um sinistro; 1 dependente: danos a terceiros e despesas de hospedagem da família.",
     "confianca_geral": "BAIXA",
     "por_que_este_plano": [
       "recebe cerca de R$ 8.350/mês de aluguel: renda que pararia após um sinistro",
       "1 dependente: danos a terceiros e despesas de hospedagem da família",
       "casa: mais portas e janelas expostas a arrombamento"
     ],
-    "por_que_nao_plano_abaixo": "O Prático não cobre aluguel, RC familiar nem despesas emergenciais, que respondem aos sinais citados acima.",
+    "por_que_nao_plano_abaixo": "O Prático não cobre aluguel, RC familiar nem despesas emergenciais, que respondem aos sinais citados acima. Em reais: o cliente recebe cerca de R$ 8.350/mês de aluguel, então até R$ 25.050 a R$ 50.100 ficariam sem proteção se o imóvel ficasse inabitável.",
     "por_que_nao_plano_acima": "É o plano mais completo.",
     "campos_que_podem_mudar_o_plano": [
       "vinculo"
@@ -196,7 +197,7 @@ Saída (coberturas resumidas):
       ],
       "aceita_numero": false,
       "impacto": "elegibilidade",
-      "motivo": "define a elegibilidade: imóvel em reforma ou construção fica fora da cobertura (CG 7.1 x/y)"
+      "motivo": "define a elegibilidade: imóvel em reforma ou construção fica fora da cobertura (CG 7.1 w/x)"
     },
     {
       "id": "vinculo",
@@ -259,9 +260,15 @@ Saída (coberturas resumidas):
       ],
       "aceita_numero": false,
       "impacto": "elegibilidade",
-      "motivo": "substitui as perguntas de elegibilidade que os dados não respondem (CG 11.1.2: declaração inexata faz perder o direito)"
+      "motivo": "substitui as perguntas de elegibilidade que os dados não respondem (CG 11, alínea a: declaração inexata faz perder o direito)"
     }
   ],
+  "jornada": {
+    "campos_formulario_tradicional": 8,
+    "perguntas_necessarias": 3,
+    "perguntas_evitadas": 5,
+    "percentual_evitado": 62
+  },
   "canal": {
     "semaforo": "VERMELHO",
     "sugerido": "GERENTE"

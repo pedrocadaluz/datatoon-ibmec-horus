@@ -1,5 +1,5 @@
 # Etapa 02 — Regras do seguro
-_Gerado por `scripts/02_aplicar_regras.py` em 28/10/2026. Tempo de execução: 2,9 s para 2716 imóveis._
+_Gerado por `scripts/02_aplicar_regras.py` em 28/10/2026. Tempo de execução: 4,4 s para 2716 imóveis._
 
 Na base de teste, **138 de 138 imóveis** receberam elegibilidade, plano, 1283 linhas de cobertura com faixa em reais, confiança, justificativa e comparação com os planos vizinhos.
 
@@ -8,7 +8,7 @@ Na base de teste, **138 de 138 imóveis** receberam elegibilidade, plano, 1283 l
 | Fonte | Uso |
 |---|---|
 | Guia dos Times, seção 9 | Elegibilidade, planos e coberturas fixas |
-| [Condições Gerais do Seguro Residencial BB Seguros, Processo SUSEP 15414.606453/2020-10, v1.3](https://assets-bbsegurosportal.bbseguros.com.br/2024-10/SEGURO_RESIDENCIAL_V-1.3_0.pdf) | Exclusões, bens não cobertos, Primeiro Risco Absoluto, regras de aluguel e despesas emergenciais (citadas como "CG") |
+| [Condições Gerais do Seguro Residencial BB Seguros, Processo SUSEP 15414.606453/2020-10, V1.6 (vigência desde 11/08/2026)](https://www.bbseguros.com.br/seguros/seguro-residencial) | Exclusões, bens não cobertos, Primeiro Risco Absoluto, regras de aluguel e despesas emergenciais (citadas como "CG") |
 | CUB R8-N por UF (Sinduscons, ago–set/2026) | Custo de reconstrução por m² (`dados_externos/cub_r8n_por_uf.csv`) |
 | Tabela CUB Sinduscon-MG (abr/2025) | Fatores de tipo e padrão (`dados_externos/fatores_cub_padrao.csv`) |
 | [Monitor Mercantil, 21/07/2026](https://monitormercantil.com.br/?p=332625) | Distribuição de sinistros da carteira residencial BB Seguros |
@@ -22,8 +22,8 @@ Aplicada antes de recomendar (guia, seção 2).
 | Resultado | Quando | Base |
 |---|---|---|
 | INELEGIVEL | Situação cadastral diferente de REGULAR; parede de material combustível | Guia 9.1 |
-| ELEGIVEL_CONDICIONADO | Possível obra relevante (material de construção ≥ R$ 30 mil, ou ≥ R$ 10 mil + vidraçaria); tipo não identificado | Guia 9.1; CG 7.1 x/y excluem imóveis em reforma ou construção |
-| ELEGIVEL | Demais casos, sujeitos à declaração do cliente (área urbana, alvenaria, sem obra estrutural, não tombado) | CG 11.1.2 e 12.2: declaração inexata faz perder o direito |
+| ELEGIVEL_CONDICIONADO | Possível obra relevante (material de construção ≥ R$ 30 mil, ou ≥ R$ 10 mil + vidraçaria); tipo não identificado | Guia 9.1; CG 7.1 w/x excluem imóveis em reforma ou construção |
+| ELEGIVEL | Demais casos, sujeitos à declaração do cliente (área urbana, alvenaria, sem obra estrutural, não tombado) | CG 11, alínea a, e 12.2: declaração inexata faz perder o direito |
 
 | valor | imóveis | % |
 |---|---|---|
@@ -34,9 +34,9 @@ Aplicada antes de recomendar (guia, seção 2).
 
 | Situação | Prédio | Conteúdo | Base |
 |---|---|---|---|
-| Inquilino | 0% a 10% (benfeitorias) | 100% | CG 10.1: beneficiário é o proprietário |
-| Apartamento (proprietário) | 10% a 30% (partes privativas) | 100% | CG 5.4 e 15.2: estrutura no seguro do condomínio |
-| Casa financiada | 50% a 100% | 100% | CG 15.2: com seguro habitacional, o residencial complementa |
+| Inquilino | 3% a 10% (benfeitorias) | 100% | CG 10: beneficiário é o proprietário |
+| Apartamento (proprietário) | 10% a 30% (partes privativas) | 100% | CG 5.3 e 15.2.1: estrutura no seguro do condomínio |
+| Casa financiada | 50% a 100% | 100% | CG 15.2.1: com seguro habitacional, o residencial atua primeiro no conteúdo e complementa a estrutura |
 | Casa em condomínio | 80% a 100% | 100% | Estrutura própria; áreas comuns no seguro do condomínio |
 | Casa própria | 100% | 100% | — |
 | Locador | conforme o tipo | até 20% | CG 6.1 r: bens de terceiros não são cobertos |
@@ -95,8 +95,8 @@ O seguro é a **Primeiro Risco Absoluto** (CG 15.1): paga até o LMI de cada cob
 | Queda de aeronave | 20% de prédio + conteúdo | Premissa |
 | Danos elétricos | 50% de eletrônicos e eletrodomésticos | Premissa |
 | Roubo e furto mediante arrombamento | 50% do conteúdo | Premissa |
-| Quebra de vidros | R$ 50/m² de área; máx ≥ 1,5× gasto com vidraçaria | Premissa |
-| Responsabilidade civil familiar | R$ 20–50 mil; R$ 30–100 mil com pet ou dependentes | Referência da equipe |
+| Quebra de vidros | R$ 40 a R$ 60/m² de área; máx ≥ 1,5× gasto com vidraçaria | Premissa |
+| Responsabilidade civil familiar | R$ 20–50 mil, mais R$ 10–30 mil com pet e R$ 5–10 mil por dependente (até 3) | Referência da equipe |
 | Perda ou pagamento de aluguel | 3 a 6 meses do aluguel pago/recebido; proprietário morador: área × aluguel por m² da cidade | CG: até 6 meses, aluguel ≤ LMI/6 |
 | Despesas emergenciais | LMI em que 3% ao dia pagam R$ 150–300 por pessoa | CG: 10% nas 48h + 3%/dia |
 
@@ -107,16 +107,16 @@ O seguro é a **Primeiro Risco Absoluto** (CG 15.1): paga até o LMI de cada cob
 | Cobertura | Mín mediano (R$) | Máx mediano (R$) | Máx/mín mediano | Linhas |
 |---|---|---|---|---|
 | DANOS_ELETRICOS | 4.850 | 9.750 | 2,0 | 138 |
-| DANOS_POR_AGUA | 12.200 | 25.000 | 2,3 | 138 |
+| DANOS_POR_AGUA | 12.350 | 24.800 | 2,2 | 138 |
 | DESPESAS_EMERGENCIAIS | 15.000 | 40.000 | 2,7 | 69 |
-| IMPACTO_VEICULOS_TERRESTRES | 900 | 4.450 | 2,8 | 138 |
-| INCENDIO_RAIO_EXPLOSAO_FUMACA | 56.400 | 151.600 | 2,4 | 138 |
-| PERDA_PAGAMENTO_ALUGUEL | 6.600 | 18.900 | 2,0 | 69 |
-| QUEBRA_DE_VIDROS | 5.900 | 8.750 | 1,7 | 124 |
-| QUEDA_AERONAVE | 11.300 | 30.300 | 2,4 | 138 |
-| RESPONSABILIDADE_CIVIL_FAMILIAR | 30.000 | 100.000 | 3,3 | 69 |
+| IMPACTO_VEICULOS_TERRESTRES | 1.300 | 4.050 | 2,6 | 138 |
+| INCENDIO_RAIO_EXPLOSAO_FUMACA | 59.050 | 149.300 | 2,4 | 138 |
+| PERDA_PAGAMENTO_ALUGUEL | 6.900 | 17.700 | 2,0 | 69 |
+| QUEBRA_DE_VIDROS | 4.750 | 10.500 | 2,5 | 124 |
+| QUEDA_AERONAVE | 11.800 | 29.850 | 2,4 | 138 |
+| RESPONSABILIDADE_CIVIL_FAMILIAR | 35.000 | 80.000 | 2,5 | 69 |
 | ROUBO_FURTO_ARROMBAMENTO | 9.400 | 18.400 | 2,0 | 124 |
-| VENDAVAL_GRANIZO | 4.000 | 12.450 | 2,4 | 138 |
+| VENDAVAL_GRANIZO | 5.100 | 12.450 | 2,3 | 138 |
 
 <details><summary>CUB R8-N usado por UF</summary>
 
@@ -196,8 +196,8 @@ Perguntas por imóvel (base de teste, sem contar a declaração):
 
 | valor | imóveis | % |
 |---|---|---|
-| 1 | 76 | 55,1 |
-| 0 | 47 | 34,1 |
+| 1 | 79 | 57,2 |
+| 0 | 44 | 31,9 |
 | 2 | 12 | 8,7 |
 | 3 | 3 | 2,2 |
 
@@ -216,14 +216,14 @@ Nos 1016 imóveis da base de desenvolvimento com área cadastrada, o motor foi r
 
 | Cobertura | Imóveis | Faixa contém o real (%) | Erro mediano do centro (%) |
 |---|---|---|---|
-| INCENDIO_RAIO_EXPLOSAO_FUMACA | 1016 | 97,2 | 8,8 |
-| DANOS_POR_AGUA | 1016 | 98,1 | 5,9 |
-| VENDAVAL_GRANIZO | 1016 | 96,9 | 6,9 |
-| IMPACTO_VEICULOS_TERRESTRES | 1016 | 96,6 | 11,5 |
-| QUEDA_AERONAVE | 1016 | 97,2 | 8,8 |
-| QUEBRA_DE_VIDROS | 1016 | 82,6 | 13,1 |
+| INCENDIO_RAIO_EXPLOSAO_FUMACA | 1016 | 97,2 | 8,0 |
+| DANOS_POR_AGUA | 1016 | 98,1 | 5,4 |
+| VENDAVAL_GRANIZO | 1016 | 96,9 | 6,4 |
+| IMPACTO_VEICULOS_TERRESTRES | 1016 | 96,1 | 10,3 |
+| QUEDA_AERONAVE | 1016 | 97,2 | 8,0 |
+| QUEBRA_DE_VIDROS | 1016 | 97,3 | 13,3 |
 
-No total, a faixa contém o valor real em **94,8%** dos casos. As faixas de prédio são conservadoras porque também carregam a incerteza do interesse segurável (ex.: partes privativas de apartamento de 10% a 30%), que não é testada aqui. Quebra de vidros depende só da área e acompanha o intervalo de 80% do modelo de área.
+No total, a faixa contém o valor real em **97,1%** dos casos. As faixas de prédio são conservadoras porque também carregam a incerteza do interesse segurável (ex.: partes privativas de apartamento de 10% a 30%), que não é testada aqui. Quebra de vidros depende só da área e acompanha o intervalo de 80% do modelo de área. **Atenção:** aqui o "valor real" é o centro da faixa calculada com os dados cadastrados (inclusive o padrão estimado pelo IPTU), então este número é otimista. Contra o custo de reconstrução verdadeiro (área real × CUB × fator do padrão real), a cobertura medida em `docs/12_avaliacao_modelo.md` (E3) é de cerca de 89%.
 
 ## 8. Testado e descartado
 
@@ -290,7 +290,7 @@ No total, a faixa contém o valor real em **94,8%** dos casos. As faixas de pré
 | QUEDA_AERONAVE | 8.900 | 24.300 | MEDIA |
 | DANOS_ELETRICOS | 4.400 | 8.800 | ALTA |
 | ROUBO_FURTO_ARROMBAMENTO | 7.000 | 14.000 | ALTA |
-| QUEBRA_DE_VIDROS | 4.800 | 4.800 | ALTA |
+| QUEBRA_DE_VIDROS | 3.800 | 5.700 | ALTA |
 
 #### IMO_CASO_00045_01 — Prático (amarelo)
 
@@ -310,28 +310,28 @@ No total, a faixa contém o valor real em **94,8%** dos casos. As faixas de pré
 | QUEDA_AERONAVE | 8.800 | 24.800 | MEDIA |
 | DANOS_ELETRICOS | 6.000 | 11.900 | MEDIA |
 | ROUBO_FURTO_ARROMBAMENTO | 9.300 | 18.600 | MEDIA |
-| QUEBRA_DE_VIDROS | 4.100 | 7.000 | MEDIA |
+| QUEBRA_DE_VIDROS | 3.300 | 8.500 | MEDIA |
 
 #### IMO_CASO_00008_01 — Total (verde)
 
 - **Casa Gêmea:** apartamento em Fortaleza/CE, inquilino, moradia habitual; área 125 m² (observado); padrão superior (estimado).
 - **Elegibilidade:** ELEGIVEL
 - **Por que este plano:** paga aluguel de R$ 1.500: se o imóvel ficar inabitável, continua devendo o aluguel; tem pet: danos a terceiros causados pelo animal; 3 dependentes: danos a terceiros e despesas de hospedagem da família; bens estimados em R$ 9.300 a R$ 18.600.
-- **Por que não o de baixo:** O Prático não cobre aluguel, RC familiar nem despesas emergenciais, que respondem aos sinais citados acima.
+- **Por que não o de baixo:** O Prático não cobre aluguel, RC familiar nem despesas emergenciais, que respondem aos sinais citados acima. Em reais: o cliente paga cerca de R$ 1.500/mês de aluguel, então até R$ 4.500 a R$ 9.000 ficariam sem proteção se o imóvel ficasse inabitável.
 - **Por que não o de cima:** É o plano mais completo.
 - **Confiança geral:** ALTA · **canal:** ONE_CLICK_BUY · **conflitos:** apartamento sem condomínio pago
 
 | Cobertura | Mín (R$) | Máx (R$) | Confiança |
 |---|---|---|---|
-| INCENDIO_RAIO_EXPLOSAO_FUMACA | 9.300 | 56.200 | MEDIA |
-| DANOS_POR_AGUA | 2.800 | 9.300 | MEDIA |
-| VENDAVAL_GRANIZO | 900 | 3.000 | MEDIA |
-| IMPACTO_VEICULOS_TERRESTRES | 500 | 1.100 | MEDIA |
-| QUEDA_AERONAVE | 1.900 | 11.200 | MEDIA |
+| INCENDIO_RAIO_EXPLOSAO_FUMACA | 19.400 | 52.900 | MEDIA |
+| DANOS_POR_AGUA | 3.800 | 9.000 | MEDIA |
+| VENDAVAL_GRANIZO | 1.200 | 2.900 | MEDIA |
+| IMPACTO_VEICULOS_TERRESTRES | 500 | 1.000 | MEDIA |
+| QUEDA_AERONAVE | 3.900 | 10.600 | MEDIA |
 | DANOS_ELETRICOS | 3.500 | 6.000 | ALTA |
 | ROUBO_FURTO_ARROMBAMENTO | 4.600 | 9.300 | ALTA |
-| QUEBRA_DE_VIDROS | 6.200 | 6.200 | ALTA |
-| RESPONSABILIDADE_CIVIL_FAMILIAR | 30.000 | 100.000 | BAIXA |
+| QUEBRA_DE_VIDROS | 5.000 | 7.500 | ALTA |
+| RESPONSABILIDADE_CIVIL_FAMILIAR | 45.000 | 110.000 | BAIXA |
 | PERDA_PAGAMENTO_ALUGUEL | 4.500 | 9.000 | ALTA |
 | DESPESAS_EMERGENCIAIS | 20.000 | 50.000 | MEDIA |
 
@@ -353,8 +353,8 @@ No total, a faixa contém o valor real em **94,8%** dos casos. As faixas de pré
 | QUEDA_AERONAVE | 9.300 | 23.100 | ALTA |
 | DANOS_ELETRICOS | 6.800 | 13.700 | ALTA |
 | ROUBO_FURTO_ARROMBAMENTO | 11.700 | 23.400 | ALTA |
-| QUEBRA_DE_VIDROS | 5.200 | 5.200 | ALTA |
-| RESPONSABILIDADE_CIVIL_FAMILIAR | 30.000 | 100.000 | BAIXA |
+| QUEBRA_DE_VIDROS | 4.200 | 6.300 | ALTA |
+| RESPONSABILIDADE_CIVIL_FAMILIAR | 35.000 | 90.000 | BAIXA |
 | PERDA_PAGAMENTO_ALUGUEL | 2.400 | 14.500 | ALTA |
 | DESPESAS_EMERGENCIAIS | 10.000 | 30.000 | MEDIA |
 
@@ -363,7 +363,7 @@ No total, a faixa contém o valor real em **94,8%** dos casos. As faixas de pré
 - **Casa Gêmea:** apartamento em Salvador/BA, proprietário que aluga a terceiros, alugado a terceiros; área 79 m² (estimado); padrão normal (a confirmar).
 - **Elegibilidade:** ELEGIVEL
 - **Por que este plano:** recebe cerca de R$ 1.000/mês de aluguel: renda que pararia após um sinistro; 2 dependentes: danos a terceiros e despesas de hospedagem da família; bens estimados em R$ 8.600 a R$ 17.100.
-- **Por que não o de baixo:** O Prático não cobre aluguel, RC familiar nem despesas emergenciais, que respondem aos sinais citados acima.
+- **Por que não o de baixo:** O Prático não cobre aluguel, RC familiar nem despesas emergenciais, que respondem aos sinais citados acima. Em reais: o cliente recebe cerca de R$ 1.000/mês de aluguel, então até R$ 3.000 a R$ 6.000 ficariam sem proteção se o imóvel ficasse inabitável.
 - **Por que não o de cima:** É o plano mais completo.
 - **Confiança geral:** MEDIA · **canal:** APP_COM_CONFIRMACAO
 
@@ -376,8 +376,8 @@ No total, a faixa contém o valor real em **94,8%** dos casos. As faixas de pré
 | QUEDA_AERONAVE | 5.100 | 15.000 | MEDIA |
 | DANOS_ELETRICOS | 2.600 | 5.200 | BAIXA |
 | ROUBO_FURTO_ARROMBAMENTO | 4.300 | 8.600 | BAIXA |
-| QUEBRA_DE_VIDROS | 3.000 | 5.200 | MEDIA |
-| RESPONSABILIDADE_CIVIL_FAMILIAR | 30.000 | 100.000 | BAIXA |
+| QUEBRA_DE_VIDROS | 2.400 | 6.200 | MEDIA |
+| RESPONSABILIDADE_CIVIL_FAMILIAR | 30.000 | 70.000 | BAIXA |
 | PERDA_PAGAMENTO_ALUGUEL | 3.000 | 6.000 | MEDIA |
 | DESPESAS_EMERGENCIAIS | 15.000 | 40.000 | MEDIA |
 
@@ -399,9 +399,9 @@ No total, a faixa contém o valor real em **94,8%** dos casos. As faixas de pré
 | QUEDA_AERONAVE | 54.200 | 97.200 | MEDIA |
 | DANOS_ELETRICOS | 5.500 | 11.000 | MEDIA |
 | ROUBO_FURTO_ARROMBAMENTO | 9.800 | 19.700 | MEDIA |
-| QUEBRA_DE_VIDROS | 4.700 | 8.000 | MEDIA |
-| RESPONSABILIDADE_CIVIL_FAMILIAR | 30.000 | 100.000 | BAIXA |
-| PERDA_PAGAMENTO_ALUGUEL | 3.700 | 31.600 | MEDIA |
+| QUEBRA_DE_VIDROS | 3.800 | 9.700 | MEDIA |
+| RESPONSABILIDADE_CIVIL_FAMILIAR | 35.000 | 90.000 | BAIXA |
+| PERDA_PAGAMENTO_ALUGUEL | 4.500 | 25.700 | MEDIA |
 | DESPESAS_EMERGENCIAIS | 10.000 | 30.000 | MEDIA |
 
 #### IMO_CASO_00080_01 — Essencial (amarelo)

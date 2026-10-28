@@ -172,6 +172,12 @@ class Motor:
 
         motivos = {"TOTAL": pontuacao["motivos_total"] + pontuacao["motivos_pratico"],
                    "PRATICO": pontuacao["motivos_pratico"]}.get(plano, [])
+        pendentes = [p for p in proximas if p["campo"] != "declaracao_unica"]
+        feitas = [c for c in respondidas if c != "declaracao_unica"]
+        necessarias = min(len(feitas) + len(pendentes), regras.CAMPOS_FORMULARIO_TRADICIONAL)
+        evitadas = regras.CAMPOS_FORMULARIO_TRADICIONAL - necessarias
+        resumo = "; ".join(motivos[:2]) if motivos else "poucos sinais de necessidade além da proteção básica"
+        curta = f"{regras.NOME_PLANO[plano]}: {resumo}." if plano else "Imóvel não elegível sem validação."
         return {
             "versao_contrato": VERSAO_CONTRATO,
             "imovel_id": imovel_id,
@@ -187,6 +193,7 @@ class Motor:
                  "conteudo_faixa": [_valor_json(r["conteudo_min"]), _valor_json(r["conteudo_max"])]},
             "recomendacao": {
                 "plano": plano,
+                "justificativa_curta": curta,
                 "confianca_geral": impacto["confianca_geral"],
                 "por_que_este_plano": motivos,
                 "por_que_nao_plano_abaixo": nao_abaixo,
@@ -206,6 +213,12 @@ class Motor:
                  "impacto": p["impacto"], "motivo": p["motivo"]}
                 for p in proximas
             ],
+            "jornada": {
+                "campos_formulario_tradicional": regras.CAMPOS_FORMULARIO_TRADICIONAL,
+                "perguntas_necessarias": necessarias,
+                "perguntas_evitadas": evitadas,
+                "percentual_evitado": round(100 * evitadas / regras.CAMPOS_FORMULARIO_TRADICIONAL),
+            },
             "canal": {"semaforo": cor, "sugerido": canal},
             "respostas_aplicadas": respondidas,
         }

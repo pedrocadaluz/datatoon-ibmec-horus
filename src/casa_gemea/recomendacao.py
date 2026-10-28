@@ -43,6 +43,7 @@ def recomendar(casa: pd.DataFrame, ref: regras.Referencias, catalogo: pd.DataFra
             "por_que_nao_plano_acima": nao_acima,
             "campos_que_mudam_plano": impacto["campos_que_mudam_plano"],
             "qtd_perguntas": impacto["qtd_perguntas"],
+            "qtd_perguntas_evitadas": regras.CAMPOS_FORMULARIO_TRADICIONAL - impacto["qtd_perguntas"],
             "perguntas_confirmacao": perguntas.texto_perguntas(impacto["perguntas"]),
             "semaforo": cor,
             "canal_sugerido": canal,

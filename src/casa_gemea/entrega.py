@@ -46,8 +46,8 @@ CAMPO_LEGIVEL = {
 }
 
 FONTES_FIXAS = [
-    "Condições Gerais do Seguro Residencial BB Seguros v1.3, Processo SUSEP 15414.606453/2020-10 "
-    "(https://assets-bbsegurosportal.bbseguros.com.br/2024-10/SEGURO_RESIDENCIAL_V-1.3_0.pdf)",
+    "Condições Gerais do Seguro Residencial BB Seguros V1.6 (vigência desde 11/08/2026), Processo SUSEP 15414.606453/2020-10 "
+    "(página do produto: https://www.bbseguros.com.br/seguros/seguro-residencial)",
     "Tabela CUB/m² Sinduscon-MG abr/2025, fatores de tipo e padrão "
     "(https://sinduscon-mg.org.br/wp-content/uploads/2025/05/tabela_cub_abril_2025.pdf)",
     "Monitor Mercantil, 21/07/2026, distribuição de sinistros residenciais BB Seguros "

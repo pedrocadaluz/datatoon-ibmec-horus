@@ -11,11 +11,11 @@ Todas as fontes são públicas. Acesso em 27/10/2026. Os arquivos ficam em `dado
 
 ## 1. Condições Gerais do Seguro Residencial (BB Seguros)
 
-- **Documento principal:** [Seguro Residencial — Condições Gerais e Especiais, v1.3](https://assets-bbsegurosportal.bbseguros.com.br/2024-10/SEGURO_RESIDENCIAL_V-1.3_0.pdf). Aliança do Brasil Seguros S.A. (BB Seguros), Processo SUSEP 15414.606453/2020-10, 171 páginas, publicado em out/2024.
+- **Documento principal:** Seguro Residencial: Condições Gerais e Especiais, **V1.6, vigente desde 11/08/2026** (página do produto: https://www.bbseguros.com.br/seguros/seguro-residencial; cópia local `cg_residencial_v1_6_2026-08.pdf`; a v1.3 de out/2024 foi usada na primeira versão e conferida em `docs/10_reconciliacao_cg.md`). Aliança do Brasil Seguros S.A. (BB Seguros), Processo SUSEP 15414.606453/2020-10, 171 páginas, publicado em out/2024.
 - **Documento de apoio:** [Seguro Residencial v2.3](https://assets-bbseguros.cld.brasilseg.com.br/2024-08/SEGURO_RESIDENCIAL-V_23_0.pdf), Processo SUSEP 15414.003077/2009-93 (ago/2024). Consultado para comparar a regra de imóvel desocupado e de veraneio.
 - **Licença:** documento contratual público, distribuído pela seguradora. Cópia local guardada para reprodutibilidade.
 - **Método:** download do PDF e extração do texto com PyMuPDF; leitura dos itens de cobertura, exclusões, aceitação e limites.
-- **Itens usados:** 3 e 4 (coberturas), 5.4 (partes comuns do condomínio), 5.7 (MEI), 6.1 (bens não cobertos), 7.1 x/y (obra e reforma), 10.1 (beneficiário), 11.1.2 (declaração inexata), 12 (aceitação), 15.1 (Primeiro Risco Absoluto), 15.2 (Segundo Risco em condomínio e financiamento habitacional), 34 (inspeção) e Condições Especiais de Roubo, Perda de Aluguel e Despesas Emergenciais.
+- **Itens usados:** 3 e 4 (coberturas), 5.3 (partes comuns do condomínio), 5.6 (MEI), 6.1 (bens não cobertos), 7.1 w/x (obra e reforma), 7.1 y (desocupação acima de 30 dias), 10 (beneficiário), 11, alínea a (declaração inexata), 12 (aceitação), 15.1 (Primeiro Risco Absoluto), 15.2 (Segundo Risco em condomínio e financiamento habitacional), 34 (inspeção) e Condições Especiais de Roubo, Perda de Aluguel e Despesas Emergenciais.
 - **Limitações:** o guia do datathon não informa a versão vigente do produto vendido com os nomes Essencial, Prático e Total; usamos a versão mais recente encontrada. Os limites em reais de cada plano não estão nas Condições Gerais: aparecem só na apólice ou no certificado.
 
 ## 2. CUB R8-N por UF

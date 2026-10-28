@@ -67,6 +67,7 @@
   },
   "recomendacao": {
     "plano": "PRATICO",
+    "justificativa_curta": "Prático: bens estimados em R$ 19.500 a R$ 39.000; eletrônicos e eletrodomésticos de até R$ 20.800.",
     "confianca_geral": "ALTA",
     "por_que_este_plano": [
       "bens estimados em R$ 19.500 a R$ 39.000",
@@ -150,10 +151,10 @@
     },
     {
       "cobertura": "QUEBRA_DE_VIDROS",
-      "faixa_valor_min": 6500,
-      "faixa_valor_max": 11000,
+      "faixa_valor_min": 5200,
+      "faixa_valor_max": 13300,
       "confianca": "MEDIA",
-      "regra": "R$ 50 por m² de área (janelas, box, espelhos, tampos); máximo ≥ 1,5× o gasto recente com vidraçaria",
+      "regra": "R$ 40 a R$ 60 por m² de área (janelas, box, espelhos, tampos); máximo ≥ 1,5× o gasto recente com vidraçaria",
       "justificativa": "Vidros e espelhos crescem com o tamanho do imóvel.",
       "a_confirmar": "área construída",
       "observacao": "Valor por m² é premissa da equipe."
@@ -200,9 +201,15 @@
       ],
       "aceita_numero": false,
       "impacto": "elegibilidade",
-      "motivo": "substitui as perguntas de elegibilidade que os dados não respondem (CG 11.1.2: declaração inexata faz perder o direito)"
+      "motivo": "substitui as perguntas de elegibilidade que os dados não respondem (CG 11, alínea a: declaração inexata faz perder o direito)"
     }
   ],
+  "jornada": {
+    "campos_formulario_tradicional": 8,
+    "perguntas_necessarias": 3,
+    "perguntas_evitadas": 5,
+    "percentual_evitado": 62
+  },
   "canal": {
     "semaforo": "VERDE",
     "sugerido": "ONE_CLICK_BUY"

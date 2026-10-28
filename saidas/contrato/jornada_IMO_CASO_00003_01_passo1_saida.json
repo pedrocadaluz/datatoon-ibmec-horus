@@ -67,13 +67,14 @@
   },
   "recomendacao": {
     "plano": "TOTAL",
+    "justificativa_curta": "Total: recebe cerca de R$ 8.350/mês de aluguel: renda que pararia após um sinistro; 1 dependente: danos a terceiros e despesas de hospedagem da família.",
     "confianca_geral": "MEDIA",
     "por_que_este_plano": [
       "recebe cerca de R$ 8.350/mês de aluguel: renda que pararia após um sinistro",
       "1 dependente: danos a terceiros e despesas de hospedagem da família",
       "casa: mais portas e janelas expostas a arrombamento"
     ],
-    "por_que_nao_plano_abaixo": "O Prático não cobre aluguel, RC familiar nem despesas emergenciais, que respondem aos sinais citados acima.",
+    "por_que_nao_plano_abaixo": "O Prático não cobre aluguel, RC familiar nem despesas emergenciais, que respondem aos sinais citados acima. Em reais: o cliente recebe cerca de R$ 8.350/mês de aluguel, então até R$ 25.050 a R$ 50.100 ficariam sem proteção se o imóvel ficasse inabitável.",
     "por_que_nao_plano_acima": "É o plano mais completo.",
     "campos_que_podem_mudar_o_plano": [
       "vinculo"
@@ -148,24 +149,24 @@
       "regra": "50% do conteúdo",
       "justificativa": "Num arrombamento são levados sobretudo bens portáteis; conteúdo R$ 3.900–R$ 7.800. Celulares, joias e dinheiro não são cobertos (CG 6.1).",
       "a_confirmar": "valor aproximado dos bens no imóvel; se o imóvel fica desocupado por longos períodos",
-      "observacao": "Residência desocupada não tem cobertura de roubo (CG, Roubo 2.1 c)."
+      "observacao": "Residência desocupada não tem cobertura de roubo (CG, Roubo 2.1 c) e, após 30 dias, nenhum evento é coberto, salvo imóvel de veraneio declarado (CG 7.1 y)."
     },
     {
       "cobertura": "QUEBRA_DE_VIDROS",
-      "faixa_valor_min": 6500,
-      "faixa_valor_max": 11000,
+      "faixa_valor_min": 5200,
+      "faixa_valor_max": 13300,
       "confianca": "MEDIA",
-      "regra": "R$ 50 por m² de área (janelas, box, espelhos, tampos); máximo ≥ 1,5× o gasto recente com vidraçaria",
+      "regra": "R$ 40 a R$ 60 por m² de área (janelas, box, espelhos, tampos); máximo ≥ 1,5× o gasto recente com vidraçaria",
       "justificativa": "Vidros e espelhos crescem com o tamanho do imóvel.",
       "a_confirmar": "área construída",
       "observacao": "Valor por m² é premissa da equipe."
     },
     {
       "cobertura": "RESPONSABILIDADE_CIVIL_FAMILIAR",
-      "faixa_valor_min": 30000,
-      "faixa_valor_max": 100000,
+      "faixa_valor_min": 25000,
+      "faixa_valor_max": 60000,
       "confianca": "BAIXA",
-      "regra": "faixa de referência: R$ 20–50 mil; R$ 30–100 mil quando há dependentes ou pet",
+      "regra": "faixa de referência: R$ 20–50 mil, mais R$ 10–30 mil com pet e R$ 5–10 mil por dependente (até 3)",
       "justificativa": "Danos a terceiros não dependem do valor do imóvel; a faixa sobe quando há mais pessoas ou animais que podem causá-los (CG, RC Familiar 1.1 b e c).",
       "a_confirmar": "se há pets, crianças ou atividades de risco (ex.: piscina)",
       "observacao": "Faixa de referência da equipe, sem base estatística na base de dados."
@@ -253,9 +254,15 @@
       ],
       "aceita_numero": false,
       "impacto": "elegibilidade",
-      "motivo": "substitui as perguntas de elegibilidade que os dados não respondem (CG 11.1.2: declaração inexata faz perder o direito)"
+      "motivo": "substitui as perguntas de elegibilidade que os dados não respondem (CG 11, alínea a: declaração inexata faz perder o direito)"
     }
   ],
+  "jornada": {
+    "campos_formulario_tradicional": 8,
+    "perguntas_necessarias": 3,
+    "perguntas_evitadas": 5,
+    "percentual_evitado": 62
+  },
   "canal": {
     "semaforo": "AMARELO",
     "sugerido": "APP_COM_CONFIRMACAO"

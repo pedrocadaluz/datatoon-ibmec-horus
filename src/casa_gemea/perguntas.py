@@ -148,14 +148,14 @@ def _texto_pergunta(campo: str, r: pd.Series) -> str:
 
 
 MOTIVO = {
-    "obra": "define a elegibilidade: imóvel em reforma ou construção fica fora da cobertura (CG 7.1 x/y)",
+    "obra": "define a elegibilidade: imóvel em reforma ou construção fica fora da cobertura (CG 7.1 w/x)",
     "vinculo": "muda o plano: quem recebe aluguel precisa da cobertura de perda de aluguel",
     "tipo_imovel": "muda o plano e a faixa: casa tem mais acessos expostos e estrutura própria",
-    "ocupacao": "muda o plano: imóvel desocupado não tem cobertura de roubo (CG, Roubo 2.1 c)",
+    "ocupacao": "muda o plano: imóvel desocupado não tem cobertura de roubo (CG, Roubo 2.1 c) e, após 30 dias, perde todas as coberturas (CG 7.1 y)",
     "conteudo": "valor dos bens define a necessidade de cobertura de roubo e a faixa de incêndio",
     "area_m2": "área define o custo de reconstrução",
     "padrao_construtivo": "acabamento define o custo de reconstrução por m²",
-    "declaracao_unica": "substitui as perguntas de elegibilidade que os dados não respondem (CG 11.1.2: declaração inexata faz perder o direito)",
+    "declaracao_unica": "substitui as perguntas de elegibilidade que os dados não respondem (CG 11, alínea a: declaração inexata faz perder o direito)",
 }
 
 
