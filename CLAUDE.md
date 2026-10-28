@@ -115,6 +115,11 @@ Decisões tomadas:
   - 4 visões do mesmo motor e das mesmas respostas: Cliente (1 pergunta por vez, botões, valor exato p/ área/bens, cards dos planos, faixas, botão contratar só no verde), Gerente (selos, evidência, impacto), SAC (roteiro "Leia:"), Agente (JSON editável).
   - Casos de demonstração: 00003 (locador+reforma → Prático), 00001, 00013, 00016.
   - Testado com streamlit AppTest: 0 exceções nas 4 visões e 40 clientes.
+- [x] Personalização (28/10, pedida no material da Brasilseg: "OPCIONAIS — inclusão/exclusão de coberturas permitidas"; saída = plano + valores + **adicionais** + motivos) — `src/casa_gemea/adicionais.py`
+  - Coberturas adicionais facultativas das CG v1.3 (item 4.1, 14 opções). Sugeridas só com sinal: RC familiar (pet/dependentes fora do Total), Equipamentos Portáteis (eletrônicos ≥ 15 mil), Bicicleta (lazer ≥ 5 mil, como pergunta), Desocupação Temporária (2ª residência/vazio). Alagamento/chuva não: Danos por Água já contempla (CG 4.3).
+  - Entram na justificativa do CSV ("Opcionais sugeridos, pagos à parte"), no JSON (`recomendacao.adicionais_sugeridos`), na demo (card 5 com checkboxes; gerente; roteiro SAC) e no relatório 02 (seção 6). **Não** entram no template de coberturas (catálogo fixo). Teste: 59% dos imóveis com ≥1 opcional.
+  - Texto "o Total vale a pena se ele quiser…" trocado por "a RC familiar pode ser incluída como opcional, sem migrar para o Total".
+- [ ] Do material da Brasilseg ainda em aberto: linguagem de cliente ("Se você escolher menos…"), assistências por plano, riscos priorizados, 3 perfis A/B/C para o pitch
 - [ ] Slides, vídeo
 - [x] Ajustes de faixas e jornada (28/10, Pedro + Claude): inquilino com benfeitorias de 3% a 10% (antes 0% a 10%, gerava faixas de até 20×); vidros R$ 40 a 60/m² (antes mín = máx em 42 linhas); RC familiar escalonada por pet e dependentes (antes idêntica nas 69 linhas); aluguel do proprietário morador com incertezas combinadas em log; faixa nunca colapsa em mín = máx; "por que não o plano de baixo" do Total mostra em reais o aluguel que o Prático deixaria sem proteção. Contrato JSON ganhou `recomendacao.justificativa_curta` e `jornada` (perguntas evitadas); `recomendacao_*.csv` ganhou `qtd_perguntas_evitadas`. Razão máx/mín máxima caiu de 20× para ~11× (mediana ~2,4×).
 

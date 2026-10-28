@@ -94,6 +94,8 @@ def _justificativa(r: pd.Series, c: pd.Series) -> str:
         partes.append(f"Por que não o {regras.NOME_PLANO[regras.ORDEM_PLANOS[i - 1]]}: {r['por_que_nao_plano_abaixo']}")
     if i < len(regras.ORDEM_PLANOS) - 1:
         partes.append(f"Por que não o {regras.NOME_PLANO[regras.ORDEM_PLANOS[i + 1]]}: {r['por_que_nao_plano_acima']}")
+    if isinstance(r["adicionais_sugeridos"], str) and r["adicionais_sugeridos"]:
+        partes.append(f"Opcionais sugeridos, pagos à parte (CG 4.1): {r['adicionais_sugeridos']}.")
     campos = [CAMPO_LEGIVEL[x] for x in str(r["campos_que_mudam_plano"]).split("|") if x in CAMPO_LEGIVEL]
     if campos:
         partes.append(f"O plano pode mudar conforme a confirmação {' e '.join(campos)}.")

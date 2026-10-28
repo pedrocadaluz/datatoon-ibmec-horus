@@ -37,7 +37,7 @@ canal ──► { imovel_id, respostas } ──► motor ──► { casa_gemea,
 | `status` | `RECOMENDACAO_INICIAL` (há perguntas) · `RECOMENDACAO_CONFIRMADA` (nada mais a perguntar) · `ENCAMINHAR_GERENTE` · `INELEGIVEL` |
 | `elegibilidade` | `status` (ELEGIVEL, ELEGIVEL_CONDICIONADO, INELEGIVEL) e `motivo` |
 | `casa_gemea` | Cada campo com `valor`, `selo` (OBSERVADO, ESTIMADO, A_CONFIRMAR, CONFIRMADO), `confianca` e `evidencia`; faixas de área e bens |
-| `recomendacao` | Plano, confiança geral, por que este plano, por que não o de baixo e o de cima, campos que ainda podem mudar o plano |
+| `recomendacao` | Plano, confiança geral, por que este plano, por que não o de baixo e o de cima, campos que ainda podem mudar o plano e `adicionais_sugeridos` (opcionais pagos à parte, CG 4.1, com motivo e faixa de referência) |
 | `coberturas` | Faixa mínima e máxima (LMI), confiança, regra, justificativa, o que confirmar e observação |
 | `proximas_perguntas` | Em ordem de impacto: `id`, `pergunta`, `opcoes` (valor + rótulo), `aceita_numero`, `impacto`, `motivo` |
 | `canal` | Semáforo e canal sugerido |
@@ -150,7 +150,8 @@ Saída (coberturas resumidas):
     "por_que_nao_plano_acima": "É o plano mais completo.",
     "campos_que_podem_mudar_o_plano": [
       "vinculo"
-    ]
+    ],
+    "adicionais_sugeridos": []
   },
   "coberturas": [
     {
