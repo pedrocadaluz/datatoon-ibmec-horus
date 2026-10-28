@@ -246,14 +246,17 @@ def adicionais(r: pd.Series, plano: str, elegibilidade: str, respostas: dict | N
 
 
 # --------------------------------------------------------------------------- assistências
+# Pacotes de assistência por plano (Guia dos Times 9.2).
+PACOTES_ASSISTENCIA = {
+    "ESSENCIAL": ["Casa em Apuros"],
+    "PRATICO": ["Casa em Apuros", "Casa Funcionando", "Casa Arrumada", "Casa Limpa"],
+    "TOTAL": ["Casa em Apuros", "Casa Funcionando", "Casa Arrumada", "Casa Limpa", "Casa sem Insetos e Pragas", "Casa Segura"],
+}
+
+
 def assistencias(r: pd.Series, plano: str) -> dict:
     """Assistência em destaque entre as do plano; benefício premium só no Total."""
-    pacotes = {
-        "ESSENCIAL": ["Casa em Apuros"],
-        "PRATICO": ["Casa em Apuros", "Casa Funcionando", "Casa Limpa"],
-        "TOTAL": ["Casa em Apuros", "Casa Funcionando", "Casa Arrumada", "Casa Limpa", "Casa sem Insetos e Pragas", "Casa Segura"],
-    }
-    do_plano = pacotes.get(plano, [])
+    do_plano = PACOTES_ASSISTENCIA.get(plano, [])
     fr = _num(r, "fracao_conteudo_do_cliente", 1.0)
     eletro = _num(r, "eletronicos_eletro_max") * fr
     candidatos = []
