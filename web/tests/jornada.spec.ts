@@ -1,8 +1,10 @@
+import { revelar, abrirValor } from './ajudas'
 import { test, expect } from '@playwright/test'
 
 test('cliente percorre jornada real, muda plano e confirma faixa', async ({ page }) => {
   await page.emulateMedia({ reducedMotion: 'reduce' })
   await page.goto('/')
+  await revelar(page)
   await expect(page.getByTestId('plano-atual')).toHaveText('Total')
   await expect(page.getByTestId('semaforo')).toContainText('Gerente')
   await page.screenshot({ path: 'evidencias/cliente-inicial.png', fullPage: true })
@@ -10,6 +12,7 @@ test('cliente percorre jornada real, muda plano e confirma faixa', async ({ page
   await expect(page.getByTestId('semaforo')).toContainText('Confirmações')
   await page.getByTestId('resposta-PROPRIETARIO_QUITADO').click()
   await expect(page.getByTestId('plano-atual')).toHaveText('Prático')
+  await abrirValor(page)
   await page.getByLabel('Valor exato').fill('160')
   await page.getByRole('button', { name: 'Confirmar valor' }).click()
   await page.getByTestId('resposta-SIM').click()
@@ -39,6 +42,7 @@ test('tres imóveis, semáforos, SAC, não sei e reinício', async ({ page, requ
     await expect(page.getByTestId('caso-atual')).toContainText(id)
     const data = await (await request.post('/api/recomendar', { data: { imovel_id: id, respostas: {} } })).json()
     const nomes: Record<string, string> = { TOTAL: 'Total', PRATICO: 'Prático', ESSENCIAL: 'Essencial' }
+    await revelar(page)
     await expect(page.getByTestId('plano-atual')).toHaveText(nomes[data.recomendacao.plano])
     await page.getByRole('button', { name: 'SAC', exact: true }).click()
     await page.getByTestId('resposta-NAO_SEI').click()

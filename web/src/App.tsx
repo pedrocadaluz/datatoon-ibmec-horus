@@ -16,8 +16,8 @@ import './app.css'
 
 interface Session { history: Registro[]; result: Resultado; initial: Resultado }
 const canais: { label: Canal; icon: string; note: string }[] = [
-  { label: 'Cliente', icon: 'home', note: 'Sua proteção' }, { label: 'Gerente', icon: 'person', note: 'A decisão explicada' },
-  { label: 'SAC', icon: 'headset', note: 'Atendimento guiado' }, { label: 'Agente', icon: 'code', note: 'Contrato JSON' },
+  { label: 'Cliente', icon: 'home', note: 'Para quem contrata' }, { label: 'Gerente', icon: 'person', note: 'Para a agência' },
+  { label: 'SAC', icon: 'headset', note: 'Para o telefone' }, { label: 'Agente', icon: 'code', note: 'Para sistemas' },
 ]
 const steps = ['Conheça a Casa Gêmea', 'Responda o que importa', 'Entenda sua proteção']
 const answersFrom = (history: Registro[]): Respostas => Object.fromEntries(history.map(h => [h.campo, h.valor]))
@@ -38,12 +38,15 @@ export default function App() {
   const [presentation, setPresentation] = useState(false)
   const [step, setStep] = useState(0)
   const [font, setFont] = useState(100)
+  const [revealed, setRevealed] = useState<Record<string, boolean>>({})
   const [view, setView] = useState<'canais' | 'app' | 'comparativo'>('canais')
   const seq = useRef(0)
   const controller = useRef<AbortController | null>(null)
   const data = sessions[selected]?.result
   const history = sessions[selected]?.history ?? []
   const item = list?.imoveis.find(i => i.imovel_id === selected)
+  const finished = !!data && data.proximas_perguntas.length === 0
+  const showRec = finished || !!revealed[selected] || channel === 'Gerente' || channel === 'Agente' || (presentation && step === 2)
 
   useEffect(() => { document.documentElement.style.fontSize = `${font}%` }, [font])
   useEffect(() => {
@@ -71,10 +74,10 @@ export default function App() {
       if (label) {
         if ('vibrate' in navigator && !matchMedia('(prefers-reduced-motion: reduce)').matches) navigator.vibrate(12)
         const before = sessionsRef.current[id]?.result.recomendacao.plano
-        setNotice(before && before !== result.recomendacao.plano ? `Resposta registrada. O plano passou de ${planos[before]} para ${planos[result.recomendacao.plano] ?? 'sem plano'}.` : 'Resposta registrada. Recomendação e faixas atualizadas pelo motor.')
+        setNotice(before && before !== result.recomendacao.plano ? `Resposta registrada. O plano passou de ${planos[before]} para ${planos[result.recomendacao.plano] ?? 'sem plano'}.` : 'Resposta registrada. Atualizamos sua recomendação.')
       }
     } catch (e) {
-      if (current === seq.current && !ctrl.signal.aborted) setError(e instanceof Error ? e.message : 'Não conseguimos consultar o motor.')
+      if (current === seq.current && !ctrl.signal.aborted) setError(e instanceof Error ? e.message : 'Não conseguimos atualizar agora.')
     } finally { if (current === seq.current) setBusy(false) }
   }, [])
 
@@ -140,7 +143,7 @@ export default function App() {
       const next = Object.entries(parsed.respostas as Respostas).map(([campo, valor]) => ({ campo, valor, pergunta: nomes[campo] ?? campo, rotulo: String(valor).replace(/_/g, ' ') }))
       setSessions(prev => ({ ...prev, [id]: { history: next, result, initial } }))
       if (id !== selected) setSelected(id)
-      setNotice('Contrato executado. As respostas estão disponíveis nos quatro canais.')
+      setNotice('Contrato executado. As respostas valem nos quatro canais.')
     } catch (e) {
       if (!ctrl.signal.aborted && current === seq.current) throw e
     } finally {
@@ -148,25 +151,29 @@ export default function App() {
     }
   }
 
-  const question = data && <Question sac={channel === 'SAC'} data={data} busy={busy} history={history} onAnswer={answer} onUndo={i => void load(selected, history.slice(0, i), 'Edição')} />
+  const question = data && <Question sac={channel === 'SAC'} revealed={showRec} onReveal={() => setRevealed(r => ({ ...r, [selected]: true }))} data={data} busy={busy} history={history} onAnswer={answer} onUndo={i => void load(selected, history.slice(0, i), 'Edição')} />
   return <div className={`app ${presentation ? `presentation focus-${step}` : ''}`}>
     <a className="skip-link" href="#conteudo">Pular para o conteúdo</a>
     <header className="topbar"><div className="topbar-inner"><a href="#conteudo" className="brand" aria-label="Horus, Casa Gêmea"><img src="/horus.svg" alt="" width="38" height="38" /><span>horus<span className="brand-divider" /><small>Casa Gêmea</small></span></a><div className="header-actions"><PwaControls /><span className="prototype">Protótipo · Datathon 2026</span><div className="font-controls" role="group" aria-label="Tamanho do texto"><button onClick={() => setFont(f => Math.max(90, f - 10))} aria-label="A− Diminuir texto" disabled={font <= 90}>A−</button><button onClick={() => setFont(f => Math.min(130, f + 10))} aria-label="A+ Aumentar texto" disabled={font >= 130}>A+</button></div><button className={`presentation-toggle ${presentation ? 'active' : ''}`} onClick={() => setPresentation(p => !p)} aria-pressed={presentation} aria-label="Apresentar, Modo apresentação" title="Atalho P"><Icon name="play" size={17} /><span>Apresentar</span><kbd>P</kbd></button></div></div></header>
-    <main id="conteudo" className={`view-${view}`}><nav className="view-nav" aria-label="Visão">{([['canais', 'Canais'], ['app', 'App'], ['comparativo', 'Comparativo']] as const).map(([v, r]) => <button key={v} aria-pressed={view === v} className={view === v ? 'active' : ''} onClick={() => setView(v)}>{r}</button>)}</nav>{view === 'app' && <AppSim onComparar={() => setView('comparativo')} />}{view === 'comparativo' && <Comparativo />}{view === 'canais' && <><section className="intro"><div><div className="breadcrumb">Proteção inteligente <span>/</span> Seguro residencial</div><h1>Menos perguntas.<br /><span>Mais sentido para sua proteção.</span></h1><p>Seu banco já conhece parte da sua casa. A gente conecta os pontos.</p></div><div className="intro-stamp"><Icon name="shield" size={24} /><span>Cada decisão<br /><b>tem uma explicação.</b></span></div></section>
+    <main id="conteudo" className={`view-${view}`}><nav className="view-nav" aria-label="Visão">{([['canais', 'Canais'], ['app', 'App'], ['comparativo', 'Comparativo']] as const).map(([v, r]) => <button key={v} aria-pressed={view === v} className={view === v ? 'active' : ''} onClick={() => setView(v)}>{r}</button>)}</nav>{view === 'app' && <AppSim onComparar={() => setView('comparativo')} />}{view === 'comparativo' && <Comparativo />}{view === 'canais' && <><section className="intro"><div><h1>Menos perguntas.<br /><span>Mais sentido para sua proteção.</span></h1><p>Seu banco já conhece parte da sua casa. Só confirmamos o que muda o resultado.</p></div></section>
 <CasePicker list={list} selected={selected} busy={busy} hasData={Boolean(data)} mobile={mobile} open={caseOpen} onClose={() => setCaseOpen(false)} onChoose={choose} onReset={() => void load(selected, [], 'Reinício')} />
-      <nav className="channel-nav" aria-label="Canal de atendimento" data-mobile={String(mobile)}>{canais.map(c => <button key={c.label} aria-label={c.label} aria-pressed={channel === c.label} className={channel === c.label ? 'active' : ''} onClick={() => setChannel(c.label)}><Icon name={c.icon} size={18} /><span>{c.label}<small>{c.note}</small></span>{channel === c.label && <span className="nav-marker" />}</button>)}{mobile && <button className="mobile-case-button" aria-label="Escolher imóvel" aria-expanded={caseOpen} onClick={() => setCaseOpen(true)}><Icon name="pin" size={18} /><span>Imóvel</span></button>}<span className="one-engine"><span />Um motor. Quatro canais.</span></nav>
+      <nav className="channel-nav" aria-label="Canal de atendimento" data-mobile={String(mobile)}>{canais.map(c => <button key={c.label} aria-label={c.label} aria-pressed={channel === c.label} className={channel === c.label ? 'active' : ''} onClick={() => setChannel(c.label)}><Icon name={c.icon} size={18} /><span>{c.label}<small>{c.note}</small></span>{channel === c.label && <span className="nav-marker" />}</button>)}{mobile && <button className="mobile-case-button" aria-label="Escolher imóvel" aria-expanded={caseOpen} onClick={() => setCaseOpen(true)}><Icon name="pin" size={18} /><span>Imóvel</span></button>}</nav>
       {presentation && <div className="presentation-bar"><span><Icon name="play" size={17} />Apresentação <b>{step + 1} / 3</b></span><strong>{steps[step]}</strong><div><button aria-label="Etapa anterior" disabled={step === 0} onClick={() => setStep(s => s - 1)}>←</button><button aria-label="Próxima etapa" disabled={step === 2} onClick={() => setStep(s => s + 1)}>→</button><button onClick={() => setPresentation(false)}>Sair</button></div>{!mobile && <small>Setas navegam · números respondem · Esc sai</small>}</div>}
       {error && <div className={`error-banner ${!data ? 'offline-card' : ''}`} role="alert"><Icon name="info" /><div><strong>{data ? 'Não foi possível atualizar a Casa Gêmea.' : 'Sua Casa Gêmea espera pela conexão.'}</strong>{!data && <p>O app pode abrir sem internet. Para consultar o imóvel, reconecte à mesma rede do computador da demonstração.</p>}<p>{texto(error)}</p>{data && <span>Os dados abaixo são a última resposta válida. Suas respostas foram preservadas.</span>}</div><button className="button secondary" onClick={() => setRetry(n => n + 1)}>Tentar novamente</button></div>}
-      {!data ? !error && <div className="loading-state" role="status"><div className="loading-house"><Icon name="home" size={45} /></div><h2>Conectando os pontos da sua casa...</h2><p>O motor está montando a Casa Gêmea e calculando sua proteção.</p><div className="skeleton" /></div> : <>
+      {!data ? !error && <div className="loading-state" role="status"><div className="loading-house"><Icon name="home" size={45} /></div><h2>Montando a Casa Gêmea...</h2><p>Estamos juntando o que já sabemos para calcular sua proteção.</p><div className="skeleton" /></div> : <>
         <div className="journey-strip"><div><span className="case-id" data-testid="caso-atual">{data.imovel_id}</span><span className="location-text"><Icon name="pin" size={14} />{item?.municipio}/{item?.uf}</span></div><div className="avoided-counter" data-testid="perguntas-evitadas"><Icon name="spark" size={18} /><strong>{data.jornada.perguntas_evitadas} de {data.jornada.campos_formulario_tradicional} perguntas evitadas</strong><span>{data.jornada.percentual_evitado}% menos formulário</span></div><div className="answered-counter" data-testid="respondidas"><b>{history.length}</b> respondidas</div><div className="mobile-count-progress" role="progressbar" aria-label="Perguntas evitadas" aria-valuemin={0} aria-valuemax={data.jornada.campos_formulario_tradicional} aria-valuenow={data.jornada.perguntas_evitadas}><i style={{ width: `${data.jornada.percentual_evitado}%` }} /></div></div>
-        <div className="status-announcement" role="status" aria-live="polite">{busy ? 'Consultando o motor...' : notice}</div>
-        <div className="workspace"><div className="workspace-main">{channel === 'Cliente' && <>{mobile && question}{mobile ? <details className="mobile-twin"><summary><Icon name="home" size={19} /><span>Ver sua Casa Gêmea<small>8 dados, com selo e confiança</small></span><b>+</b></summary><House casa={data.casa_gemea} location={`${item?.municipio} / ${item?.uf}`} imovel={selected} /></details> : <House casa={data.casa_gemea} location={`${item?.municipio} / ${item?.uf}`} imovel={selected} />}{!mobile && question}</>}
+        <div className="status-announcement" role="status" aria-live="polite">{busy ? 'Atualizando...' : notice}</div>
+        {(() => {
+          const casa = <House casa={data.casa_gemea} location={`${item?.municipio} / ${item?.uf}`} imovel={selected} />
+          const side = channel === 'Cliente' && !mobile && !showRec
+          return <div className={`workspace ${!showRec && !side ? 'solo' : ''}`}><div className="workspace-main">{channel === 'Cliente' && <>{mobile && question}{mobile ? <details className="mobile-twin"><summary><Icon name="home" size={19} /><span>Ver sua Casa Gêmea<small>8 dados, com selo e confiança</small></span><b>+</b></summary>{casa}</details> : <>{question}{showRec && casa}</>}</>}
           {channel === 'Gerente' && <><Manager data={data} />{question}</>}
           {channel === 'SAC' && <><section className="card sac-intro"><div className="sac-symbol"><Icon name="headset" size={30} /></div><div><span className="eyebrow">Atendimento por voz</span><h2>Uma conversa, sem formulário longo.</h2><p>Leia: “Já usamos os dados disponíveis para entender sua casa. Vou confirmar só o que pode mudar sua proteção. Se não souber, tudo bem.”</p><span className="small-note">Imóvel {data.imovel_id} · {item?.municipio}/{item?.uf}</span></div></section>{question}</>}
           {channel === 'Agente' && <Agent data={data} answers={answersFrom(history)} busy={busy} onApply={applyJson} />}
-        </div><MobileRecommendation key={selected} data={data} initial={sessions[selected]?.initial ?? null} pending={busy} mobile={mobile} presentationStep={presentation ? step : null} /></div>
+        </div>{side ? casa : <MobileRecommendation key={selected} show={showRec} data={data} initial={sessions[selected]?.initial ?? null} pending={busy} mobile={mobile} presentationStep={presentation ? step : null} />}</div>
+        })()}
       </>}
-      </>}<section className="privacy-note"><Icon name="lock" size={19} /><div><strong>Sua casa no centro. Seus dados com propósito.</strong><p>Usamos apenas sinais necessários sobre o imóvel e suas necessidades de cobertura. Cada estimativa pode ser conferida. O canal muda, o motor é o mesmo.</p></div><span>Dados sintéticos<br />Motor determinístico</span></section>
+      </>}<details className="privacy-note"><summary><Icon name="lock" size={17} />Como usamos seus dados</summary><p>Usamos só o que ajuda a proteger sua casa. Idade e renda não entram na conta. Cada estimativa mostra de onde veio. Dados de demonstração.</p></details>
     </main><footer><span><b>horus</b> · Casa Gêmea</span><p>Datathon Proteção Inteligente · BBDW + Ibmec · 2026</p><span>Protótipo demonstrativo. Sem contratação real.</span></footer>
   </div>
 }

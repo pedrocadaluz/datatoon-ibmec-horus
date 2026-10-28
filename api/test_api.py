@@ -41,8 +41,13 @@ class ContratoHTTP(unittest.TestCase):
                     self.assertEqual(data["recomendacao"]["plano"], row["plano_recomendado"])
                     self.assertEqual(data["recomendacao"]["confianca_geral"], row["confianca_geral"])
                     self.assertEqual(data["elegibilidade"]["status"], {"SIM": "ELEGIVEL", "PENDENTE_VALIDACAO": "ELEGIVEL_CONDICIONADO", "NAO": "INELEGIVEL"}[row["elegivel"]])
-                    self.assertEqual({c["cobertura"] for c in data["coberturas"]}, set(row["coberturas_recomendadas"].split(" | ")))
-                    for cobertura in data["coberturas"]:
+                    # Na entrega, os adicionais com faixa vêm depois das coberturas fixas do plano.
+                    # RC familiar opcional (fora do Total) aparece só na interface, não nos CSVs da entrega.
+                    adicionais = [a for a in data["personalizacao"]["adicionais_sugeridos"]
+                                  if "faixa_valor_min" in a and a["id"] != "RESPONSABILIDADE_CIVIL_FAMILIAR"]
+                    detalhadas = data["coberturas"] + [{"cobertura": a["id"], **a} for a in adicionais]
+                    self.assertEqual({c["cobertura"] for c in detalhadas}, set(row["coberturas_recomendadas"].split(" | ")) - {""})
+                    for cobertura in detalhadas:
                         original = faixas[row["imovel_id"], cobertura["cobertura"]]
                         for campo in ("faixa_valor_min", "faixa_valor_max"):
                             self.assertEqual(cobertura[campo], float(original[campo]))

@@ -187,8 +187,15 @@ def _adicional(id_, nome, necessidade, por_que, clausula, usa, pergunta=None, fa
     return saida
 
 
-def adicionais(r: pd.Series, plano: str, elegibilidade: str, respostas: dict | None = None) -> list[dict]:
-    """Até 3 coberturas adicionais com sinal nos dados, em ordem de necessidade."""
+NOME_PLANO_ADICIONAL = {"ESSENCIAL": "Essencial", "PRATICO": "Prático"}
+
+
+def adicionais(r: pd.Series, plano: str, elegibilidade: str, respostas: dict | None = None,
+               faixas: list[dict] | None = None, com_rc: bool = True) -> list[dict]:
+    """Até 3 coberturas adicionais com sinal nos dados (mais o RC familiar, quando cabe), em ordem de necessidade.
+
+    `faixas` são as coberturas já calculadas pelas regras; a faixa de RC Familiar vem delas.
+    """
     respostas = respostas or {}
     if not plano or elegibilidade == INELEGIVEL:
         return []
@@ -199,6 +206,20 @@ def adicionais(r: pd.Series, plano: str, elegibilidade: str, respostas: dict | N
     desocupado = bool(r.get("imovel_desocupado", False)) or r.get("uso_imovel") == "TEMPORADA_OU_SEGUNDA_RESIDENCIA"
     saida = []
 
+    # RC Familiar como opcional: só fora do Total, e pet/dependentes indicam necessidade, nunca risco.
+    dependentes = int(_num(r, "quantidade_dependentes"))
+    pet = r.get("possui_pet_informado") == "SIM"
+    if com_rc and plano != "TOTAL" and (pet or dependentes > 0):
+        na_casa = " e ".join(x for x in ["pet" if pet else "", f"{dependentes} dependente{'s' if dependentes > 1 else ''}" if dependentes else ""] if x)
+        rc = next((f for f in (faixas or []) if f["cobertura"] == "RESPONSABILIDADE_CIVIL_FAMILIAR"), None)
+        saida.append(_adicional(
+            "RESPONSABILIDADE_CIVIL_FAMILIAR", "Responsabilidade civil familiar",
+            45 + (20 if pet else 0) + min(25, 10 * dependentes),
+            f"Você tem {na_casa} em casa. O plano {NOME_PLANO_ADICIONAL[plano]} não cobre danos que pessoas ou animais da casa causem a terceiros; esta cobertura sim.",
+            "CG V1.6, item 4.1 m e RC Familiar 1.1", "pet informado e quantidade de dependentes (só indicam necessidade, não risco)",
+            None, (rc["faixa_valor_min"], rc["faixa_valor_max"]) if rc else None,
+            "mesma faixa de limite calculada para a responsabilidade civil familiar do plano Total (referência, não preço)",
+            "A cobertura é ligada ao imóvel segurado."))
     if respostas.get("equipamentos") != "NAO" and portateis >= 4_000:
         faixa = (_arred(0.25 * portateis, 500), _arred(0.60 * portateis, 500))
         saida.append(_adicional(
@@ -242,18 +263,24 @@ def adicionais(r: pd.Series, plano: str, elegibilidade: str, respostas: dict | N
             "CG V1.6, item 5.6", "equipamentos eletrônicos em casa (apenas indício; só vale se o cliente confirmar)",
             "Você trabalha em casa como MEI, com equipamentos da atividade?", None, "",
             "Sem declaração, bens da atividade profissional não são cobertos."))
-    return sorted(saida, key=lambda x: -x["necessidade"])[:3]
+    # O RC familiar não ocupa vaga dos demais: os 3 principais são os mesmos da entrega.
+    principais = sorted((a for a in saida if a["id"] != "RESPONSABILIDADE_CIVIL_FAMILIAR"), key=lambda x: -x["necessidade"])[:3]
+    rc = [a for a in saida if a["id"] == "RESPONSABILIDADE_CIVIL_FAMILIAR"]
+    return sorted(principais + rc, key=lambda x: -x["necessidade"])
 
 
 # --------------------------------------------------------------------------- assistências
+# Pacotes de assistência por plano (Guia dos Times 9.2).
+PACOTES_ASSISTENCIA = {
+    "ESSENCIAL": ["Casa em Apuros"],
+    "PRATICO": ["Casa em Apuros", "Casa Funcionando", "Casa Arrumada", "Casa Limpa"],
+    "TOTAL": ["Casa em Apuros", "Casa Funcionando", "Casa Arrumada", "Casa Limpa", "Casa sem Insetos e Pragas", "Casa Segura"],
+}
+
+
 def assistencias(r: pd.Series, plano: str) -> dict:
     """Assistência em destaque entre as do plano; benefício premium só no Total."""
-    pacotes = {
-        "ESSENCIAL": ["Casa em Apuros"],
-        "PRATICO": ["Casa em Apuros", "Casa Funcionando", "Casa Limpa"],
-        "TOTAL": ["Casa em Apuros", "Casa Funcionando", "Casa Arrumada", "Casa Limpa", "Casa sem Insetos e Pragas", "Casa Segura"],
-    }
-    do_plano = pacotes.get(plano, [])
+    do_plano = PACOTES_ASSISTENCIA.get(plano, [])
     fr = _num(r, "fracao_conteudo_do_cliente", 1.0)
     eletro = _num(r, "eletronicos_eletro_max") * fr
     candidatos = []
@@ -349,11 +376,11 @@ RECIBOS = [
 
 
 def analisar(r: pd.Series, plano: str, elegibilidade: str, coberturas_do_plano: list[str],
-             respostas_adicionais: dict | None = None) -> dict:
+             respostas_adicionais: dict | None = None, faixas: list[dict] | None = None) -> dict:
     """Bloco `personalizacao` do contrato JSON."""
     p = perfil(r)
     alertas = alertas_do_cliente(r, elegibilidade)
-    adic = adicionais(r, plano, elegibilidade, respostas_adicionais)
+    adic = adicionais(r, plano, elegibilidade, respostas_adicionais, faixas)
     return {
         "perfil": p,
         "necessidades": necessidades(r, plano, coberturas_do_plano),

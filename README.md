@@ -33,7 +33,7 @@ O mesmo motor serve a todos os canais: o cliente no app, o gerente na agência, 
 | Arquivo | Conteúdo |
 |---|---|
 | [`entrega/template_resultado_times.csv`](entrega/template_resultado_times.csv) | 138 imóveis do Teste Comum: elegibilidade, tipo/uso/vínculo sugeridos, plano, coberturas, confiança, justificativa, perguntas e fontes |
-| [`entrega/template_coberturas_times.csv`](entrega/template_coberturas_times.csv) | 1.283 coberturas: faixa mínima e máxima em reais, confiança, dados usados, regra de cálculo, justificativa, o que confirmar e observação |
+| [`entrega/template_coberturas_times.csv`](entrega/template_coberturas_times.csv) | 1.393 coberturas (1.283 fixas dos planos + 110 adicionais opcionais): faixa mínima e máxima em reais, confiança, dados usados, regra de cálculo, justificativa, o que confirmar e observação |
 | [`docs/`](docs/) | Relatórios de cada etapa, convenções dos campos e fontes externas |
 
 ---
@@ -179,14 +179,14 @@ A mesma saída serve a todos os canais:
 | Indicador | Resultado |
 |---|---|
 | Imóveis processados | 138 de 138 (100%) |
-| Coberturas com faixa em reais | 1.283 de 1.283 (100%), nenhuma sem estimativa |
+| Coberturas com faixa em reais | 1.393 de 1.393 (100%): 1.283 fixas dos planos + 110 adicionais opcionais (Equipamentos Portáteis 86, Bicicleta 24), nenhuma sem estimativa |
 | Recomendações com justificativa e comparação | 138 de 138 |
 | Elegibilidade | 135 `SIM` · 3 `PENDENTE_VALIDACAO` (possível obra) · 0 `NAO` |
 | Plano | Total 50,0% · Prático 39,9% · Essencial 10,1% |
 | Confiança geral | Alta 74,6% · Média 16,7% · Baixa 8,7% |
 | Perguntas por imóvel (além da declaração) | 0: 34,1% · 1: 55,1% · 2: 8,7% · 3: 2,2% |
 | Canal | One Click Buy 63,8% · Gerente 16,7% · Atendimento assistido 10,9% · App com confirmação 8,7% |
-| Testes de formato da entrega | 13 de 13 aprovados ([`docs/03_entrega.md`](docs/03_entrega.md)) |
+| Testes de formato da entrega | 14 de 14 aprovados ([`docs/03_entrega.md`](docs/03_entrega.md)) |
 | Tempo de execução | ~3 s para os 2.716 imóveis das duas bases |
 
 Inquilinos e locadores vão ao Total porque as CG (Perda de Aluguel 1.1) cobrem exatamente o que eles pagam ou recebem. O inquilino recebe o reembolso do aluguel de uma moradia temporária. O locador recebe o aluguel que deixa de receber.
@@ -205,17 +205,16 @@ Inquilinos e locadores vão ao Total porque as CG (Perda de Aluguel 1.1) cobrem 
 
 ## Como executar
 
-Requisitos: **Python 3.12.2** (arquivo `.python-version`) e as dependências de `requirements.txt` (pandas e numpy; streamlit só para a demo).
+Requisitos: **Python 3.12.2** (arquivo `.python-version`) e as dependências de `requirements.txt` (pandas e numpy; fastapi e uvicorn para a API do web-app).
 
 ```bash
 pip install -r requirements.txt
 
 python scripts/01_construir_casa_gemea.py   # Casa Gêmea das duas bases      → saidas/casa_gemea_*.csv, docs/01
 python scripts/02_aplicar_regras.py         # regras, faixas e validação      → saidas/recomendacao_*, coberturas_*, docs/02
-python scripts/03_gerar_entrega.py          # templates oficiais + 13 testes → entrega/, docs/03
+python scripts/03_gerar_entrega.py          # templates oficiais + 14 testes → entrega/, docs/03
 python scripts/04_contrato_json.py          # jornada de exemplo do contrato  → saidas/contrato/, docs/04
 python scripts/04_contrato_json.py entrada.json   # responde uma chamada do contrato JSON
-streamlit run demo/app.py                   # demo: jornada de cotação (cliente, gerente, SAC, agente)
 ```
 
 - O script 03 roda o pipeline inteiro sozinho e **falha com erro** se algum teste de formato não passar.
@@ -246,8 +245,7 @@ streamlit run demo/app.py                   # demo: jornada de cotação (client
 ├── entrega/                       os 2 CSVs da entrega (templates oficiais preenchidos)
 ├── saidas/                        arquivos gerados (Casa Gêmea, recomendação, validação, auditoria, contrato)
 ├── docs/                          relatórios por etapa (índice em docs/README.md)
-├── dados_externos/                CUB por UF, fatores Sinduscon, Condições Gerais BB (V1.6 vigente, v1.3 e v2.3 para comparação)
-└── demo/ · .streamlit/            demo Streamlit anterior (legado; a interface oficial é `web/`)
+└── dados_externos/                CUB por UF, fatores Sinduscon, Condições Gerais BB (V1.6 vigente, v1.3 e v2.3 para comparação)
 ```
 
 As bases originais da organização (`Seguro_Residencial_*`) ficam na raiz, ignoradas pelo Git.

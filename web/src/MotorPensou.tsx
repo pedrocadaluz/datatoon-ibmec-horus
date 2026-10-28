@@ -27,7 +27,7 @@ export function MotorConteudo({ data }: { data: ResultadoPersonalizado }) {
       <ul className="mp-need">{data.personalizacao.necessidades.map(n => <li key={n.cobertura}><button aria-expanded={aberta === n.cobertura} onClick={() => setAberta(aberta === n.cobertura ? '' : n.cobertura)}>
         <span className="mp-need-name">{coberturas[n.cobertura] ?? n.cobertura}{n.no_plano_recomendado ? '' : <small> · fora do plano</small>}</span>
         <span className="mp-bar"><i className={`n-${n.nivel.toLowerCase()}`} style={{ width: `${n.indice}%` }} /></span><b>{n.indice}</b></button>
-        {aberta === n.cobertura && <p className="mp-factors">{n.fatores.length ? n.fatores.map(f => `+${f.pontos} ${texto(f.fator)}`).join(' · ') : 'Sem fator específico: nível básico da carteira.'}</p>}</li>)}</ul></section>
+        {aberta === n.cobertura && <p className="mp-factors">{n.fatores.length ? n.fatores.map(f => `+${f.pontos} ${texto(f.fator)}`).join(' · ') : 'Sem fator específico: nível básico da carteira.'}</p>}</li>)}</ul><p className="small-note">Alagamento, chuva e rompimento de tubulação já estão em Danos por água, em todos os planos. Não precisa contratar à parte.</p></section>
     <section><h3>5. Limites do motor</h3><ul className="mp-limits">{data.explicacao.limites_do_motor.map(l => <li key={l}>{texto(l)}</li>)}</ul>
       <p className="small-note">As faixas são “limite sugerido de indenização”, não preço. O plano {planos[data.recomendacao.plano] ?? ''} é uma recomendação transparente, não uma contratação.</p></section>
   </div>

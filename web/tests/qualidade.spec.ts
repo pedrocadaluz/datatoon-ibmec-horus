@@ -1,9 +1,11 @@
+import { revelar, abrirValor } from './ajudas'
 import { test, expect } from '@playwright/test'
 import AxeBuilder from '@axe-core/playwright'
 
 test('acessibilidade AA nas quatro visões e no celular', async ({ page }) => {
   await page.emulateMedia({ reducedMotion: 'reduce' })
   await page.goto('/')
+  await revelar(page)
   await expect(page.getByTestId('plano-atual')).toHaveText('Total')
   for (const canal of ['Cliente', 'Gerente', 'SAC', 'Agente']) {
     await page.getByRole('button', { name: canal, exact: true }).click()
@@ -20,6 +22,7 @@ test('justificativa, contador e aluguel usam os campos reais do motor', async ({
   const result = await (await request.post('/api/recomendar', { data: { imovel_id: 'IMO_CASO_00003_01', respostas: {} } })).json()
   await page.goto('/')
   await expect(page.getByTestId('perguntas-evitadas')).toContainText(`${result.jornada.perguntas_evitadas} de 8 perguntas evitadas`)
+  await revelar(page)
   await expect(page.locator('.short-reason')).toContainText(result.recomendacao.justificativa_curta.replace(/[\u2013\u2014]/g, ', '))
   await expect(page.locator('.rental-highlight strong').first()).toContainText('R$')
   await expect(page.locator('.why-plan')).not.toBeVisible()
@@ -35,6 +38,7 @@ test('justificativa, contador e aluguel usam os campos reais do motor', async ({
     if (larga) {
       await page.getByLabel('Imóvel do Teste Comum').selectOption(item.imovel_id)
       await expect(page.getByTestId('caso-atual')).toContainText(item.imovel_id)
+      await revelar(page)
       await page.locator('.all-coverages > summary').click()
       await page.locator(`[data-cobertura="${larga.cobertura}"] > summary`).click()
       await expect(page.locator('.wide-range').first()).toHaveText('Faixa larga: confirme para estreitar')
@@ -47,6 +51,7 @@ test('justificativa, contador e aluguel usam os campos reais do motor', async ({
 
 test('apresentação por teclado, zoom e erro de rede preservam respostas', async ({ page }) => {
   await page.goto('/')
+  await revelar(page)
   await expect(page.getByTestId('plano-atual')).toHaveText('Total')
   await page.keyboard.press('p')
   await expect(page.locator('.presentation-bar')).toBeVisible()
@@ -72,14 +77,19 @@ test('apresentação por teclado, zoom e erro de rede preservam respostas', asyn
 
 test('valor exato não acompanha a troca de imóveis e SAC identifica a estimativa', async ({ page }) => {
   await page.goto('/')
+  await revelar(page)
   await expect(page.getByTestId('plano-atual')).toHaveText('Total')
   await page.getByLabel('Imóvel do Teste Comum').selectOption('IMO_CASO_00001_01')
+  await abrirValor(page)
   await expect(page.getByLabel('Valor exato')).toBeVisible()
   await page.getByLabel('Imóvel do Teste Comum').selectOption('IMO_CASO_00007_01')
   await expect(page.getByTestId('caso-atual')).toContainText('IMO_CASO_00007_01')
+  await abrirValor(page)
   await page.getByLabel('Valor exato').fill('777')
   await page.getByLabel('Imóvel do Teste Comum').selectOption('IMO_CASO_00001_01')
   await expect(page.getByTestId('caso-atual')).toContainText('IMO_CASO_00001_01')
+  await expect(page.getByLabel('Valor exato')).toHaveCount(0)
+  await abrirValor(page)
   await expect(page.getByLabel('Valor exato')).toHaveValue('')
   await page.getByRole('button', { name: 'SAC', exact: true }).click()
   await expect(page.getByTestId('metadados-pergunta')).toContainText('Estimado')
@@ -89,6 +99,7 @@ test('valor exato não acompanha a troca de imóveis e SAC identifica a estimati
 
 test('trocar de imóvel durante execução JSON descarta a resposta anterior', async ({ page }) => {
   await page.goto('/')
+  await revelar(page)
   await expect(page.getByTestId('plano-atual')).toHaveText('Total')
   await page.getByRole('button', { name: 'Agente', exact: true }).click()
   await page.getByLabel('Entrada JSON').fill(JSON.stringify({ versao_contrato: '1.0', imovel_id: 'IMO_CASO_00002_01', respostas: { obra: 'NAO' } }))
