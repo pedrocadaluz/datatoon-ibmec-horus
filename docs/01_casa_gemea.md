@@ -1,5 +1,5 @@
 # Etapa 01 — Casa Gêmea
-_Gerado por `scripts/01_construir_casa_gemea.py` em 27/10/2026._
+_Gerado por `scripts/01_construir_casa_gemea.py` em 28/10/2026._
 
 A Casa Gêmea é a cópia virtual de cada imóvel, montada só com os sinais disponíveis. Cada informação recebe um **selo** (`OBSERVADO`, `ESTIMADO` ou `A_CONFIRMAR`), uma **confiança** (`ALTA`, `MEDIA`, `BAIXA`) e a **evidência** usada.
 
@@ -13,13 +13,14 @@ A Casa Gêmea é a cópia virtual de cada imóvel, montada só com os sinais dis
 | Campo | Sinais usados | Regra |
 |---|---|---|
 | Tipo de imóvel | complemento, termos apartamento/casa/condomínio, condomínio pago | Apartamento ou casa pelo complemento; casa + condomínio = casa em condomínio. Apartamento sem condomínio pago tem confiança média. |
-| Vínculo | aluguel pago, parcela de financiamento, crédito compatível com aluguel | Inquilino > financiado > locador > quitado (ausência de sinais). Sinais simultâneos = a confirmar. |
+| Vínculo | aluguel pago, parcela de financiamento, crédito compatível com aluguel, endereço principal, origem da área | Inquilino > financiado > locador > quitado. Locador só com confiança média se o imóvel não for o endereço principal; quitado com confiança alta se a área veio de laudo de financiamento. |
 | Uso | endereço principal, nº de imóveis do cliente, vínculo | Principal = moradia habitual; 2º imóvel não principal = temporada/segunda residência; locador = alugado a terceiros. |
 | Área | área cadastrada; senão IPTU, energia, tipo, município | Modelo log-linear (detalhes abaixo) com faixa de 80%. |
-| Padrão construtivo | cadastro | Ausente → `NORMAL` como referência, a confirmar. |
+| Padrão construtivo | cadastro; IPTU por m² comparado à mediana da cidade | Ausente e com área real → indício pelo IPTU (confiança baixa). Ausente e com área estimada → `NORMAL`, a confirmar (o IPTU já foi usado na área). |
 | Parede externa | cadastro | Ausente → a confirmar (requisito de elegibilidade). |
-| Sinal de obra | gasto com material de construção em 24 meses | 0 / < 10 mil (leve) / < 30 mil (moderada) / ≥ 30 mil (possível obra relevante). |
-| Conteúdo | bens vinculados e compras de 36 meses | Mín = bens ponderados pela probabilidade; máx = maior entre bens cadastrados e compras. |
+| Sinal de obra | material de construção, vidraçaria, vínculo | ≥ 30 mil, ou ≥ 10 mil + vidraçaria → possível obra relevante; < 10 mil leve. Inquilino desce um nível. |
+| Conteúdo | bens vinculados e compras de 36 meses | Mín = maior entre bens ponderados e 50% das compras; máx = maior entre bens cadastrados e compras. |
+| Sinais em conflito | área × IPTU/energia, aluguel recebido × endereço principal, apartamento × condomínio | Cada conflito baixa a confiança e vira pergunta. |
 
 **Não usados em nenhuma inferência:** idade, renda, origem e confiança da renda.
 
@@ -98,8 +99,17 @@ Variáveis testadas e descartadas: condomínio (correlação 0,02 com a área), 
 
 | valor | desenvolvimento (n) | desenvolvimento (%) | teste (n) | teste (%) |
 |---|---|---|---|---|
-| A_CONFIRMAR | 1878 | 72,8 | 98 | 71,0 |
+| A_CONFIRMAR | 1135 | 44,0 | 64 | 46,4 |
+| ESTIMADO | 743 | 28,8 | 34 | 24,6 |
 | OBSERVADO | 700 | 27,2 | 40 | 29,0 |
+
+### Sinais em conflito por imóvel
+
+| valor | desenvolvimento (n) | desenvolvimento (%) | teste (n) | teste (%) |
+|---|---|---|---|---|
+| 0 | 1985 | 77,0 | 107 | 77,5 |
+| 1 | 558 | 21,6 | 28 | 20,3 |
+| 2 | 35 | 1,4 | 3 | 2,2 |
 
 ### Material da parede externa
 
@@ -113,9 +123,9 @@ Variáveis testadas e descartadas: condomínio (correlação 0,02 com a área), 
 | valor | desenvolvimento (n) | desenvolvimento (%) | teste (n) | teste (%) |
 |---|---|---|---|---|
 | SEM_SINAL | 2117 | 82,1 | 109 | 79,0 |
-| REFORMA_LEVE | 244 | 9,5 | 15 | 10,9 |
-| REFORMA_MODERADA | 151 | 5,9 | 11 | 8,0 |
-| POSSIVEL_OBRA_RELEVANTE | 66 | 2,6 | 3 | 2,2 |
+| REFORMA_LEVE | 268 | 10,4 | 19 | 13,8 |
+| REFORMA_MODERADA | 130 | 5,0 | 7 | 5,1 |
+| POSSIVEL_OBRA_RELEVANTE | 63 | 2,4 | 3 | 2,2 |
 
 ### Confiança no valor do conteúdo
 
@@ -124,24 +134,35 @@ Variáveis testadas e descartadas: condomínio (correlação 0,02 com a área), 
 | MEDIA | 2139 | 83,0 | 109 | 79,0 |
 | BAIXA | 439 | 17,0 | 29 | 21,0 |
 
+## Validação do indício de padrão pelo IPTU
+
+Imóveis da base de desenvolvimento com área real e padrão cadastrado: 273. O indício não serve como classificação (acerto geral de 58,6%), mas aponta os extremos:
+
+| Indício | Acerto quando aponta | Frequência real do padrão |
+|---|---|---|
+| SUPERIOR | 55,2% | 17,6% |
+| ECONOMICO | 36,7% | 19,0% |
+
+Por isso o indício entra com confiança BAIXA e só desloca a faixa de custo entre NORMAL e o padrão indicado.
+
 ## Campos a confirmar por imóvel
 
 | valor | desenvolvimento (n) | desenvolvimento (%) | teste (n) | teste (%) |
 |---|---|---|---|---|
-| 0 | 103 | 4,0 | 5 | 3,6 |
-| 1 | 657 | 25,5 | 34 | 24,6 |
-| 2 | 1214 | 47,1 | 63 | 45,7 |
-| 3 | 456 | 17,7 | 26 | 18,8 |
-| 4 | 94 | 3,6 | 3 | 2,2 |
-| 5 | 49 | 1,9 | 6 | 4,3 |
-| 6 | 5 | 0,2 | 1 | 0,7 |
+| 0 | 215 | 8,3 | 11 | 8,0 |
+| 1 | 965 | 37,4 | 45 | 32,6 |
+| 2 | 904 | 35,1 | 54 | 39,1 |
+| 3 | 281 | 10,9 | 12 | 8,7 |
+| 4 | 131 | 5,1 | 6 | 4,3 |
+| 5 | 73 | 2,8 | 9 | 6,5 |
+| 6 | 9 | 0,3 | 1 | 0,7 |
 
 ## Valores de referência (base de desenvolvimento)
 
 | Medida | Mediana | P90 |
 |---|---|---|
 | Área (m²) | 126 | 265 |
-| Conteúdo mínimo (R$) | 7.600 | 33.200 |
+| Conteúdo mínimo (R$) | 17.500 | 41.500 |
 | Conteúdo máximo (R$) | 34.000 | 75.230 |
 | Eletrônicos + eletrodomésticos, máx (R$) | 20.400 | 45.000 |
 

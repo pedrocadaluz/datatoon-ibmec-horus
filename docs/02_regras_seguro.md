@@ -1,5 +1,5 @@
 # Etapa 02 — Regras do seguro
-_Gerado por `scripts/02_aplicar_regras.py` em 27/10/2026. Tempo de execução: 1,6 s para 2716 imóveis._
+_Gerado por `scripts/02_aplicar_regras.py` em 28/10/2026. Tempo de execução: 2,9 s para 2716 imóveis._
 
 Na base de teste, **138 de 138 imóveis** receberam elegibilidade, plano, 1283 linhas de cobertura com faixa em reais, confiança, justificativa e comparação com os planos vizinhos.
 
@@ -159,68 +159,126 @@ IPTU por m² vem de imóveis com área real; aluguel por m² vem de inquilinos c
 ## 5. Confiança e canal
 
 - **Confiança de cada cobertura:** média da confiança dos dados que ela usa (alta = 0, média = 1, baixa = 2). Até 0,5 é alta, até 1,2 é média, acima é baixa.
-- **Confiança geral:** alta com até 1 campo a confirmar e nenhum conflito; baixa se condicionado, com 4+ campos a confirmar ou 2+ conflitos; média nos demais.
+- **Confiança geral:** mede a chance de o plano mudar depois das perguntas (ver seção 6). Alta: nenhuma resposta plausível muda o plano. Média: um campo pode mudar o plano. Baixa: dois ou mais campos podem mudar o plano, ou a elegibilidade depende de confirmação.
 - **Semáforo:** vermelho se condicionado, vínculo a confirmar ou obra a confirmar (vai ao gerente); verde com confiança alta; amarelo nos demais.
 - **Canal:** verde + usuário de app = One Click Buy. Dados de app só escolhem o canal, nunca o plano.
 
 | valor | imóveis | % |
 |---|---|---|
-| AMARELO | 68 | 49,3 |
-| VERDE | 47 | 34,1 |
+| VERDE | 100 | 72,5 |
 | VERMELHO | 23 | 16,7 |
+| AMARELO | 15 | 10,9 |
 
 | valor | imóveis | % |
 |---|---|---|
-| APP_COM_CONFIRMACAO | 60 | 43,5 |
-| ONE_CLICK_BUY | 40 | 29,0 |
+| ONE_CLICK_BUY | 88 | 63,8 |
 | GERENTE | 23 | 16,7 |
 | ATENDIMENTO_ASSISTIDO | 15 | 10,9 |
+| APP_COM_CONFIRMACAO | 12 | 8,7 |
 
-## 6. Casos contrastantes (base de teste)
+## 6. Perguntas que mudam o resultado
 
-#### IMO_CASO_00021_01 — Essencial (amarelo)
+Para cada campo incerto, o motor simula as respostas plausíveis e refaz a recomendação (`src/casa_gemea/perguntas.py`).
 
-- **Casa Gêmea:** apartamento em Sao Paulo/SP, proprietário com financiamento, moradia habitual; área 93 m² (estimado); padrão normal (a confirmar).
+| Campo | Respostas simuladas | Efeito medido |
+|---|---|---|
+| Obra | — | define a elegibilidade (sempre perguntada se houver sinal) |
+| Vínculo | locador → proprietário sem renda do imóvel | plano |
+| Tipo | apartamento ↔ casa (quando a confiança não é alta) | plano |
+| Ocupação | segunda residência desocupada por longos períodos (sem cobertura de roubo) | plano |
+| Bens | valor no mínimo e no máximo da faixa | plano e faixa |
+| Área | área confirmada no valor estimado | faixa |
+| Padrão | padrão confirmado | faixa |
+
+**Regra de parada:** pergunta-se só o que muda o plano, define a elegibilidade ou estreita a faixa de incêndio em pelo menos 25%, enquanto a faixa tiver máximo mais de 30% acima do mínimo. Ordem: elegibilidade → plano → faixa. No fim, uma **declaração única** (área urbana, alvenaria, sem obra estrutural, não tombado) substitui várias perguntas de elegibilidade.
+
+Perguntas por imóvel (base de teste, sem contar a declaração):
+
+| valor | imóveis | % |
+|---|---|---|
+| 1 | 76 | 55,1 |
+| 0 | 47 | 34,1 |
+| 2 | 12 | 8,7 |
+| 3 | 3 | 2,2 |
+
+Campos que podem mudar o plano (base de desenvolvimento, imóveis):
+
+| valor | imóveis | % |
+|---|---|---|
+| conteudo | 328 | 46,6 |
+| vinculo | 188 | 26,7 |
+| ocupacao | 100 | 14,2 |
+| tipo_imovel | 88 | 12,5 |
+
+## 7. Validação das faixas escondendo dados reais
+
+Nos 1016 imóveis da base de desenvolvimento com área cadastrada, o motor foi rodado escondendo a área e o padrão construtivo, com o modelo de área retreinado em validação cruzada (5 dobras: nenhum imóvel é avaliado por um modelo que o viu). Valor real = centro da faixa calculada com os dados cadastrados (`src/casa_gemea/validacao.py`).
+
+| Cobertura | Imóveis | Faixa contém o real (%) | Erro mediano do centro (%) |
+|---|---|---|---|
+| INCENDIO_RAIO_EXPLOSAO_FUMACA | 1016 | 97,2 | 8,8 |
+| DANOS_POR_AGUA | 1016 | 98,1 | 5,9 |
+| VENDAVAL_GRANIZO | 1016 | 96,9 | 6,9 |
+| IMPACTO_VEICULOS_TERRESTRES | 1016 | 96,6 | 11,5 |
+| QUEDA_AERONAVE | 1016 | 97,2 | 8,8 |
+| QUEBRA_DE_VIDROS | 1016 | 82,6 | 13,1 |
+
+No total, a faixa contém o valor real em **94,8%** dos casos. As faixas de prédio são conservadoras porque também carregam a incerteza do interesse segurável (ex.: partes privativas de apartamento de 10% a 30%), que não é testada aqui. Quebra de vidros depende só da área e acompanha o intervalo de 80% do modelo de área.
+
+## 8. Testado e descartado
+
+| Ideia | Resultado na base de desenvolvimento | Decisão |
+|---|---|---|
+| Padrão construtivo pelo condomínio por m² (apartamentos) | Acerto de 48% a 54% contra 58% de chutar NORMAL; aponta SUPERIOR com 44% de acerto (frequência real 23%) | Não entra: pior que a referência |
+| Locador mais preciso (aluguel recebido × aluguel por m² da cidade; regularidade dos créditos) | Distribuições iguais entre locadores com e sem conflito de endereço (razão mediana 1,44 × 1,59; mesma regularidade) | Não entra: o sinal não separa os grupos; o vínculo vira pergunta |
+| Ajuste de RC familiar para clientes com 2 imóveis | CG, RC Familiar 1.1: a cobertura é ligada ao imóvel segurado | Sem mudança: não há duplicidade |
+| Confiança geral por contagem de campos a confirmar | Marcava como média campos que não mudam nada (ex.: área de quem já é Total) | Substituída pela análise de impacto |
+
+## 9. Casos contrastantes (base de teste)
+
+#### IMO_CASO_00058_02 — Essencial (amarelo)
+
+- **Casa Gêmea:** apartamento em Porto Alegre/RS, proprietário com financiamento, moradia habitual; área 135 m² (estimado); padrão normal (a confirmar).
 - **Elegibilidade:** ELEGIVEL
 - **Por que este plano:** poucos sinais de necessidade além da proteção básica.
 - **Por que não o de baixo:** É o plano de entrada.
-- **Por que não o de cima:** O Prático acrescenta roubo e quebra de vidros, mas os sinais de bens de valor são baixos (bens estimados em R$ 7.600 a R$ 15.300).
-- **Confiança geral:** MEDIA · **canal:** APP_COM_CONFIRMACAO
+- **Por que não o de cima:** O Prático acrescenta roubo e quebra de vidros, mas os sinais de bens de valor são baixos (bens estimados em R$ 8.900 a R$ 17.800). Como o cliente tem 2 dependentes, o Total vale a pena se ele quiser proteção contra danos a terceiros.
+- **Confiança geral:** MEDIA · **canal:** APP_COM_CONFIRMACAO · **conflitos:** apartamento sem condomínio pago
 
 | Cobertura | Mín (R$) | Máx (R$) | Confiança |
 |---|---|---|---|
-| INCENDIO_RAIO_EXPLOSAO_FUMACA | 27.700 | 83.900 | MEDIA |
-| DANOS_POR_AGUA | 4.300 | 11.400 | MEDIA |
-| VENDAVAL_GRANIZO | 1.400 | 3.600 | MEDIA |
-| IMPACTO_VEICULOS_TERRESTRES | 600 | 2.100 | MEDIA |
-| QUEDA_AERONAVE | 5.500 | 16.800 | MEDIA |
-| DANOS_ELETRICOS | 2.600 | 5.200 | ALTA |
+| INCENDIO_RAIO_EXPLOSAO_FUMACA | 47.100 | 149.000 | MEDIA |
+| DANOS_POR_AGUA | 6.500 | 18.500 | MEDIA |
+| VENDAVAL_GRANIZO | 2.000 | 5.700 | MEDIA |
+| IMPACTO_VEICULOS_TERRESTRES | 1.100 | 3.900 | MEDIA |
+| QUEDA_AERONAVE | 9.400 | 29.800 | MEDIA |
+| DANOS_ELETRICOS | 2.800 | 5.700 | MEDIA |
 
-#### IMO_CASO_00010_01 — Essencial (amarelo)
+#### IMO_CASO_00109_01 — Essencial (amarelo)
 
-- **Casa Gêmea:** apartamento em Salvador/BA, proprietário quitado, temporada ou segunda residência; área 96 m² (estimado); padrão normal (a confirmar).
+- **Casa Gêmea:** apartamento em Rio de Janeiro/RJ, proprietário quitado, moradia habitual; área 95 m² (observado); padrão normal (observado).
 - **Elegibilidade:** ELEGIVEL
 - **Por que este plano:** poucos sinais de necessidade além da proteção básica.
 - **Por que não o de baixo:** É o plano de entrada.
-- **Por que não o de cima:** O Prático acrescenta roubo e quebra de vidros, mas os sinais de bens de valor são baixos (bens estimados em R$ 9.100 a R$ 18.200). Alternativa: com pet ou dependentes, o Total vale a pena se o cliente quiser proteção contra danos a terceiros.
-- **Confiança geral:** MEDIA · **canal:** APP_COM_CONFIRMACAO
+- **Por que não o de cima:** O Prático acrescenta roubo e quebra de vidros, mas os sinais de bens de valor são baixos (bens estimados em R$ 9.500 a R$ 19.000). Como o cliente tem 1 dependente, o Total vale a pena se ele quiser proteção contra danos a terceiros.
+- **Confiança geral:** MEDIA · **canal:** ATENDIMENTO_ASSISTIDO · **conflitos:** apartamento sem condomínio pago
 
 | Cobertura | Mín (R$) | Máx (R$) | Confiança |
 |---|---|---|---|
-| INCENDIO_RAIO_EXPLOSAO_FUMACA | 29.600 | 88.400 | MEDIA |
-| DANOS_POR_AGUA | 4.800 | 12.500 | MEDIA |
-| VENDAVAL_GRANIZO | 1.500 | 3.900 | MEDIA |
-| IMPACTO_VEICULOS_TERRESTRES | 600 | 2.100 | MEDIA |
-| QUEDA_AERONAVE | 5.900 | 17.700 | MEDIA |
-| DANOS_ELETRICOS | 3.500 | 7.000 | MEDIA |
+| INCENDIO_RAIO_EXPLOSAO_FUMACA | 33.000 | 89.600 | ALTA |
+| DANOS_POR_AGUA | 5.200 | 12.800 | ALTA |
+| VENDAVAL_GRANIZO | 1.700 | 4.000 | ALTA |
+| IMPACTO_VEICULOS_TERRESTRES | 700 | 2.100 | ALTA |
+| QUEDA_AERONAVE | 6.600 | 17.900 | ALTA |
+| DANOS_ELETRICOS | 2.300 | 4.600 | ALTA |
 
 #### IMO_CASO_00013_01 — Prático (amarelo)
 
 - **Casa Gêmea:** apartamento em Porto Alegre/RS, proprietário com financiamento, moradia habitual; área 95 m² (observado); padrão superior (estimado).
 - **Elegibilidade:** ELEGIVEL
 - **Por que este plano:** bens estimados em R$ 14.000 a R$ 28.000; eletrônicos e eletrodomésticos de até R$ 17.600.
-- **Por que não o de baixo:** O Essencial não cobre roubo nem quebra de vidros, e há bens estimados em R$ 14.000 a R$ 28.000; eletrônicos e eletrodomésticos de até R$ 17.600.
-- **Por que não o de cima:** O Total acrescenta aluguel, RC familiar e despesas emergenciais, mas não paga nem recebe aluguel, então a cobertura de aluguel teria pouco uso. Alternativa: com pet ou dependentes, o Total vale a pena se o cliente quiser proteção contra danos a terceiros.
+- **Por que não o de baixo:** O Essencial não cobre roubo nem quebra de vidros, que protegem os bens e os acessos citados acima.
+- **Por que não o de cima:** O Total acrescenta aluguel, RC familiar e despesas emergenciais, mas o cliente não paga nem recebe aluguel: a cobertura de aluguel só pagaria uma moradia temporária se o imóvel ficasse inabitável, sem perda de renda. São proteções úteis, mas não prioritárias para este perfil. Como o cliente tem 1 dependente, o Total vale a pena se ele quiser proteção contra danos a terceiros.
 - **Confiança geral:** MEDIA · **canal:** APP_COM_CONFIRMACAO · **conflitos:** área cadastrada diverge do IPTU e da energia
 
 | Cobertura | Mín (R$) | Máx (R$) | Confiança |
@@ -234,34 +292,34 @@ IPTU por m² vem de imóveis com área real; aluguel por m² vem de inquilinos c
 | ROUBO_FURTO_ARROMBAMENTO | 7.000 | 14.000 | ALTA |
 | QUEBRA_DE_VIDROS | 4.800 | 4.800 | ALTA |
 
-#### IMO_CASO_00001_01 — Prático (amarelo)
+#### IMO_CASO_00045_01 — Prático (amarelo)
 
-- **Casa Gêmea:** casa em condomínio em Recife/PE, proprietário quitado, moradia habitual; área 263 m² (estimado); padrão normal (a confirmar).
+- **Casa Gêmea:** apartamento em Fortaleza/CE, proprietário quitado, moradia habitual; área 107 m² (estimado); padrão normal (a confirmar).
 - **Elegibilidade:** ELEGIVEL
-- **Por que este plano:** bens estimados em R$ 22.700 a R$ 45.400; eletrônicos e eletrodomésticos de até R$ 27.200; casa: mais portas e janelas expostas a arrombamento.
-- **Por que não o de baixo:** O Essencial não cobre roubo nem quebra de vidros, e há bens estimados em R$ 22.700 a R$ 45.400; eletrônicos e eletrodomésticos de até R$ 27.200; casa: mais portas e janelas expostas a arrombamento.
-- **Por que não o de cima:** O Total acrescenta aluguel, RC familiar e despesas emergenciais, mas não paga nem recebe aluguel, então a cobertura de aluguel teria pouco uso. Alternativa: com pet ou dependentes, o Total vale a pena se o cliente quiser proteção contra danos a terceiros.
-- **Confiança geral:** MEDIA · **canal:** APP_COM_CONFIRMACAO
+- **Por que este plano:** bens estimados em R$ 18.600 a R$ 37.100; eletrônicos e eletrodomésticos de até R$ 23.800.
+- **Por que não o de baixo:** O Essencial não cobre roubo nem quebra de vidros, que protegem os bens e os acessos citados acima.
+- **Por que não o de cima:** O Total acrescenta aluguel, RC familiar e despesas emergenciais, mas o cliente não paga nem recebe aluguel: a cobertura de aluguel só pagaria uma moradia temporária se o imóvel ficasse inabitável, sem perda de renda. São proteções úteis, mas não prioritárias para este perfil. Como o cliente tem 3 dependentes, o Total vale a pena se ele quiser proteção contra danos a terceiros.
+- **Confiança geral:** MEDIA · **canal:** ATENDIMENTO_ASSISTIDO
 
 | Cobertura | Mín (R$) | Máx (R$) | Confiança |
 |---|---|---|---|
-| INCENDIO_RAIO_EXPLOSAO_FUMACA | 498.100 | 923.800 | MEDIA |
-| DANOS_POR_AGUA | 54.300 | 101.500 | MEDIA |
-| VENDAVAL_GRANIZO | 97.300 | 180.200 | MEDIA |
-| IMPACTO_VEICULOS_TERRESTRES | 47.500 | 87.800 | MEDIA |
-| QUEDA_AERONAVE | 99.600 | 184.800 | MEDIA |
-| DANOS_ELETRICOS | 6.800 | 13.600 | MEDIA |
-| ROUBO_FURTO_ARROMBAMENTO | 11.400 | 22.700 | MEDIA |
-| QUEBRA_DE_VIDROS | 10.100 | 17.200 | ALTA |
+| INCENDIO_RAIO_EXPLOSAO_FUMACA | 43.900 | 124.000 | MEDIA |
+| DANOS_POR_AGUA | 8.100 | 19.800 | MEDIA |
+| VENDAVAL_GRANIZO | 2.600 | 6.300 | MEDIA |
+| IMPACTO_VEICULOS_TERRESTRES | 800 | 2.600 | MEDIA |
+| QUEDA_AERONAVE | 8.800 | 24.800 | MEDIA |
+| DANOS_ELETRICOS | 6.000 | 11.900 | MEDIA |
+| ROUBO_FURTO_ARROMBAMENTO | 9.300 | 18.600 | MEDIA |
+| QUEBRA_DE_VIDROS | 4.100 | 7.000 | MEDIA |
 
-#### IMO_CASO_00008_01 — Total (amarelo)
+#### IMO_CASO_00008_01 — Total (verde)
 
 - **Casa Gêmea:** apartamento em Fortaleza/CE, inquilino, moradia habitual; área 125 m² (observado); padrão superior (estimado).
 - **Elegibilidade:** ELEGIVEL
-- **Por que este plano:** paga aluguel de R$ 1.500: se o imóvel ficar inabitável, continua devendo o aluguel; tem pet: danos a terceiros causados pelo animal; 3 dependente(s): danos a terceiros e despesas de hospedagem da família; bens estimados em R$ 9.300 a R$ 18.600.
-- **Por que não o de baixo:** O Prático não cobre aluguel, RC familiar nem despesas emergenciais, e o cliente paga aluguel de R$ 1.500: se o imóvel ficar inabitável, continua devendo o aluguel; tem pet: danos a terceiros causados pelo animal; 3 dependente(s): danos a terceiros e despesas de hospedagem da família.
+- **Por que este plano:** paga aluguel de R$ 1.500: se o imóvel ficar inabitável, continua devendo o aluguel; tem pet: danos a terceiros causados pelo animal; 3 dependentes: danos a terceiros e despesas de hospedagem da família; bens estimados em R$ 9.300 a R$ 18.600.
+- **Por que não o de baixo:** O Prático não cobre aluguel, RC familiar nem despesas emergenciais, que respondem aos sinais citados acima.
 - **Por que não o de cima:** É o plano mais completo.
-- **Confiança geral:** MEDIA · **canal:** APP_COM_CONFIRMACAO · **conflitos:** apartamento sem condomínio pago
+- **Confiança geral:** ALTA · **canal:** ONE_CLICK_BUY · **conflitos:** apartamento sem condomínio pago
 
 | Cobertura | Mín (R$) | Máx (R$) | Confiança |
 |---|---|---|---|
@@ -277,35 +335,35 @@ IPTU por m² vem de imóveis com área real; aluguel por m² vem de inquilinos c
 | PERDA_PAGAMENTO_ALUGUEL | 4.500 | 9.000 | ALTA |
 | DESPESAS_EMERGENCIAIS | 20.000 | 50.000 | MEDIA |
 
-#### IMO_CASO_00006_01 — Total (amarelo)
+#### IMO_CASO_00004_01 — Total (verde)
 
-- **Casa Gêmea:** apartamento em Goiania/GO, proprietário com financiamento, moradia habitual; área 145 m² (observado); padrão normal (estimado).
+- **Casa Gêmea:** apartamento em Brasilia/DF, proprietário com financiamento, moradia habitual; área 105 m² (observado); padrão econômico (observado).
 - **Elegibilidade:** ELEGIVEL
-- **Por que este plano:** tem pet: danos a terceiros causados pelo animal; 1 dependente(s): danos a terceiros e despesas de hospedagem da família; bens estimados em R$ 11.100 a R$ 22.200; eletrônicos e eletrodomésticos de até R$ 15.400.
-- **Por que não o de baixo:** O Prático não cobre aluguel, RC familiar nem despesas emergenciais, e o cliente tem pet: danos a terceiros causados pelo animal; 1 dependente(s): danos a terceiros e despesas de hospedagem da família.
+- **Por que este plano:** tem pet: danos a terceiros causados pelo animal; 1 dependente: danos a terceiros e despesas de hospedagem da família; bens estimados em R$ 23.400 a R$ 46.800; eletrônicos e eletrodomésticos de até R$ 27.400.
+- **Por que não o de baixo:** O Prático não cobre aluguel, RC familiar nem despesas emergenciais, que respondem aos sinais citados acima.
 - **Por que não o de cima:** É o plano mais completo.
-- **Confiança geral:** MEDIA · **canal:** APP_COM_CONFIRMACAO · **conflitos:** apartamento sem condomínio pago
+- **Confiança geral:** ALTA · **canal:** ATENDIMENTO_ASSISTIDO
 
 | Cobertura | Mín (R$) | Máx (R$) | Confiança |
 |---|---|---|---|
-| INCENDIO_RAIO_EXPLOSAO_FUMACA | 46.100 | 127.300 | MEDIA |
-| DANOS_POR_AGUA | 6.800 | 17.200 | MEDIA |
-| VENDAVAL_GRANIZO | 2.200 | 5.400 | MEDIA |
-| IMPACTO_VEICULOS_TERRESTRES | 1.100 | 3.200 | MEDIA |
-| QUEDA_AERONAVE | 9.200 | 25.500 | MEDIA |
-| DANOS_ELETRICOS | 3.800 | 7.700 | ALTA |
-| ROUBO_FURTO_ARROMBAMENTO | 5.600 | 11.100 | ALTA |
-| QUEBRA_DE_VIDROS | 7.200 | 7.200 | ALTA |
+| INCENDIO_RAIO_EXPLOSAO_FUMACA | 46.300 | 115.500 | ALTA |
+| DANOS_POR_AGUA | 9.300 | 20.900 | ALTA |
+| VENDAVAL_GRANIZO | 3.000 | 6.700 | ALTA |
+| IMPACTO_VEICULOS_TERRESTRES | 700 | 2.100 | ALTA |
+| QUEDA_AERONAVE | 9.300 | 23.100 | ALTA |
+| DANOS_ELETRICOS | 6.800 | 13.700 | ALTA |
+| ROUBO_FURTO_ARROMBAMENTO | 11.700 | 23.400 | ALTA |
+| QUEBRA_DE_VIDROS | 5.200 | 5.200 | ALTA |
 | RESPONSABILIDADE_CIVIL_FAMILIAR | 30.000 | 100.000 | BAIXA |
-| PERDA_PAGAMENTO_ALUGUEL | 6.500 | 20.300 | ALTA |
+| PERDA_PAGAMENTO_ALUGUEL | 2.400 | 14.500 | ALTA |
 | DESPESAS_EMERGENCIAIS | 10.000 | 30.000 | MEDIA |
 
 #### IMO_CASO_00038_01 — Total (amarelo)
 
 - **Casa Gêmea:** apartamento em Salvador/BA, proprietário que aluga a terceiros, alugado a terceiros; área 79 m² (estimado); padrão normal (a confirmar).
 - **Elegibilidade:** ELEGIVEL
-- **Por que este plano:** recebe cerca de R$ 1.000/mês de aluguel: renda que pararia após um sinistro; 2 dependente(s): danos a terceiros e despesas de hospedagem da família; bens estimados em R$ 8.600 a R$ 17.100.
-- **Por que não o de baixo:** O Prático não cobre aluguel, RC familiar nem despesas emergenciais, e o cliente recebe cerca de R$ 1.000/mês de aluguel: renda que pararia após um sinistro; 2 dependente(s): danos a terceiros e despesas de hospedagem da família.
+- **Por que este plano:** recebe cerca de R$ 1.000/mês de aluguel: renda que pararia após um sinistro; 2 dependentes: danos a terceiros e despesas de hospedagem da família; bens estimados em R$ 8.600 a R$ 17.100.
+- **Por que não o de baixo:** O Prático não cobre aluguel, RC familiar nem despesas emergenciais, que respondem aos sinais citados acima.
 - **Por que não o de cima:** É o plano mais completo.
 - **Confiança geral:** MEDIA · **canal:** APP_COM_CONFIRMACAO
 
@@ -318,19 +376,19 @@ IPTU por m² vem de imóveis com área real; aluguel por m² vem de inquilinos c
 | QUEDA_AERONAVE | 5.100 | 15.000 | MEDIA |
 | DANOS_ELETRICOS | 2.600 | 5.200 | BAIXA |
 | ROUBO_FURTO_ARROMBAMENTO | 4.300 | 8.600 | BAIXA |
-| QUEBRA_DE_VIDROS | 3.000 | 5.200 | ALTA |
+| QUEBRA_DE_VIDROS | 3.000 | 5.200 | MEDIA |
 | RESPONSABILIDADE_CIVIL_FAMILIAR | 30.000 | 100.000 | BAIXA |
 | PERDA_PAGAMENTO_ALUGUEL | 3.000 | 6.000 | MEDIA |
 | DESPESAS_EMERGENCIAIS | 15.000 | 40.000 | MEDIA |
 
-#### IMO_CASO_00007_01 — Total (amarelo)
+#### IMO_CASO_00007_01 — Total (verde)
 
 - **Casa Gêmea:** casa em Sao Paulo/SP, proprietário quitado, moradia habitual; área 122 m² (estimado); padrão normal (a confirmar).
 - **Elegibilidade:** ELEGIVEL
-- **Por que este plano:** tem pet: danos a terceiros causados pelo animal; 1 dependente(s): danos a terceiros e despesas de hospedagem da família; bens estimados em R$ 19.700 a R$ 39.400; eletrônicos e eletrodomésticos de até R$ 22.000; casa: mais portas e janelas expostas a arrombamento.
-- **Por que não o de baixo:** O Prático não cobre aluguel, RC familiar nem despesas emergenciais, e o cliente tem pet: danos a terceiros causados pelo animal; 1 dependente(s): danos a terceiros e despesas de hospedagem da família.
+- **Por que este plano:** tem pet: danos a terceiros causados pelo animal; 1 dependente: danos a terceiros e despesas de hospedagem da família; bens estimados em R$ 19.700 a R$ 39.400; eletrônicos e eletrodomésticos de até R$ 22.000; casa: mais portas e janelas expostas a arrombamento.
+- **Por que não o de baixo:** O Prático não cobre aluguel, RC familiar nem despesas emergenciais, que respondem aos sinais citados acima.
 - **Por que não o de cima:** É o plano mais completo.
-- **Confiança geral:** MEDIA · **canal:** APP_COM_CONFIRMACAO
+- **Confiança geral:** ALTA · **canal:** ONE_CLICK_BUY
 
 | Cobertura | Mín (R$) | Máx (R$) | Confiança |
 |---|---|---|---|
@@ -346,24 +404,6 @@ IPTU por m² vem de imóveis com área real; aluguel por m² vem de inquilinos c
 | PERDA_PAGAMENTO_ALUGUEL | 3.700 | 31.600 | MEDIA |
 | DESPESAS_EMERGENCIAIS | 10.000 | 30.000 | MEDIA |
 
-#### IMO_CASO_00058_02 — Essencial (amarelo)
-
-- **Casa Gêmea:** apartamento em Porto Alegre/RS, proprietário com financiamento, moradia habitual; área 135 m² (estimado); padrão normal (a confirmar).
-- **Elegibilidade:** ELEGIVEL
-- **Por que este plano:** poucos sinais de necessidade além da proteção básica.
-- **Por que não o de baixo:** É o plano de entrada.
-- **Por que não o de cima:** O Prático acrescenta roubo e quebra de vidros, mas os sinais de bens de valor são baixos (bens estimados em R$ 8.900 a R$ 17.800). Alternativa: com pet ou dependentes, o Total vale a pena se o cliente quiser proteção contra danos a terceiros.
-- **Confiança geral:** MEDIA · **canal:** APP_COM_CONFIRMACAO · **conflitos:** apartamento sem condomínio pago
-
-| Cobertura | Mín (R$) | Máx (R$) | Confiança |
-|---|---|---|---|
-| INCENDIO_RAIO_EXPLOSAO_FUMACA | 47.100 | 149.000 | MEDIA |
-| DANOS_POR_AGUA | 6.500 | 18.500 | MEDIA |
-| VENDAVAL_GRANIZO | 2.000 | 5.700 | MEDIA |
-| IMPACTO_VEICULOS_TERRESTRES | 1.100 | 3.900 | MEDIA |
-| QUEDA_AERONAVE | 9.400 | 29.800 | MEDIA |
-| DANOS_ELETRICOS | 2.800 | 5.700 | MEDIA |
-
 #### IMO_CASO_00080_01 — Essencial (amarelo)
 
 - **Casa Gêmea:** apartamento em Sao Paulo/SP, proprietário com financiamento, moradia habitual; área 125 m² (estimado); padrão normal (a confirmar).
@@ -371,7 +411,7 @@ IPTU por m² vem de imóveis com área real; aluguel por m² vem de inquilinos c
 - **Por que este plano:** poucos sinais de necessidade além da proteção básica.
 - **Por que não o de baixo:** É o plano de entrada.
 - **Por que não o de cima:** O Prático acrescenta roubo e quebra de vidros, mas os sinais de bens de valor são baixos (bens estimados em R$ 11.000 a R$ 22.100).
-- **Confiança geral:** MEDIA · **canal:** APP_COM_CONFIRMACAO · **conflitos:** apartamento sem condomínio pago
+- **Confiança geral:** BAIXA · **canal:** APP_COM_CONFIRMACAO · **conflitos:** apartamento sem condomínio pago
 
 | Cobertura | Mín (R$) | Máx (R$) | Confiança |
 |---|---|---|---|
@@ -381,6 +421,24 @@ IPTU por m² vem de imóveis com área real; aluguel por m² vem de inquilinos c
 | IMPACTO_VEICULOS_TERRESTRES | 800 | 2.800 | MEDIA |
 | QUEDA_AERONAVE | 7.600 | 22.900 | MEDIA |
 | DANOS_ELETRICOS | 3.200 | 6.500 | ALTA |
+
+#### IMO_CASO_00083_01 — Essencial (vermelho)
+
+- **Casa Gêmea:** apartamento em Brasilia/DF, proprietário com financiamento, moradia habitual; área 61 m² (estimado); padrão normal (a confirmar).
+- **Elegibilidade:** ELEGIVEL
+- **Por que este plano:** poucos sinais de necessidade além da proteção básica.
+- **Por que não o de baixo:** É o plano de entrada.
+- **Por que não o de cima:** O Prático acrescenta roubo e quebra de vidros, mas os sinais de bens de valor são baixos (bens estimados em R$ 12.600 a R$ 25.200). Como o cliente tem pet, o Total vale a pena se ele quiser proteção contra danos a terceiros.
+- **Confiança geral:** BAIXA · **canal:** GERENTE · **conflitos:** apartamento sem condomínio pago
+
+| Cobertura | Mín (R$) | Máx (R$) | Confiança |
+|---|---|---|---|
+| INCENDIO_RAIO_EXPLOSAO_FUMACA | 26.800 | 73.800 | MEDIA |
+| DANOS_POR_AGUA | 5.200 | 12.400 | MEDIA |
+| VENDAVAL_GRANIZO | 1.700 | 4.000 | MEDIA |
+| IMPACTO_VEICULOS_TERRESTRES | 500 | 1.500 | MEDIA |
+| QUEDA_AERONAVE | 5.400 | 14.800 | MEDIA |
+| DANOS_ELETRICOS | 3.600 | 7.100 | ALTA |
 
 ## Limitações
 

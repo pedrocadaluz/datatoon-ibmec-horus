@@ -7,6 +7,7 @@ Saídas:
     saidas/recomendacao_{desenvolvimento,teste}.csv   uma linha por imóvel
     saidas/coberturas_{desenvolvimento,teste}.csv     uma linha por cobertura
     saidas/parametros_calibrados.csv                  IPTU e aluguel por m² por cidade
+    saidas/validacao_faixas.csv                       faixas com dados escondidos × valor real
     docs/02_regras_seguro.md
 """
 
@@ -19,7 +20,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 
 import pandas as pd  # noqa: E402
 
-from casa_gemea import regras  # noqa: E402
+from casa_gemea import perguntas, regras, validacao  # noqa: E402
 from casa_gemea.config import ENCODING, PASTA_DOCS, PASTA_SAIDAS  # noqa: E402
 from casa_gemea.pipeline import executar  # noqa: E402
 
@@ -104,7 +105,7 @@ def card_caso(r: pd.Series, cob: pd.DataFrame) -> list[str]:
 
 
 # ------------------------------------------------------------------- relatório
-def escrever_relatorio(res, tempo: float) -> Path:
+def escrever_relatorio(res, tempo: float, val: pd.DataFrame) -> Path:
     casa_t, rec_t, cob_t = res.casas["teste"], res.recomendacoes["teste"], res.coberturas["teste"]
     rec_d = res.recomendacoes["desenvolvimento"]
     m_t = casa_t.merge(rec_t, on=["cliente_id", "imovel_id"])
@@ -240,7 +241,7 @@ def escrever_relatorio(res, tempo: float) -> Path:
         "## 5. Confiança e canal",
         "",
         "- **Confiança de cada cobertura:** média da confiança dos dados que ela usa (alta = 0, média = 1, baixa = 2). Até 0,5 é alta, até 1,2 é média, acima é baixa.",
-        "- **Confiança geral:** alta com até 1 campo a confirmar e nenhum conflito; baixa se condicionado, com 4+ campos a confirmar ou 2+ conflitos; média nos demais.",
+        "- **Confiança geral:** mede a chance de o plano mudar depois das perguntas (ver seção 6). Alta: nenhuma resposta plausível muda o plano. Média: um campo pode mudar o plano. Baixa: dois ou mais campos podem mudar o plano, ou a elegibilidade depende de confirmação.",
         "- **Semáforo:** vermelho se condicionado, vínculo a confirmar ou obra a confirmar (vai ao gerente); verde com confiança alta; amarelo nos demais.",
         "- **Canal:** verde + usuário de app = One Click Buy. Dados de app só escolhem o canal, nunca o plano.",
         "",
@@ -248,7 +249,56 @@ def escrever_relatorio(res, tempo: float) -> Path:
         "",
         tabela_md(percentual(rec_t["canal_sugerido"])),
         "",
-        "## 6. Casos contrastantes (base de teste)",
+        "## 6. Perguntas que mudam o resultado",
+        "",
+        "Para cada campo incerto, o motor simula as respostas plausíveis e refaz a recomendação (`src/casa_gemea/perguntas.py`).",
+        "",
+        "| Campo | Respostas simuladas | Efeito medido |",
+        "|---|---|---|",
+        "| Obra | — | define a elegibilidade (sempre perguntada se houver sinal) |",
+        "| Vínculo | locador → proprietário sem renda do imóvel | plano |",
+        "| Tipo | apartamento ↔ casa (quando a confiança não é alta) | plano |",
+        "| Ocupação | segunda residência desocupada por longos períodos (sem cobertura de roubo) | plano |",
+        "| Bens | valor no mínimo e no máximo da faixa | plano e faixa |",
+        "| Área | área confirmada no valor estimado | faixa |",
+        "| Padrão | padrão confirmado | faixa |",
+        "",
+        f"**Regra de parada:** pergunta-se só o que muda o plano, define a elegibilidade ou estreita a faixa de incêndio em pelo menos {perguntas.LIMIAR_ESTREITAMENTO:.0%}, enquanto a faixa tiver máximo mais de {perguntas.FAIXA_ACEITAVEL - 1:.0%} acima do mínimo. Ordem: elegibilidade → plano → faixa. No fim, uma **declaração única** (área urbana, alvenaria, sem obra estrutural, não tombado) substitui várias perguntas de elegibilidade.",
+        "",
+        "Perguntas por imóvel (base de teste, sem contar a declaração):",
+        "",
+        tabela_md(percentual(rec_t["qtd_perguntas"])),
+        "",
+        "Campos que podem mudar o plano (base de desenvolvimento, imóveis):",
+        "",
+        tabela_md(percentual(rec_d["campos_que_mudam_plano"].replace("", pd.NA).dropna().str.split("|").explode())),
+        "",
+        "## 7. Validação das faixas escondendo dados reais",
+        "",
+        f"Nos {val['imovel_id'].nunique()} imóveis da base de desenvolvimento com área cadastrada, o motor foi rodado escondendo a área e o padrão "
+        "construtivo, com o modelo de área retreinado em validação cruzada (5 dobras: nenhum imóvel é avaliado por um modelo que o viu). "
+        "Valor real = centro da faixa calculada com os dados cadastrados (`src/casa_gemea/validacao.py`).",
+        "",
+        tabela_md(validacao.resumo(val).assign(
+            faixa_contem=lambda d: (100 * d["faixa_contem"]).round(1),
+            erro_mediano_centro=lambda d: (100 * d["erro_mediano_centro"]).round(1),
+        ).rename(columns={"cobertura": "Cobertura", "imoveis": "Imóveis", "faixa_contem": "Faixa contém o real (%)",
+                          "erro_mediano_centro": "Erro mediano do centro (%)"})),
+        "",
+        f"No total, a faixa contém o valor real em **{br(100 * val['contem'].mean(), 1)}%** dos casos. As faixas de prédio são conservadoras "
+        "porque também carregam a incerteza do interesse segurável (ex.: partes privativas de apartamento de 10% a 30%), que não é testada aqui. "
+        "Quebra de vidros depende só da área e acompanha o intervalo de 80% do modelo de área.",
+        "",
+        "## 8. Testado e descartado",
+        "",
+        "| Ideia | Resultado na base de desenvolvimento | Decisão |",
+        "|---|---|---|",
+        "| Padrão construtivo pelo condomínio por m² (apartamentos) | Acerto de 48% a 54% contra 58% de chutar NORMAL; aponta SUPERIOR com 44% de acerto (frequência real 23%) | Não entra: pior que a referência |",
+        "| Locador mais preciso (aluguel recebido × aluguel por m² da cidade; regularidade dos créditos) | Distribuições iguais entre locadores com e sem conflito de endereço (razão mediana 1,44 × 1,59; mesma regularidade) | Não entra: o sinal não separa os grupos; o vínculo vira pergunta |",
+        "| Ajuste de RC familiar para clientes com 2 imóveis | CG, RC Familiar 1.1: a cobertura é ligada ao imóvel segurado | Sem mudança: não há duplicidade |",
+        "| Confiança geral por contagem de campos a confirmar | Marcava como média campos que não mudam nada (ex.: área de quem já é Total) | Substituída pela análise de impacto |",
+        "",
+        "## 9. Casos contrastantes (base de teste)",
         "",
     ]
     for _, r in escolher_casos(casa_t, rec_t).iterrows():
@@ -283,7 +333,11 @@ def main() -> None:
     res.calibracao.tabela().to_csv(PASTA_SAIDAS / "parametros_calibrados.csv", index=False, encoding=ENCODING)
     print("✔ saidas/parametros_calibrados.csv")
 
-    relatorio = escrever_relatorio(res, tempo)
+    val = validacao.validar()
+    val.to_csv(PASTA_SAIDAS / "validacao_faixas.csv", index=False, encoding=ENCODING)
+    print(f"✔ saidas/validacao_faixas.csv: faixa contém o valor real em {val['contem'].mean():.1%}")
+
+    relatorio = escrever_relatorio(res, tempo, val)
     print(f"✔ docs/{relatorio.name}")
 
 

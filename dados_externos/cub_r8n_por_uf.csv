@@ -1,0 +1,11 @@
+uf,cub_r8n_reais_m2,mes_referencia,fonte_original,url_consulta,data_acesso,observacao
+SP,2238.58,2026-09,Sinduscon-SP,https://myside.com.br/guia-imoveis/cub-sp,2026-10-27,
+DF,2416.71,2026-09,Sinduscon-DF,https://myside.com.br/guia-imoveis/cub-df,2026-10-27,
+RJ,2476.31,2026-09,Sinduscon-RJ,https://myside.com.br/guia-imoveis/cub-rj,2026-10-27,
+PR,2738.93,2026-09,Sinduscon-PR,https://myside.com.br/guia-curitiba/cub-pr,2026-10-27,
+MG,2561.78,2026-09,Sinduscon-MG,https://myside.com.br/guia-imoveis/cub-mg,2026-10-27,
+GO,2416.71,2026-09,Sinduscon-DF (proxy),https://myside.com.br/guia-imoveis/cub-df,2026-10-27,Sinduscon-GO publica como principal a categoria R16-A (alto padrão); usado o R8-N do DF como referência regional (Centro-Oeste)
+BA,2218.68,2026-08,Sinduscon-BA,https://myside.com.br/guia-imoveis/cub-ba,2026-10-27,
+PE,2240.23,2026-09,Sinduscon-PE,https://myside.com.br/guia-imoveis/cub-pe,2026-10-27,
+CE,2458.13,2026-08,Sinduscon-CE,https://myside.com.br/guia-imoveis/cub-ce,2026-10-27,
+RS,2943.73,2026-09,Sinduscon-RS,https://myside.com.br/guia-imoveis/cub-rs,2026-10-27,

@@ -18,13 +18,9 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 import pandas as pd  # noqa: E402
 
 from casa_gemea import area  # noqa: E402
-from casa_gemea.carregar import ler_base, montar_tabela_imoveis  # noqa: E402
 from casa_gemea.config import ENCODING, PASTA_DOCS, PASTA_SAIDAS  # noqa: E402
-from casa_gemea.inferencias import (  # noqa: E402
-    COLUNAS_CASA_GEMEA,
-    construir_casa_gemea,
-    inferir_tipo,
-)
+from casa_gemea.inferencias import COLUNAS_CASA_GEMEA, classificar_padrao_por_iptu  # noqa: E402
+from casa_gemea.pipeline import executar  # noqa: E402
 
 CAMPOS_RELATORIO = [
     ("tipo_imovel", "Tipo de imóvel"),
@@ -32,6 +28,7 @@ CAMPOS_RELATORIO = [
     ("uso_imovel", "Uso do imóvel"),
     ("area_m2_selo", "Origem da área"),
     ("padrao_construtivo_selo", "Padrão construtivo"),
+    ("qtd_inconsistencias", "Sinais em conflito por imóvel"),
     ("material_parede", "Material da parede externa"),
     ("alerta_obra", "Sinal de obra"),
     ("conteudo_confianca", "Confiança no valor do conteúdo"),
@@ -61,6 +58,26 @@ def distribuicao(casas: dict[str, pd.DataFrame], campo: str) -> pd.DataFrame:
     return tabela.rename_axis("valor").reset_index()
 
 
+def padrao_validacao(dev: pd.DataFrame) -> str:
+    """Compara o indício pelo IPTU com o padrão cadastrado (imóveis com os dois dados)."""
+    v = dev[(dev["area_m2_selo"] == "OBSERVADO") & (dev["padrao_construtivo_cadastrado"] != "NAO_DISPONIVEL")]
+    previsto = v["razao_iptu_m2_cidade"].map(classificar_padrao_por_iptu)
+    linhas = [
+        "Imóveis da base de desenvolvimento com área real e padrão cadastrado: "
+        f"{len(v)}. O indício não serve como classificação (acerto geral de "
+        f"{br((previsto == v['padrao_construtivo_cadastrado']).mean() * 100, 1)}%), mas aponta os extremos:",
+        "",
+        "| Indício | Acerto quando aponta | Frequência real do padrão |",
+        "|---|---|---|",
+    ]
+    for padrao in ["SUPERIOR", "ECONOMICO"]:
+        acerto = (v.loc[previsto == padrao, "padrao_construtivo_cadastrado"] == padrao).mean()
+        freq = (v["padrao_construtivo_cadastrado"] == padrao).mean()
+        linhas.append(f"| {padrao} | {br(acerto * 100, 1)}% | {br(freq * 100, 1)}% |")
+    linhas += ["", "Por isso o indício entra com confiança BAIXA e só desloca a faixa de custo entre NORMAL e o padrão indicado."]
+    return "\n".join(linhas)
+
+
 def escrever_relatorio(casas: dict[str, pd.DataFrame], modelo: area.ModeloArea) -> Path:
     m = modelo.metricas
     dev = casas["desenvolvimento"]
@@ -86,13 +103,14 @@ def escrever_relatorio(casas: dict[str, pd.DataFrame], modelo: area.ModeloArea) 
         "| Campo | Sinais usados | Regra |",
         "|---|---|---|",
         "| Tipo de imóvel | complemento, termos apartamento/casa/condomínio, condomínio pago | Apartamento ou casa pelo complemento; casa + condomínio = casa em condomínio. Apartamento sem condomínio pago tem confiança média. |",
-        "| Vínculo | aluguel pago, parcela de financiamento, crédito compatível com aluguel | Inquilino > financiado > locador > quitado (ausência de sinais). Sinais simultâneos = a confirmar. |",
+        "| Vínculo | aluguel pago, parcela de financiamento, crédito compatível com aluguel, endereço principal, origem da área | Inquilino > financiado > locador > quitado. Locador só com confiança média se o imóvel não for o endereço principal; quitado com confiança alta se a área veio de laudo de financiamento. |",
         "| Uso | endereço principal, nº de imóveis do cliente, vínculo | Principal = moradia habitual; 2º imóvel não principal = temporada/segunda residência; locador = alugado a terceiros. |",
         "| Área | área cadastrada; senão IPTU, energia, tipo, município | Modelo log-linear (detalhes abaixo) com faixa de 80%. |",
-        "| Padrão construtivo | cadastro | Ausente → `NORMAL` como referência, a confirmar. |",
+        "| Padrão construtivo | cadastro; IPTU por m² comparado à mediana da cidade | Ausente e com área real → indício pelo IPTU (confiança baixa). Ausente e com área estimada → `NORMAL`, a confirmar (o IPTU já foi usado na área). |",
         "| Parede externa | cadastro | Ausente → a confirmar (requisito de elegibilidade). |",
-        "| Sinal de obra | gasto com material de construção em 24 meses | 0 / < 10 mil (leve) / < 30 mil (moderada) / ≥ 30 mil (possível obra relevante). |",
-        "| Conteúdo | bens vinculados e compras de 36 meses | Mín = bens ponderados pela probabilidade; máx = maior entre bens cadastrados e compras. |",
+        "| Sinal de obra | material de construção, vidraçaria, vínculo | ≥ 30 mil, ou ≥ 10 mil + vidraçaria → possível obra relevante; < 10 mil leve. Inquilino desce um nível. |",
+        "| Conteúdo | bens vinculados e compras de 36 meses | Mín = maior entre bens ponderados e 50% das compras; máx = maior entre bens cadastrados e compras. |",
+        "| Sinais em conflito | área × IPTU/energia, aluguel recebido × endereço principal, apartamento × condomínio | Cada conflito baixa a confiança e vira pergunta. |",
         "",
         "**Não usados em nenhuma inferência:** idade, renda, origem e confiança da renda.",
         "",
@@ -125,6 +143,7 @@ def escrever_relatorio(casas: dict[str, pd.DataFrame], modelo: area.ModeloArea) 
     for campo, titulo in CAMPOS_RELATORIO:
         partes += ["", f"### {titulo}", "", tabela_md(distribuicao(casas, campo))]
 
+    partes += ["", "## Validação do indício de padrão pelo IPTU", "", padrao_validacao(dev)]
     partes += [
         "",
         "## Campos a confirmar por imóvel",
@@ -164,14 +183,10 @@ def main() -> None:
     PASTA_SAIDAS.mkdir(exist_ok=True)
     PASTA_DOCS.mkdir(exist_ok=True)
 
-    tabelas = {nome: montar_tabela_imoveis(ler_base(nome)) for nome in ("desenvolvimento", "teste")}
+    resultado = executar(com_regras=False)
+    modelo, casas = resultado.modelo_area, resultado.casas
 
-    # O tipo do imóvel entra no modelo de área, então é inferido antes do treino.
-    modelo = area.treinar(inferir_tipo(tabelas["desenvolvimento"]))
-
-    casas = {}
-    for nome, tabela in tabelas.items():
-        casas[nome] = construir_casa_gemea(tabela, modelo)
+    for nome in casas:
         destino = PASTA_SAIDAS / f"casa_gemea_{nome}.csv"
         casas[nome][COLUNAS_CASA_GEMEA].to_csv(destino, index=False, encoding=ENCODING)
         print(f"✔ {destino.relative_to(destino.parents[1])}: {len(casas[nome])} imóveis")
