@@ -104,6 +104,7 @@ test('gerente: relatório inicial, perguntas e resultado para o cliente com e-ma
   await expect(page.getByTestId('plano-atual')).toHaveText('Prático')
   await expect(page.locator('#recomendacao')).not.toContainText('Confiança')
   await page.screenshot({ path: 'test-results/gerente-3.png', fullPage: true })
+  await expect(page.getByTestId('duvidas')).toHaveCount(0)
   await page.getByRole('button', { name: 'Enviar por e-mail' }).click()
   await page.getByLabel('E-mail do cliente').fill('cliente@exemplo.com')
   await page.getByRole('button', { name: 'Enviar (simulação)' }).click()

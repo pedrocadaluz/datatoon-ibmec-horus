@@ -22,9 +22,9 @@ function Range({ coverage, initial, client }: { coverage: Cobertura; initial?: C
     </div><div className="range-scale"><span>R$ 0</span><span>{reais(scale)}</span></div></>
 }
 
-export function Recommendation({ data, initial, pending, full, history }: { data: Resultado; initial: Resultado | null; pending: boolean; full?: boolean; history?: Registro[] }) {
+export function Recommendation({ data, initial, pending, full, history, duvidas = true }: { data: Resultado; initial: Resultado | null; pending: boolean; full?: boolean; history?: Registro[]; duvidas?: boolean }) {
   const [demo, setDemo] = useState(false)
-  if (full) return <ClientRecommendation data={data} initial={initial} pending={pending} history={history} />
+  if (full) return <ClientRecommendation data={data} initial={initial} pending={pending} history={history} duvidas={duvidas} />
   const rec = data.recomendacao
   const fire = data.coberturas.find(c => c.cobertura === 'INCENDIO_RAIO_EXPLOSAO_FUMACA')
   const firstFire = initial?.coberturas.find(c => c.cobertura === fire?.cobertura)
@@ -51,7 +51,7 @@ export function Recommendation({ data, initial, pending, full, history }: { data
 }
 
 /** Relatório para o cliente: o mesmo resultado do motor, sem selos, cores de semáforo, códigos nem fórmulas. */
-function ClientRecommendation({ data, initial, pending, history }: { data: Resultado; initial: Resultado | null; pending: boolean; history?: Registro[] }) {
+function ClientRecommendation({ data, initial, pending, history, duvidas }: { data: Resultado; initial: Resultado | null; pending: boolean; history?: Registro[]; duvidas?: boolean }) {
   const [demo, setDemo] = useState(false)
   const rec = data.recomendacao
   const fire = data.coberturas.find(c => c.cobertura === 'INCENDIO_RAIO_EXPLOSAO_FUMACA')
@@ -68,6 +68,6 @@ function ClientRecommendation({ data, initial, pending, history }: { data: Resul
     {demo && completed && <p className="demo-message" role="status">Demonstração concluída. Nenhuma contratação foi realizada. Esta interface não envia propostas.</p>}
     {rec.plano && <PlanCompare data={data} />}
     {data.coberturas.length > 0 && <details className="all-coverages"><summary>O que o seu plano cobre <span>{data.coberturas.length}</span></summary>{data.coberturas.map(c => <details className="coverage-detail" key={c.cobertura} data-cobertura={c.cobertura}><summary><span>{coberturas[c.cobertura] ?? texto(c.cobertura)}</span><strong>{reais(c.faixa_valor_min)} a {reais(c.faixa_valor_max)}</strong></summary><Range coverage={c} initial={initial?.coberturas.find(i => i.cobertura === c.cobertura)} client /><p>{descricaoCobertura[c.cobertura] ?? ''}</p>{ajusteCliente(c.a_confirmar) && <p>{ajusteCliente(c.a_confirmar)}</p>}</details>)}</details>}
-    <Duvidas data={data} history={history} />
+    {duvidas && <Duvidas data={data} history={history} />}
   </aside>
 }

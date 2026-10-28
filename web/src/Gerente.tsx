@@ -116,7 +116,7 @@ export function ManagerFlow({ data, initial, history, busy, passo, onPasso, ques
           {perguntas > 0 && <button className="button secondary" onClick={() => onPasso(2)}>← Voltar às perguntas</button>}
         </div>
       </section>
-      <div className="manager-result"><Recommendation data={data} initial={initial} pending={busy} full history={history} /><AnswerHistory history={history} busy={busy} onUndo={i => { onPasso(2); onUndo(i) }} open /></div>
+      <div className="manager-result"><Recommendation data={data} initial={initial} pending={busy} full history={history} duvidas={false} /><AnswerHistory history={history} busy={busy} onUndo={i => { onPasso(2); onUndo(i) }} open /></div>
       <RelatorioImpressao data={data} cidade={cidade} />
       <EnviarEmail open={email} onClose={() => setEmail(false)} data={data} cidade={cidade} />
     </>}
