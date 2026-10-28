@@ -17,10 +17,11 @@ export function Question({ data, busy, history, sac, simple, house, onAnswer, on
   const mobile = useMobile()
   const q = data.proximas_perguntas[0]
   const [exact, setExact] = useState('')
+  const [exactOpen, setExactOpen] = useState(false)
   const heading = useRef<HTMLHeadingElement>(null)
   const previous = useRef(q?.id)
   useEffect(() => {
-    setExact('')
+    setExact(''); setExactOpen(false)
     if (previous.current !== q?.id) heading.current?.focus({ preventScroll: true })
     previous.current = q?.id
   }, [q?.id, data.imovel_id])
@@ -39,14 +40,15 @@ export function Question({ data, busy, history, sac, simple, house, onAnswer, on
           <span className="option-key">{i + 1}</span><span>{texto(op.rotulo)}</span><Icon name="arrow" size={17} />
         </button>)}
       </fieldset>
-      {q.aceita_numero && <form className="exact-value" onSubmit={e => { e.preventDefault(); if (exact) onAnswer(q, Number(exact), `${exact} ${q.id === 'area_m2' ? 'm²' : 'reais'}`) }}>
-        <label htmlFor="exact-value">Sabe o valor exato?<span>{q.id === 'area_m2' ? 'Área em m²' : 'Bens em reais'}</span></label>
-        <div><input id="exact-value" aria-label="Valor exato" type="number" min={q.id === 'area_m2' ? 1 : 100} step={q.id === 'area_m2' ? 1 : 100} value={exact} onChange={e => setExact(e.target.value)} placeholder={q.id === 'area_m2' ? 'Ex.: 160' : 'Ex.: 25000'} disabled={busy} required /><button className="button secondary" disabled={busy || !exact}>Confirmar valor</button></div>
+      {q.aceita_numero && !exactOpen && <button type="button" className="exact-link" disabled={busy} onClick={() => setExactOpen(true)}>{q.id === 'area_m2' ? 'Informar a área' : 'Informar o valor'}</button>}
+      {q.aceita_numero && exactOpen && <form className="exact-value" onSubmit={e => { e.preventDefault(); if (exact) onAnswer(q, Number(exact), `${exact} ${q.id === 'area_m2' ? 'm²' : 'reais'}`) }}>
+        <label htmlFor="exact-value">{q.id === 'area_m2' ? 'Área em m²' : 'Valor dos bens em reais'}</label>
+        <div><input id="exact-value" aria-label="Valor exato" type="number" min={q.id === 'area_m2' ? 1 : 100} step={q.id === 'area_m2' ? 1 : 100} value={exact} onChange={e => setExact(e.target.value)} placeholder={q.id === 'area_m2' ? 'Ex.: 160' : 'Ex.: 25000'} disabled={busy} required autoFocus /><button className="button secondary" disabled={busy || !exact}>Confirmar valor</button></div>
       </form>}
       <p className="small-note">{simple ? 'Tudo bem não saber: seguimos com a nossa estimativa.' : '“Não sei” também vale. Sua recomendação continua com a incerteza sinalizada.'}</p>
     </div> : <div className="question-finish" role="status"><div className={`finish-icon ${data.status === 'INELEGIVEL' ? 'danger' : ''}`}><Icon name={data.status === 'INELEGIVEL' ? 'info' : 'check'} size={25} /></div>
       <h2 tabIndex={-1} ref={heading}>{data.status === 'INELEGIVEL' ? 'Imóvel inelegível neste momento.' : data.status === 'ENCAMINHAR_GERENTE' ? 'Agora, seguimos com o gerente.' : 'Sua recomendação está pronta.'}</h2>
-      <p>{data.status === 'INELEGIVEL' ? texto(data.elegibilidade.motivo) : data.status === 'ENCAMINHAR_GERENTE' ? 'As perguntas terminaram, mas ainda há uma pendência. O gerente recebe os dados e o motivo para ajudar você.' : 'Não há mais perguntas selecionadas pelo motor. Confira as faixas e os pontos que ainda dependem de confirmação.'}</p>
+      <p>{data.status === 'INELEGIVEL' ? texto(data.elegibilidade.motivo) : data.status === 'ENCAMINHAR_GERENTE' ? 'Falta só uma confirmação. O gerente recebe os dados e o motivo para ajudar você.' : 'Não precisamos de mais nada. Confira as faixas e o que ainda pode mudar.'}</p>
       <a className="button secondary" href="#recomendacao" onClick={e => { if (matchMedia('(max-width: 767px)').matches) { e.preventDefault(); window.dispatchEvent(new Event('horus-show-recommendation')) } }}>Ver minha recomendação <Icon name="arrow" size={16} /></a>
     </div>}
     <AnswerHistory history={history} busy={busy} onUndo={onUndo} />

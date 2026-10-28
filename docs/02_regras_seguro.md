@@ -1,7 +1,7 @@
 # Etapa 02 — Regras do seguro
-_Gerado por `scripts/02_aplicar_regras.py` em 28/10/2026. Tempo de execução: 4,4 s para 2716 imóveis._
+_Gerado por `scripts/02_aplicar_regras.py` em 28/10/2026. Tempo de execução: 1,3 s para 2716 imóveis._
 
-Na base de teste, **138 de 138 imóveis** receberam elegibilidade, plano, 1283 linhas de cobertura com faixa em reais, confiança, justificativa e comparação com os planos vizinhos.
+Na base de teste, **138 de 138 imóveis** receberam elegibilidade, plano, 1393 linhas de cobertura com faixa em reais, confiança, justificativa e comparação com os planos vizinhos.
 
 ## Fontes
 
@@ -23,7 +23,7 @@ Aplicada antes de recomendar (guia, seção 2).
 |---|---|---|
 | INELEGIVEL | Situação cadastral diferente de REGULAR; parede de material combustível | Guia 9.1 |
 | ELEGIVEL_CONDICIONADO | Possível obra relevante (material de construção ≥ R$ 30 mil, ou ≥ R$ 10 mil + vidraçaria); tipo não identificado | Guia 9.1; CG 7.1 w/x excluem imóveis em reforma ou construção |
-| ELEGIVEL | Demais casos, sujeitos à declaração do cliente (área urbana, alvenaria, sem obra estrutural, não tombado) | CG 11, alínea a, e 12.2: declaração inexata faz perder o direito |
+| ELEGIVEL | Demais casos, sujeitos à declaração do cliente (área urbana, fora de comunidade carente, sem vínculo rural, alvenaria, sem obra estrutural, não tombado, desapropriado nem condenado, sem outro seguro residencial BB no endereço) | CG 11, alínea a, e 12.2: declaração inexata faz perder o direito |
 
 | valor | imóveis | % |
 |---|---|---|
@@ -106,9 +106,11 @@ O seguro é a **Primeiro Risco Absoluto** (CG 15.1): paga até o LMI de cada cob
 
 | Cobertura | Mín mediano (R$) | Máx mediano (R$) | Máx/mín mediano | Linhas |
 |---|---|---|---|---|
+| BICICLETA | 3.350 | 6.800 | 2,0 | 24 |
 | DANOS_ELETRICOS | 4.850 | 9.750 | 2,0 | 138 |
 | DANOS_POR_AGUA | 12.350 | 24.800 | 2,2 | 138 |
 | DESPESAS_EMERGENCIAIS | 15.000 | 40.000 | 2,7 | 69 |
+| EQUIPAMENTOS_PORTATEIS | 2.000 | 4.800 | 2,4 | 86 |
 | IMPACTO_VEICULOS_TERRESTRES | 1.300 | 4.050 | 2,6 | 138 |
 | INCENDIO_RAIO_EXPLOSAO_FUMACA | 59.050 | 149.300 | 2,4 | 138 |
 | PERDA_PAGAMENTO_ALUGUEL | 6.900 | 17.700 | 2,0 | 69 |
@@ -190,7 +192,7 @@ Para cada campo incerto, o motor simula as respostas plausíveis e refaz a recom
 | Área | área confirmada no valor estimado | faixa |
 | Padrão | padrão confirmado | faixa |
 
-**Regra de parada:** pergunta-se só o que muda o plano, define a elegibilidade ou estreita a faixa de incêndio em pelo menos 25%, enquanto a faixa tiver máximo mais de 30% acima do mínimo. Ordem: elegibilidade → plano → faixa. No fim, uma **declaração única** (área urbana, alvenaria, sem obra estrutural, não tombado) substitui várias perguntas de elegibilidade.
+**Regra de parada:** pergunta-se só o que muda o plano, define a elegibilidade ou estreita a faixa de incêndio em pelo menos 25%, enquanto a faixa tiver máximo mais de 30% acima do mínimo. Ordem: elegibilidade → plano → faixa. No fim, uma **declaração única** (área urbana, fora de comunidade carente, sem vínculo rural, alvenaria, sem obra estrutural, não tombado, desapropriado nem condenado, sem outro seguro residencial BB no endereço) substitui várias perguntas de elegibilidade.
 
 Perguntas por imóvel (base de teste, sem contar a declaração):
 
@@ -291,6 +293,7 @@ No total, a faixa contém o valor real em **97,1%** dos casos. As faixas de pré
 | DANOS_ELETRICOS | 4.400 | 8.800 | ALTA |
 | ROUBO_FURTO_ARROMBAMENTO | 7.000 | 14.000 | ALTA |
 | QUEBRA_DE_VIDROS | 3.800 | 5.700 | ALTA |
+| EQUIPAMENTOS_PORTATEIS | 1.200 | 2.800 | BAIXA |
 
 #### IMO_CASO_00045_01 — Prático (amarelo)
 
@@ -311,6 +314,7 @@ No total, a faixa contém o valor real em **97,1%** dos casos. As faixas de pré
 | DANOS_ELETRICOS | 6.000 | 11.900 | MEDIA |
 | ROUBO_FURTO_ARROMBAMENTO | 9.300 | 18.600 | MEDIA |
 | QUEBRA_DE_VIDROS | 3.300 | 8.500 | MEDIA |
+| EQUIPAMENTOS_PORTATEIS | 2.700 | 6.500 | BAIXA |
 
 #### IMO_CASO_00008_01 — Total (verde)
 
@@ -334,6 +338,7 @@ No total, a faixa contém o valor real em **97,1%** dos casos. As faixas de pré
 | RESPONSABILIDADE_CIVIL_FAMILIAR | 45.000 | 110.000 | BAIXA |
 | PERDA_PAGAMENTO_ALUGUEL | 4.500 | 9.000 | ALTA |
 | DESPESAS_EMERGENCIAIS | 20.000 | 50.000 | MEDIA |
+| EQUIPAMENTOS_PORTATEIS | 1.600 | 3.700 | BAIXA |
 
 #### IMO_CASO_00004_01 — Total (verde)
 
@@ -357,6 +362,7 @@ No total, a faixa contém o valor real em **97,1%** dos casos. As faixas de pré
 | RESPONSABILIDADE_CIVIL_FAMILIAR | 35.000 | 90.000 | BAIXA |
 | PERDA_PAGAMENTO_ALUGUEL | 2.400 | 14.500 | ALTA |
 | DESPESAS_EMERGENCIAIS | 10.000 | 30.000 | MEDIA |
+| EQUIPAMENTOS_PORTATEIS | 1.600 | 3.900 | BAIXA |
 
 #### IMO_CASO_00038_01 — Total (amarelo)
 
@@ -403,6 +409,7 @@ No total, a faixa contém o valor real em **97,1%** dos casos. As faixas de pré
 | RESPONSABILIDADE_CIVIL_FAMILIAR | 35.000 | 90.000 | BAIXA |
 | PERDA_PAGAMENTO_ALUGUEL | 4.500 | 25.700 | MEDIA |
 | DESPESAS_EMERGENCIAIS | 10.000 | 30.000 | MEDIA |
+| EQUIPAMENTOS_PORTATEIS | 1.600 | 3.800 | BAIXA |
 
 #### IMO_CASO_00080_01 — Essencial (amarelo)
 
@@ -421,6 +428,7 @@ No total, a faixa contém o valor real em **97,1%** dos casos. As faixas de pré
 | IMPACTO_VEICULOS_TERRESTRES | 800 | 2.800 | MEDIA |
 | QUEDA_AERONAVE | 7.600 | 22.900 | MEDIA |
 | DANOS_ELETRICOS | 3.200 | 6.500 | ALTA |
+| EQUIPAMENTOS_PORTATEIS | 1.100 | 2.700 | BAIXA |
 
 #### IMO_CASO_00083_01 — Essencial (vermelho)
 
@@ -439,6 +447,7 @@ No total, a faixa contém o valor real em **97,1%** dos casos. As faixas de pré
 | IMPACTO_VEICULOS_TERRESTRES | 500 | 1.500 | MEDIA |
 | QUEDA_AERONAVE | 5.400 | 14.800 | MEDIA |
 | DANOS_ELETRICOS | 3.600 | 7.100 | ALTA |
+| EQUIPAMENTOS_PORTATEIS | 1.200 | 3.000 | BAIXA |
 
 ## Limitações
 

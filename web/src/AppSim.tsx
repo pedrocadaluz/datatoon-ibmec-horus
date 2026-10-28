@@ -97,6 +97,7 @@ export function AppSim({ onComparar }: { onComparar: () => void }) {
           {pers.alertas.map(al => <p key={al.tipo} className="sim-alert" role="note"><Icon name="info" size={16} />{paraVoce(al.texto)}</p>)}
           {visiveis.length > 0 && <section><h3>Adicionais para a sua casa</h3>{visiveis.map(a => <CartaoAdicional key={a.id} a={a} resposta={escolhas[a.id] ?? resp[chaveAdicional(a.id)]} dispensado={dispensados.includes(a.id)}
             onResponder={v => adicional(a, v)} onAdicionar={() => adicional(a, a.pergunta ? 'SIM' : 'ADD')} onDispensar={() => setDispensados(d => [...d, a.id])} />)}</section>}
+          <p className="small-note">Alagamento, chuva e rompimento de tubulação já estão em Danos por água, em todos os planos. Não precisa contratar à parte.</p>
           <section className="sim-assist"><h3>Assistências em destaque</h3><p className="small-note">Base do plano: {pers.assistencias.base}</p>
             {pers.assistencias.destaque.map(d => <p key={d.nome}><b>{d.nome}:</b> {texto(d.por_que)}</p>)}
             {pers.assistencias.beneficio_premium_sugerido && <p><b>Benefício sugerido: {pers.assistencias.beneficio_premium_sugerido.nome}.</b> {texto(pers.assistencias.beneficio_premium_sugerido.por_que)}</p>}</section></>}

@@ -98,8 +98,8 @@ Decisões tomadas:
   - Textos corrigidos: dono também tem cobertura de aluguel (moradia temporária, CG Perda de Aluguel 1.1.1 b) → "útil, mas não prioritária"; inquilino também (1.1.2 b) — confirma Total. RC cita pet/dependentes reais; singular/plural; água lista área a confirmar; vidros com confiança só pela área.
   - Testado e descartado: padrão por condomínio/m² (pior que chutar NORMAL); locador por aluguel/m² e regularidade (não separa grupos); RC p/ 2 imóveis (RC é ligada ao imóvel, CG RC 1.1).
   - Em aberto (decisão do time): RC familiar cobre vazamento para o vizinho (CG RC 1.1 e) — apartamento poderia pontuar para o Total.
-- [x] CSVs da entrega (etapa 03) — `python scripts/03_gerar_entrega.py` → `entrega/template_resultado_times.csv` (138) + `template_coberturas_times.csv` (1.283) + `docs/03_entrega.md`
-  - Lógica em `src/casa_gemea/entrega.py` (montar + 13 testes de formato; o script falha se algum teste falhar). Rodar 02 antes não é necessário: o 03 executa o pipeline inteiro.
+- [x] CSVs da entrega (etapa 03) — `python scripts/03_gerar_entrega.py` → `entrega/template_resultado_times.csv` (138) + `template_coberturas_times.csv` (1.393 = 1.283 fixas + 110 adicionais) + `docs/03_entrega.md`
+  - Lógica em `src/casa_gemea/entrega.py` (montar + 14 testes de formato; o script falha se algum teste falhar). Rodar 02 antes não é necessário: o 03 executa o pipeline inteiro.
   - Campos do template são "LIVRE_E_DOCUMENTADA" no dicionário. Convenções: `elegivel` = SIM / PENDENTE_VALIDACAO / NAO; listas separadas por " | "; última pergunta = declaração única.
   - Justificativa: recomendação inicial → Casa Gêmea com selos → por que este → por que não abaixo/acima → o que pode mudar o plano.
   - Decisão (28/10): apartamento NÃO pontua para o Total por RC/vazamento; fica como evolução futura.
@@ -110,7 +110,7 @@ Decisões tomadas:
   - Regra de parada absoluta: faixa de incêndio ≤ 1,30× (FAIXA_ACEITAVEL) → não pergunta mais só por faixa (antes a regra relativa não parava).
   - Testado: motor sem respostas = CSV entregue (0 divergências em 138); respostas inválidas → erro.
   - Jornada exemplo IMO_CASO_00003_01: Total/baixa/vermelho → (sem obra) → (mora nele) Prático/alta → (160 m² + declaração) confirmada, faixa 505–634 mil.
-- [x] Demo (28/10) — `streamlit run demo/app.py` (streamlit 1.40.1 no requirements; tema em `.streamlit/config.toml`)
+- [x] ~~Demo Streamlit~~ (28/10; **removida** do repositório no mesmo dia, a pedido da Ludmila: a interface oficial é o web-app `web/` + `api/`) — era `streamlit run demo/app.py` (streamlit 1.40.1 no requirements; tema em `.streamlit/config.toml`)
   - Visual inspirado na página do Seguro Residencial da BB Seguros (barra de atalhos, menu, breadcrumb, hero azul com título amarelo, cards). Cores aproximadas (#465EFF / #FCFC30, não confirmadas em fonte oficial; dict COR no topo). Sem logo oficial; aviso "PROTÓTIPO" e rodapé. Site oficial bloqueia robôs (Incapsula): não contornar.
   - 4 visões do mesmo motor e das mesmas respostas: Cliente (1 pergunta por vez, botões, valor exato p/ área/bens, cards dos planos, faixas, botão contratar só no verde), Gerente (selos, evidência, impacto), SAC (roteiro "Leia:"), Agente (JSON editável).
   - Casos de demonstração: 00003 (locador+reforma → Prático), 00001, 00013, 00016.

@@ -5,7 +5,7 @@ Uso (na raiz do projeto):
 
 Saídas:
     entrega/template_resultado_times.csv     uma linha por imóvel (138)
-    entrega/template_coberturas_times.csv    uma linha por cobertura fixa do plano e por adicional aplicável
+    entrega/template_coberturas_times.csv    uma linha por cobertura do plano
     docs/03_entrega.md                              convenções, testes e exemplos
 """
 
@@ -92,9 +92,9 @@ def escrever_relatorio(resultado: pd.DataFrame, coberturas: pd.DataFrame, testes
         "| `uso_imovel_sugerido` | `MORADIA_HABITUAL` · `TEMPORADA_OU_SEGUNDA_RESIDENCIA` · `ALUGADO_A_TERCEIROS` |",
         "| `tipo_vinculo_sugerido` | `INQUILINO` · `PROPRIETARIO_FINANCIADO` · `PROPRIETARIO_QUITADO` (sem financiamento ativo) · `PROPRIETARIO_LOCADOR` |",
         "| `plano_recomendado` | `ESSENCIAL` · `PRATICO` · `TOTAL` (nomes do catálogo) |",
-        "| `coberturas_recomendadas` | Coberturas fixas do plano e adicionais aplicáveis com faixa (`EQUIPAMENTOS_PORTATEIS`, `BICICLETA`), separadas por ` \\| ` |",
+        "| `coberturas_recomendadas` | Coberturas fixas do plano e, depois delas, os adicionais opcionais com faixa (CG 4.1), separados por ` \\| ` |",
         "| `confianca_geral` | `ALTA` (nenhuma resposta plausível muda o plano) · `MEDIA` (um campo pode mudar) · `BAIXA` (dois ou mais, ou elegibilidade pendente) |",
-        "| `justificativa_recomendacao` | Recomendação inicial → Casa Gêmea com selos → por que este plano → por que não o de baixo → por que não o de cima → o que pode mudar o plano |",
+        "| `justificativa_recomendacao` | Recomendação inicial → Casa Gêmea com selos → por que este plano → por que não o de baixo → por que não o de cima → adicionais opcionais sugeridos → assistências do plano → o que pode mudar o plano |",
         "| `perguntas_confirmacao` | Perguntas fechadas em ordem de impacto, com opções e o porquê, separadas por ` \\| `; a última é sempre a declaração única de elegibilidade |",
         "| `fontes_publicas_adicionais` | Condições Gerais BB, CUB da UF do imóvel, fatores Sinduscon-MG e dado de sinistros, com link |",
         "| `faixa_valor_min` / `faixa_valor_max` | Reais inteiros, sem \"R$\" e sem separador de milhar |",

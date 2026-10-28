@@ -1,8 +1,28 @@
-"""Recomendação completa por imóvel: junta regras do seguro e análise de impacto."""
+"""Recomendação completa por imóvel: junta regras do seguro, análise de impacto e personalização."""
 
 import pandas as pd
 
 from . import perguntas, personalizacao, regras
+from .config import BAIXA
+
+
+def _texto_adicionais(adicionais: list[dict]) -> str:
+    """Adicionais em uma frase cada; os sem faixa dizem por que não têm linha no detalhamento."""
+    partes = []
+    for ad in adicionais:
+        sem_faixa = "" if "faixa_valor_min" in ad else             " Sem linha de faixa: não tem limite próprio ou depende de declaração do cliente."
+        partes.append(f"{ad['nome']} ({ad['clausula']}): {ad['por_que_para_voce']}{sem_faixa}")
+    return " ".join(partes)
+
+
+def _texto_assistencias(r: pd.Series, plano: str) -> str:
+    if not plano:
+        return ""
+    assist = personalizacao.assistencias(r, plano)
+    texto = ", ".join(personalizacao.PACOTES_ASSISTENCIA[plano])
+    if assist["destaque"]:
+        texto += "; em destaque para este cliente: " + "; ".join(f"{d['nome']}, {d['por_que']}" for d in assist["destaque"])
+    return texto
 
 
 def recomendar(casa: pd.DataFrame, ref: regras.Referencias, catalogo: pd.DataFrame):
@@ -22,9 +42,24 @@ def recomendar(casa: pd.DataFrame, ref: regras.Referencias, catalogo: pd.DataFra
 
         faixas = regras.calcular_coberturas(r, ref) if plano else []
         do_plano = [f for f in faixas if f["cobertura"] in coberturas_do_plano.get(plano, [])]
-        do_plano += personalizacao.coberturas_adicionais(r, plano, elegibilidade)
         for f in do_plano:
             coberturas.append({"cliente_id": r["cliente_id"], "imovel_id": r["imovel_id"], **f})
+
+        # Adicionais opcionais (CG 4.1): os dimensionáveis ganham linha própria no detalhamento.
+        # RC familiar opcional fica só na interface (JSON); os CSVs da entrega seguem como validados.
+        adicionais = personalizacao.adicionais(r, plano, elegibilidade, com_rc=False)
+        for ad in adicionais:
+            if "faixa_valor_min" in ad:
+                coberturas.append({
+                    "cliente_id": r["cliente_id"], "imovel_id": r["imovel_id"], "cobertura": ad["id"],
+                    "faixa_valor_min": ad["faixa_valor_min"], "faixa_valor_max": ad["faixa_valor_max"],
+                    "confianca_estimativa": BAIXA,  # faixa por premissa; itens confirmados na contratação
+                    "dados_utilizados": ad["dados_usados"],
+                    "regra_calculo_utilizada": ad["regra_da_faixa"],
+                    "justificativa": f"Cobertura adicional opcional, paga à parte ({ad['clausula']}). {ad['por_que_para_voce']}",
+                    "informacao_a_confirmar": ad["pergunta"] or "",
+                    "observacao": ad["cuidado"],
+                })
 
         linhas.append({
             "cliente_id": r["cliente_id"],
@@ -32,7 +67,10 @@ def recomendar(casa: pd.DataFrame, ref: regras.Referencias, catalogo: pd.DataFra
             "elegivel": elegibilidade,
             "motivo_inelegibilidade": motivo,
             "plano_recomendado": plano,
-            "coberturas_recomendadas": "|".join(f["cobertura"] for f in do_plano),
+            "coberturas_recomendadas": "|".join([f["cobertura"] for f in do_plano]
+                                                + [ad["id"] for ad in adicionais if "faixa_valor_min" in ad]),
+            "adicionais_sugeridos": _texto_adicionais(adicionais),
+            "assistencias_do_plano": _texto_assistencias(r, plano),
             "confianca_geral": impacto["confianca_geral"],
             "pontos_pratico": pontuacao["pontos_pratico"],
             "pontos_total": pontuacao["pontos_total"],

@@ -12,8 +12,8 @@ import re
 
 import pandas as pd
 
-from . import personalizacao, regras
-from .config import PASTA_DADOS_EXTERNOS
+from . import regras
+from .config import PASTA_DADOS_EXTERNOS, PASTA_SAIDAS
 
 COLUNAS_RESULTADO = [
     "cliente_id", "imovel_id", "elegivel", "motivo_inelegibilidade", "tipo_imovel_sugerido",
@@ -94,6 +94,9 @@ def _justificativa(r: pd.Series, c: pd.Series) -> str:
         partes.append(f"Por que não o {regras.NOME_PLANO[regras.ORDEM_PLANOS[i - 1]]}: {r['por_que_nao_plano_abaixo']}")
     if i < len(regras.ORDEM_PLANOS) - 1:
         partes.append(f"Por que não o {regras.NOME_PLANO[regras.ORDEM_PLANOS[i + 1]]}: {r['por_que_nao_plano_acima']}")
+    if r["adicionais_sugeridos"]:
+        partes.append(f"Adicionais opcionais sugeridos, pagos à parte: {r['adicionais_sugeridos']}")
+    partes.append(f"Assistências do plano (não entram no detalhamento de coberturas): {r['assistencias_do_plano']}.")
     campos = [CAMPO_LEGIVEL[x] for x in str(r["campos_que_mudam_plano"]).split("|") if x in CAMPO_LEGIVEL]
     if campos:
         partes.append(f"O plano pode mudar conforme a confirmação {' e '.join(campos)}.")
@@ -143,11 +146,11 @@ def validar(resultado: pd.DataFrame, coberturas: pd.DataFrame, template: pd.Data
             catalogo: pd.DataFrame) -> pd.DataFrame:
     """Testes de formato e coerência da entrega. Cada linha: teste, ok, detalhe."""
     do_plano = catalogo.groupby("plano")["cobertura_fixa"].apply(set).to_dict()
-    por_imovel = coberturas.groupby("imovel_id")["cobertura"].apply(set)
-    adicionais = set(personalizacao.CONFIANCA_ADICIONAL)
-    nomes_validos = set(catalogo["cobertura_fixa"]) | adicionais
-    listadas = {r.imovel_id: set(r.coberturas_recomendadas.split(" | ")) - {""} for r in resultado.itertuples()}
-    nao_elegiveis = set(resultado.loc[resultado["elegivel"] == "NAO", "imovel_id"])
+    adicionais = set(pd.read_csv(PASTA_SAIDAS / "catalogo_adicionais.csv", encoding="utf-8-sig")["cobertura_id"])
+    eh_adicional = coberturas["cobertura"].isin(adicionais)
+    por_imovel = coberturas[~eh_adicional].groupby("imovel_id")["cobertura"].apply(set)
+    listadas = resultado.set_index("imovel_id")["coberturas_recomendadas"].str.split(" | ", regex=False).apply(set)
+    detalhadas = coberturas.groupby("imovel_id")["cobertura"].apply(set)
     obrigatorias = [c for c in COLUNAS_RESULTADO if c != "motivo_inelegibilidade"]
     texto = resultado.select_dtypes("object").to_numpy().ravel().tolist() + \
         coberturas.select_dtypes("object").to_numpy().ravel().tolist()
@@ -160,16 +163,14 @@ def validar(resultado: pd.DataFrame, coberturas: pd.DataFrame, template: pd.Data
         ("Campos obrigatórios preenchidos", (resultado[obrigatorias] != "").all().all(), ""),
         ("Motivo preenchido quando não é elegível sem ressalvas",
          (resultado.loc[resultado["elegivel"] != "SIM", "motivo_inelegibilidade"] != "").all(), ""),
-        ("Cada imóvel tem todas as coberturas fixas do plano no catálogo, e só adicionais além delas",
-         all(do_plano.get(r.plano_recomendado, set()) <= por_imovel.get(r.imovel_id, set())
-             and por_imovel.get(r.imovel_id, set()) - do_plano.get(r.plano_recomendado, set()) <= adicionais
+        ("Coberturas fixas de cada imóvel = coberturas do plano no catálogo",
+         all(por_imovel.get(r.imovel_id, set()) == do_plano.get(r.plano_recomendado, set())
              for r in resultado.itertuples()), f"{len(coberturas)} linhas de cobertura"),
-        ("Nomes de cobertura iguais ao catálogo ou à lista de adicionais", coberturas["cobertura"].isin(nomes_validos).all(),
-         f"{coberturas['cobertura'].isin(adicionais).sum()} linhas de adicionais"),
-        ("coberturas_recomendadas = linhas do template de coberturas",
-         all(listadas[i] == por_imovel.get(i, set()) for i in listadas), ""),
-        ("Nenhum adicional em imóvel não elegível",
-         not coberturas.loc[coberturas["imovel_id"].isin(nao_elegiveis), "cobertura"].isin(adicionais).any(), ""),
+        ("Nomes de cobertura iguais ao catálogo (fixas) ou às Condições Gerais (adicionais)",
+         (coberturas["cobertura"].isin(catalogo["cobertura_fixa"]) | eh_adicional).all(),
+         f"{int(eh_adicional.sum())} linhas de adicionais em {coberturas.loc[eh_adicional, 'imovel_id'].nunique()} imóveis"),
+        ("Coberturas listadas no resultado = coberturas detalhadas",
+         all(listadas[i] == detalhadas.get(i, set()) for i in listadas.index if listadas[i] != {""}), ""),
         ("Sem cobertura duplicada por imóvel", not coberturas.duplicated(["imovel_id", "cobertura"]).any(), ""),
         ("Faixas são números inteiros positivos",
          bool((coberturas[["faixa_valor_min", "faixa_valor_max"]] > 0).all().all())

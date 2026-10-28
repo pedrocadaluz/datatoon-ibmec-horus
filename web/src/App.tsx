@@ -16,8 +16,8 @@ import './app.css'
 
 interface Session { history: Registro[]; result: Resultado; initial: Resultado }
 const canais: { label: Canal; icon: string; note: string }[] = [
-  { label: 'Cliente', icon: 'home', note: 'Sua proteção' }, { label: 'Gerente', icon: 'person', note: 'A decisão explicada' },
-  { label: 'SAC', icon: 'headset', note: 'Atendimento guiado' }, { label: 'Agente', icon: 'code', note: 'Contrato JSON' },
+  { label: 'Cliente', icon: 'home', note: 'Para quem contrata' }, { label: 'Gerente', icon: 'person', note: 'Para a agência' },
+  { label: 'SAC', icon: 'headset', note: 'Para o telefone' }, { label: 'Agente', icon: 'code', note: 'Para sistemas' },
 ]
 const steps = ['Conheça a Casa Gêmea', 'Responda o que importa', 'Entenda sua proteção']
 const answersFrom = (history: Registro[]): Respostas => Object.fromEntries(history.map(h => [h.campo, h.valor]))
@@ -74,10 +74,10 @@ export default function App() {
       if (label) {
         if ('vibrate' in navigator && !matchMedia('(prefers-reduced-motion: reduce)').matches) navigator.vibrate(12)
         const before = sessionsRef.current[id]?.result.recomendacao.plano
-        setNotice(before && before !== result.recomendacao.plano ? `Resposta registrada. O plano passou de ${planos[before]} para ${planos[result.recomendacao.plano] ?? 'sem plano'}.` : 'Resposta registrada. Sua recomendação foi atualizada.')
+        setNotice(before && before !== result.recomendacao.plano ? `Resposta registrada. O plano passou de ${planos[before]} para ${planos[result.recomendacao.plano] ?? 'sem plano'}.` : 'Resposta registrada. Atualizamos sua recomendação.')
       }
     } catch (e) {
-      if (current === seq.current && !ctrl.signal.aborted) setError(e instanceof Error ? e.message : 'Não conseguimos consultar o motor.')
+      if (current === seq.current && !ctrl.signal.aborted) setError(e instanceof Error ? e.message : 'Não conseguimos atualizar agora.')
     } finally { if (current === seq.current) setBusy(false) }
   }, [])
 
@@ -144,7 +144,7 @@ export default function App() {
       const next = Object.entries(parsed.respostas as Respostas).map(([campo, valor]) => ({ campo, valor, pergunta: nomes[campo] ?? campo, rotulo: String(valor).replace(/_/g, ' ') }))
       setSessions(prev => ({ ...prev, [id]: { history: next, result, initial } }))
       if (id !== selected) setSelected(id)
-      setNotice('Contrato executado. As respostas estão disponíveis nos quatro canais.')
+      setNotice('Contrato executado. As respostas valem nos quatro canais.')
     } catch (e) {
       if (!ctrl.signal.aborted && current === seq.current) throw e
     } finally {
@@ -163,9 +163,9 @@ export default function App() {
       <nav className="channel-nav" aria-label="Canal de atendimento" data-mobile={String(mobile)}>{canais.map(c => <button key={c.label} aria-label={c.label} aria-pressed={channel === c.label} className={channel === c.label ? 'active' : ''} onClick={() => setChannel(c.label)}><Icon name={c.icon} size={18} /><span>{c.label}<small>{c.note}</small></span>{channel === c.label && <span className="nav-marker" />}</button>)}{mobile && <button className="mobile-case-button" aria-label="Escolher imóvel" aria-expanded={caseOpen} onClick={() => setCaseOpen(true)}><Icon name="pin" size={18} /><span>Imóvel</span></button>}</nav>
       {presentation && <div className="presentation-bar"><span><Icon name="play" size={17} />Apresentação <b>{step + 1} / 3</b></span><strong>{steps[step]}</strong><div><button aria-label="Etapa anterior" disabled={step === 0} onClick={() => setStep(s => s - 1)}>←</button><button aria-label="Próxima etapa" disabled={step === 2} onClick={() => setStep(s => s + 1)}>→</button><button onClick={() => setPresentation(false)}>Sair</button></div>{!mobile && <small>Setas navegam · números respondem · Esc sai</small>}</div>}
       {error && <div className={`error-banner ${!data ? 'offline-card' : ''}`} role="alert"><Icon name="info" /><div><strong>{data ? 'Não foi possível atualizar a Casa Gêmea.' : 'Sua Casa Gêmea espera pela conexão.'}</strong>{!data && <p>O app pode abrir sem internet. Para consultar o imóvel, reconecte à mesma rede do computador da demonstração.</p>}<p>{texto(error)}</p>{data && <span>Os dados abaixo são a última resposta válida. Suas respostas foram preservadas.</span>}</div><button className="button secondary" onClick={() => setRetry(n => n + 1)}>Tentar novamente</button></div>}
-      {!data ? !error && <div className="loading-state" role="status"><div className="loading-house"><Icon name="home" size={45} /></div><h2>Conectando os pontos da sua casa...</h2><p>O motor está montando a Casa Gêmea e calculando sua proteção.</p><div className="skeleton" /></div> : <>
+      {!data ? !error && <div className="loading-state" role="status"><div className="loading-house"><Icon name="home" size={45} /></div><h2>Montando a Casa Gêmea...</h2><p>Estamos juntando o que já sabemos para calcular sua proteção.</p><div className="skeleton" /></div> : <>
         <div className="journey-strip"><div><span className="case-id" data-testid="caso-atual">{data.imovel_id}</span><span className="location-text"><Icon name="pin" size={14} />{item?.municipio}/{item?.uf}</span></div><div className="answered-counter" data-testid="respondidas"><b>{history.length}</b> {history.length === 1 ? 'respondida' : 'respondidas'}</div></div>
-        <div className="status-announcement" role="status" aria-live="polite">{busy ? 'Consultando o motor...' : notice}</div>
+        <div className="status-announcement" role="status" aria-live="polite">{busy ? 'Atualizando...' : notice}</div>
         {story && <HouseHero data={data} location={`${item?.municipio}/${item?.uf}`} pending={busy} showPlan={!showReport} onOpenReport={() => setReportOpen(true)} imovel={selected} />}
         <div className={`workspace ${story ? 'story' : ''}`}><div className="workspace-main">{story && (showReport ? <ClientReport data={data} initial={sessions[selected]?.initial ?? null} pending={busy} history={history} onBack={() => setReportOpen(false)} onUndo={undo} /> : question)}
           {channel === 'Cliente' && mobile && <>{question}<details className="mobile-twin"><summary><Icon name="home" size={19} /><span>Ver sua Casa Gêmea<small>O que já sabemos e de onde veio</small></span><b>+</b></summary>{house}</details></>}

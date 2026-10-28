@@ -9,7 +9,7 @@ Uso (na raiz do projeto):
 
 Saídas:
     saidas/consistencia_grupos.csv     um grupo por linha, com os planos e o motivo da diferença
-    docs/14_consistencia.md            resumo por base
+    docs/15_consistencia.md            resumo por base
 """
 
 import sys
@@ -108,7 +108,7 @@ def main() -> None:
     for r in inconsist[inconsist["base"] == "teste"].itertuples():
         p.append(f"| {r.tipo_imovel} | {r.vinculo} | {r.nivel_bens} | {'sim' if r.tem_pet else 'não'} | "
                  f"{'sim' if r.tem_dependentes else 'não'} | {r.imoveis} | {r.planos} | {r.sinais_que_variam or '-'} |")
-    caminho = PASTA_DOCS / "14_consistencia.md"
+    caminho = PASTA_DOCS / "15_consistencia.md"
     caminho.write_text("\n".join(p) + "\n", encoding="utf-8")
     print(f"✔ saidas/consistencia_grupos.csv: {len(tabela)} grupos")
     print(f"✔ {caminho.relative_to(caminho.parents[1])}")

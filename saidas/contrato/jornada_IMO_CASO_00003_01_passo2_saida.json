@@ -160,18 +160,6 @@
       "observacao": "Valor por m² é premissa da equipe."
     }
   ],
-  "coberturas_adicionais": [
-    {
-      "cobertura": "EQUIPAMENTOS_PORTATEIS",
-      "faixa_valor_min": 1100,
-      "faixa_valor_max": 2700,
-      "confianca": "MEDIA",
-      "regra": "25% a 60% do valor de eletrônicos observado (premissa; os itens precisam ser listados na contratação)",
-      "justificativa": "Cobertura adicional, fora das fixas do plano: Você comprou cerca de R$ 4.525 em eletrônicos. Danos elétricos não cobrem queda nem dano mecânico de notebook, tablet ou câmera; esta cobertura sim, dentro de casa. (CG V1.6, item 4.1 g)",
-      "a_confirmar": "quais notebooks, tablets ou câmeras há no imóvel e o valor (os itens são listados na contratação)",
-      "observacao": "Celulares não são cobertos (CG 6.1); queda em líquido é exclusão da cobertura."
-    }
-  ],
   "proximas_perguntas": [
     {
       "id": "area_m2",
@@ -526,6 +514,20 @@
         "dados_usados": "compras de eletrônicos, eletrodomésticos e móveis em 36 meses",
         "pergunta": null,
         "cuidado": "Não tem limite próprio: muda a base de pagamento do conteúdo."
+      },
+      {
+        "id": "RESPONSABILIDADE_CIVIL_FAMILIAR",
+        "nome": "Responsabilidade civil familiar",
+        "necessidade": 55,
+        "nivel": "MEDIA",
+        "por_que_para_voce": "Você tem 1 dependente em casa. O plano Prático não cobre danos que pessoas ou animais da casa causem a terceiros; esta cobertura sim.",
+        "clausula": "CG V1.6, item 4.1 m e RC Familiar 1.1",
+        "dados_usados": "pet informado e quantidade de dependentes (só indicam necessidade, não risco)",
+        "pergunta": null,
+        "cuidado": "A cobertura é ligada ao imóvel segurado.",
+        "faixa_valor_min": 25000,
+        "faixa_valor_max": 60000,
+        "regra_da_faixa": "mesma faixa de limite calculada para a responsabilidade civil familiar do plano Total (referência, não preço)"
       },
       {
         "id": "EQUIPAMENTOS_PORTATEIS",

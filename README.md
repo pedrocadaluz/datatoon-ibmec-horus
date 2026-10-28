@@ -33,7 +33,7 @@ Desafio escolhido: **Seguro Residencial**.
 | Arquivo | Conteúdo |
 |---|---|
 | [`entrega/template_resultado_times.csv`](entrega/template_resultado_times.csv) | 138 imóveis do Teste Comum: elegibilidade, tipo/uso/vínculo sugeridos, plano, coberturas, confiança, justificativa, perguntas e fontes |
-| [`entrega/template_coberturas_times.csv`](entrega/template_coberturas_times.csv) | 1.393 coberturas (1.283 fixas dos planos + 110 adicionais aplicáveis): faixa mínima e máxima em reais, confiança, dados usados, regra de cálculo, justificativa, o que confirmar e observação |
+| [`entrega/template_coberturas_times.csv`](entrega/template_coberturas_times.csv) | 1.393 coberturas (1.283 fixas dos planos + 110 adicionais opcionais): faixa mínima e máxima em reais, confiança, dados usados, regra de cálculo, justificativa, o que confirmar e observação |
 | [`docs/`](docs/) | Relatórios de cada etapa, convenções dos campos e fontes externas |
 
 ---
@@ -210,7 +210,7 @@ Módulo `personalizacao.py`. Não muda o plano nem as faixas; muda o que se dest
 | Perguntas por imóvel (além da declaração) | 0: 31,9% · 1: 57,2% · 2: 8,7% · 3: 2,2% (média 0,81) |
 | Perguntas evitadas | 7,2 de 8 campos de um formulário tradicional, em média |
 | Canal | One Click Buy 63,8% · Gerente 16,7% · Atendimento assistido 10,9% · App com confirmação 8,7% |
-| Testes de formato da entrega | 15 de 15 aprovados ([`docs/03_entrega.md`](docs/03_entrega.md)) |
+| Testes de formato da entrega | 14 de 14 aprovados ([`docs/03_entrega.md`](docs/03_entrega.md)) |
 | Testes da API | 10 de 10, incluindo paridade dos 138 casos com os CSVs |
 | Tempo de execução | ~3 s para os 2.716 imóveis das duas bases |
 
@@ -224,7 +224,7 @@ Módulo `personalizacao.py`. Não muda o plano nem as faixas; muda o que se dest
 | Erro do centro da faixa | 6% a 13% (mediana por cobertura) | Mesmo teste |
 | Modelo de área | Erro mediano 13,4% · R² 0,86 (log) · intervalo de 80% contém o real em 79,9% | Validação cruzada de 5 dobras por cliente. **Teste cego** (treino só no desenvolvimento, n = 46 imóveis do teste com área real): erro mediano 16,2% (IC 95%: 12,8% a 21,8%), cobertura 78%; sem overfitting nem vazamento (`docs/13_diagnostico_ajuste.md`) |
 | Estabilidade do plano | Limiares de bens ±20% mudam 3,6% / 1,4% dos planos | [`docs/02_regras_seguro.md`](docs/02_regras_seguro.md) |
-| Consistência entre casos semelhantes | 91,2% dos grupos (desenvolvimento) e 93,8% (teste) recebem o mesmo plano; os grupos restantes são todos explicados por eletrônicos, vidraçaria ou desocupação | Imóveis agrupados por tipo, vínculo, nível de bens, pet e dependentes; [`docs/14_consistencia.md`](docs/14_consistencia.md) |
+| Consistência entre casos semelhantes | 91,2% dos grupos (desenvolvimento) e 93,8% (teste) recebem o mesmo plano; os grupos restantes são todos explicados por eletrônicos, vidraçaria ou desocupação | Imóveis agrupados por tipo, vínculo, nível de bens, pet e dependentes; [`docs/15_consistencia.md`](docs/15_consistencia.md) |
 | Confiança geral | Alta 69% · Média 22% · Baixa 9% | Antes da análise de impacto: alta 37% |
 | Valor das perguntas escolhidas | Com 1 pergunta, o plano fica igual ao plano com tudo confirmado em **98,2%** dos casos (93,8% com uma pergunta aleatória; 92,0% sem perguntar) | 600 imóveis com área e padrão escondidos; [`docs/12_avaliacao_modelo.md`](docs/12_avaliacao_modelo.md) (E4) |
 | Sensibilidade do plano às premissas | Limiares de bens, vidros, eletrônicos e vínculo: robusto. Pesos de pet e dependentes (±1): mudam de 12% a 40% dos planos | `docs/12_avaliacao_modelo.md` (E5); ver Premissas |
@@ -251,7 +251,7 @@ Módulo `personalizacao.py`. Não muda o plano nem as faixas; muda o que se dest
 
 ## Como executar
 
-Requisitos: **Python 3.12.2** (arquivo `.python-version`) e as dependências de `requirements.txt` (pandas, numpy, FastAPI e Uvicorn; streamlit só para a demo legada). O web-app pede também **Node 24 e npm 11**.
+Requisitos: **Python 3.12.2** (arquivo `.python-version`) e as dependências de `requirements.txt` (pandas, numpy, FastAPI e Uvicorn). O web-app pede também **Node 24 e npm 11**.
 
 ### 1. Bases de dados
 Descompacte as bases recebidas da organização na raiz do projeto, com estes nomes de pasta:
@@ -271,11 +271,11 @@ pip install -r requirements.txt
 
 python scripts/01_construir_casa_gemea.py   # Casa Gêmea das duas bases      → saidas/casa_gemea_*.csv, docs/01
 python scripts/02_aplicar_regras.py         # regras, faixas e validação      → saidas/recomendacao_*, coberturas_*, docs/02
-python scripts/03_gerar_entrega.py          # templates oficiais + 15 testes → entrega/, docs/03
+python scripts/03_gerar_entrega.py          # templates oficiais + 14 testes → entrega/, docs/03
 python scripts/04_contrato_json.py          # jornada de exemplo do contrato  → saidas/contrato/, docs/04
 python scripts/04_contrato_json.py entrada.json   # responde uma chamada do contrato JSON
 python scripts/10_personas.py               # três personas contrastantes     → saidas/personas/, docs/11
-python scripts/11_consistencia.py           # consistência entre casos        → saidas/consistencia_grupos.csv, docs/14
+python scripts/11_consistencia.py           # consistência entre casos        → saidas/consistencia_grupos.csv, docs/15
 ```
 
 Scripts de análise (não são necessários para a entrega): `06_auditoria_proxy.py`, `07_analise_colunas.py`, `08_avaliar_modelo.py`, `09_diagnostico_ajuste.py`.
@@ -334,8 +334,7 @@ npm --prefix web test                # jornadas e acessibilidade no navegador (C
 ├── entrega/                       os 2 CSVs da entrega (templates oficiais preenchidos)
 ├── saidas/                        arquivos gerados (Casa Gêmea, recomendação, validação, auditoria, contrato)
 ├── docs/                          relatórios por etapa (índice em docs/README.md)
-├── dados_externos/                CUB por UF, fatores Sinduscon, Condições Gerais BB (V1.6 vigente, v1.3 e v2.3 para comparação)
-└── demo/ · .streamlit/            demo Streamlit anterior (legado; a interface oficial é `web/`)
+└── dados_externos/                CUB por UF, fatores Sinduscon, Condições Gerais BB (V1.6 vigente, v1.3 e v2.3 para comparação)
 ```
 
 As bases originais da organização (`Seguro_Residencial_*`) ficam na raiz, ignoradas pelo Git. Os materiais recebidos (guia, apresentações e bases compactadas) ficam na pasta `doc/`, também ignorada.

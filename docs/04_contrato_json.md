@@ -177,7 +177,6 @@ Saída (coberturas resumidas):
       "...": "uma entrada por cobertura do plano"
     }
   ],
-  "coberturas_adicionais": [],
   "proximas_perguntas": [
     {
       "id": "obra",

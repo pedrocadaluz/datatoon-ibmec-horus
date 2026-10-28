@@ -121,7 +121,7 @@ Se as bases estiverem fora da raiz, configure `CASA_GEMEA_DADOS` no terminal dos
 
 ## Decisões de design
 
-Azul `#5A6FFF`, amarelo `#FCFC30` pontual, papel `#F9F7FF`, bordas `#DDE4FC`, cantos de 4 a 6px e Inter. O azul de texto e ações é mais escuro para contraste AA. Marca e casa em SVG são autorais; não representam a planta real do imóvel. Não há logotipo ou imagens do BB. Dados sintéticos e condição de protótipo aparecem na página. Textos humanos do motor têm travessões normalizados só na apresentação; no painel JSON, o caractere é escapado, preservando o valor do contrato ao copiar e interpretar.
+Dois azuis do site da BB Seguros (leitura em `docs/14_cores_site_bb.md`): `#465EFF` estrutural, nas superfícies grandes (barra de topo, navegação inferior do celular e rodapé, texto branco, contraste 4,9:1), e `#5A6FFF` de destaque (item ativo, barras e ícones). Texto e ações em `#3548CA` (7,2:1 sobre branco). Amarelo `#FCFC30` só como acento, papel `#F9F7FF`, bordas `#DDE4FC`, cantos de 4 a 6px e Inter. O coral `#FF6F68` do site não é usado: texto branco sobre ele dá 2,7:1, abaixo do AA. Todas as cores ficam em variáveis no `:root` de `src/styles.css`. Marca e casa em SVG são autorais; não representam a planta real do imóvel. Não há logotipo ou imagens do BB. Dados sintéticos e condição de protótipo aparecem na página. Textos humanos do motor têm travessões normalizados só na apresentação; no painel JSON, o caractere é escapado, preservando o valor do contrato ao copiar e interpretar.
 
 ## Entrega
 

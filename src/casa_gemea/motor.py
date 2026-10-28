@@ -188,7 +188,7 @@ class Motor:
         evitadas = regras.CAMPOS_FORMULARIO_TRADICIONAL - necessarias
         resumo = "; ".join(motivos[:2]) if motivos else "poucos sinais de necessidade além da proteção básica"
         curta = f"{regras.NOME_PLANO[plano]}: {resumo}." if plano else "Imóvel não elegível sem validação."
-        pers = personalizacao.analisar(r, plano, elegibilidade, self.coberturas_do_plano.get(plano, []), adicionais_resp)
+        pers = personalizacao.analisar(r, plano, elegibilidade, self.coberturas_do_plano.get(plano, []), adicionais_resp, todas)
         explica = personalizacao.explicacao(r, elegibilidade, motivo, pontuacao, impacto, cor, canal, plano, nao_abaixo, nao_acima)
         return {
             "versao_contrato": VERSAO_CONTRATO,
@@ -217,12 +217,6 @@ class Motor:
                  "confianca": f["confianca_estimativa"], "regra": f["regra_calculo_utilizada"],
                  "justificativa": f["justificativa"], "a_confirmar": f["informacao_a_confirmar"], "observacao": f["observacao"]}
                 for f in faixas
-            ],
-            "coberturas_adicionais": [
-                {"cobertura": f["cobertura"], "faixa_valor_min": f["faixa_valor_min"], "faixa_valor_max": f["faixa_valor_max"],
-                 "confianca": f["confianca_estimativa"], "regra": f["regra_calculo_utilizada"],
-                 "justificativa": f["justificativa"], "a_confirmar": f["informacao_a_confirmar"], "observacao": f["observacao"]}
-                for f in personalizacao.coberturas_adicionais(r, plano, elegibilidade, adicionais_resp)
             ],
             "proximas_perguntas": [
                 {"id": p["campo"], "pergunta": perguntas.enunciado(p["campo"], r),

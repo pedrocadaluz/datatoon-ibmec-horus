@@ -1,3 +1,4 @@
+import { revelar, abrirValor } from './ajudas'
 import { test, expect, devices } from '@playwright/test'
 
 for (const device of ['Pixel 7', 'iPhone 14'] as const) {
@@ -8,6 +9,7 @@ for (const device of ['Pixel 7', 'iPhone 14'] as const) {
       await page.emulateMedia({ reducedMotion: 'reduce' })
       await page.goto('/')
       await expect(page.getByRole('navigation', { name: 'Canal de atendimento' })).toHaveAttribute('data-mobile', 'true')
+      await revelar(page)
       await expect(page.getByTestId('resumo-movel')).toContainText('Total')
       // A visão Cliente não mostra selos na pergunta; eles ficam no painel da Casa Gêmea, no Gerente e no SAC.
       await expect(page.getByTestId('metadados-pergunta')).toHaveCount(0)
@@ -17,6 +19,7 @@ for (const device of ['Pixel 7', 'iPhone 14'] as const) {
       await page.screenshot({ path: `evidencias/pwa-${device.replace(' ', '-').toLowerCase()}-inicio.png` })
       await page.getByTestId('resposta-NAO').click()
       await page.getByTestId('resposta-PROPRIETARIO_QUITADO').click()
+      await abrirValor(page)
       await page.getByLabel('Valor exato').fill('160')
       await page.getByRole('button', { name: 'Confirmar valor' }).click()
       await page.getByTestId('resposta-SIM').click()
