@@ -1,7 +1,16 @@
 import type { Page } from '@playwright/test'
 
-/** O plano já aparece no topo (desktop) ou no resumo fixo (celular); o relatório completo vem no fim. */
+/** Entra pela tela inicial como um perfil (Cliente, Gerente, SAC ou Agente), opcionalmente escolhendo o imóvel. */
+export async function entrar(page: Page, canal = 'Cliente', imovel?: string) {
+  const trocar = page.getByRole('button', { name: 'Trocar de canal' })
+  if (await trocar.isVisible()) await trocar.click()
+  if (imovel) await page.getByLabel('Imóvel do Teste Comum').selectOption(imovel)
+  await page.getByRole('button', { name: canal, exact: true }).click()
+}
+
+/** O plano já aparece no topo (desktop) ou no resumo fixo (celular); entra como Cliente se ainda estiver na tela inicial. */
 export async function revelar(page: Page) {
+  if (await page.getByRole('heading', { name: 'Como você quer entrar?' }).isVisible()) await entrar(page)
   await page.getByTestId('plano-atual').or(page.getByTestId('resumo-movel')).first().waitFor()
 }
 

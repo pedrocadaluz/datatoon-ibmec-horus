@@ -1,9 +1,10 @@
-import { revelar, abrirValor } from './ajudas'
+import { entrar, revelar, abrirValor } from './ajudas'
 import { test, expect } from '@playwright/test'
 
 test('cliente percorre jornada real, muda plano e confirma faixa', async ({ page }) => {
   await page.emulateMedia({ reducedMotion: 'reduce' })
   await page.goto('/')
+  await entrar(page)
   await revelar(page)
   await expect(page.getByTestId('plano-atual')).toHaveText('Total')
   await expect(page.getByTestId('semaforo')).toContainText('Conversar com um especialista')
@@ -46,9 +47,9 @@ test('cliente percorre jornada real, muda plano e confirma faixa', async ({ page
   await expect(page.getByRole('heading', { name: 'Sua recomendação está pronta.' })).toBeVisible()
   await page.evaluate(() => window.scrollTo(0, 0))
   await page.screenshot({ path: 'evidencias/cliente-confirmado.png', fullPage: true })
-  await page.getByRole('button', { name: 'Gerente', exact: true }).click()
+  await entrar(page, 'Gerente')
   await expect(page.getByText('declaração do cliente', { exact: true }).first()).toBeVisible()
-  await page.getByRole('button', { name: 'Agente', exact: true }).click()
+  await entrar(page, 'Agente')
   await expect(page.getByLabel('Entrada JSON')).toContainText('160')
 })
 
@@ -62,15 +63,16 @@ test('tres imóveis, semáforos, SAC, não sei e reinício', async ({ page, requ
   }
   expect(Object.keys(found).sort()).toEqual(['AMARELO', 'VERDE', 'VERMELHO'])
   await page.goto('/')
+  await entrar(page)
   for (const [color, id] of Object.entries(found)) {
-    await page.getByRole('button', { name: 'Cliente', exact: true }).click()
-    await page.getByLabel('Imóvel do Teste Comum').selectOption(id)
+    await entrar(page, 'Cliente')
+    await entrar(page, 'Cliente', id)
     await expect(page.getByTestId('caso-atual')).toContainText(id)
     const data = await (await request.post('/api/recomendar', { data: { imovel_id: id, respostas: {} } })).json()
     const nomes: Record<string, string> = { TOTAL: 'Total', PRATICO: 'Prático', ESSENCIAL: 'Essencial' }
     await revelar(page)
     await expect(page.getByTestId('plano-atual')).toHaveText(nomes[data.recomendacao.plano])
-    await page.getByRole('button', { name: 'SAC', exact: true }).click()
+    await entrar(page, 'SAC')
     await page.getByRole('button', { name: 'Iniciar roteiro de perguntas' }).click()
     await page.getByTestId('resposta-NAO_SEI').click()
     await expect(page.getByTestId('respondidas')).toContainText('1')
@@ -83,6 +85,7 @@ test('tres imóveis, semáforos, SAC, não sei e reinício', async ({ page, requ
 test('obra estrutural encerra e celular não transborda', async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 })
   await page.goto('/')
+  await entrar(page)
   await page.getByTestId('resposta-OBRA_ESTRUTURAL').click()
   await expect(page.getByTestId('plano-atual')).toHaveText('Sem plano')
   await expect(page.getByText('Imóvel inelegível neste momento.')).toBeVisible()
@@ -94,7 +97,8 @@ test('obra estrutural encerra e celular não transborda', async ({ page }) => {
 test('gerente: relatório inicial, perguntas e resultado para o cliente com e-mail simulado', async ({ page }) => {
   await page.emulateMedia({ reducedMotion: 'reduce' })
   await page.goto('/')
-  await page.getByRole('button', { name: 'Gerente', exact: true }).click()
+  await entrar(page)
+  await entrar(page, 'Gerente')
   await expect(page.getByRole('heading', { name: 'Antes de falar com o cliente' })).toBeVisible()
   await page.screenshot({ path: 'test-results/gerente-1.png', fullPage: true })
   await page.getByRole('button', { name: 'Começar as perguntas sugeridas' }).click()
@@ -117,7 +121,8 @@ test('gerente: relatório inicial, perguntas e resultado para o cliente com e-ma
 test('SAC: abertura, roteiro com respostas prontas e encerramento com registro', async ({ page }) => {
   await page.emulateMedia({ reducedMotion: 'reduce' })
   await page.goto('/')
-  await page.getByRole('button', { name: 'SAC', exact: true }).click()
+  await entrar(page)
+  await entrar(page, 'SAC')
   await expect(page.getByRole('heading', { name: 'Comece por aqui' })).toBeVisible()
   await expect(page.getByText('Nunca peça senha')).toBeVisible()
   await page.getByRole('button', { name: 'Iniciar roteiro de perguntas' }).click()
@@ -137,8 +142,9 @@ test('SAC: abertura, roteiro com respostas prontas e encerramento com registro',
 
 test('apartamento aparece como prédio e casa como casa', async ({ page }) => {
   await page.goto('/')
+  await entrar(page)
   await expect(page.locator('.house-hero .house-art')).toHaveAttribute('data-tipo', 'casa')
-  await page.getByLabel('Imóvel do Teste Comum').selectOption('IMO_CASO_00002_01')
+  await entrar(page, 'Cliente', 'IMO_CASO_00002_01')
   await expect(page.getByTestId('caso-atual')).toContainText('IMO_CASO_00002_01')
   await expect(page.locator('.house-hero .house-art')).toHaveAttribute('data-tipo', 'apartamento')
   await page.getByRole('button', { name: 'Como usar' }).click()

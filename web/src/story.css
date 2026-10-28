@@ -212,3 +212,43 @@ details.why-card[open] > summary { margin-bottom: 6px; }
 .help-sheet .sheet-header, .email-sheet .sheet-header { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 16px 22px; border-bottom: 1px solid var(--line); }
 .help-sheet .sheet-header h2, .email-sheet .sheet-header h2 { margin: 0; font-size: 1.1rem; }
 .help-sheet .sheet-scroll, .email-sheet .sheet-scroll { padding: 18px 22px 22px; max-height: calc(100dvh - 140px); overflow-y: auto; }
+
+/* Tela de entrada: escolher a Casa Gêmea e o perfil. */
+.entrada { display: grid; gap: 18px; max-width: 1100px; margin: 8px auto 28px; }
+.entrada h2 { font-size: 1.3rem; }
+.entrada-imovel, .entrada-perfis { display: grid; grid-template-columns: auto 1fr; gap: 16px; align-items: start; }
+.entrada-passo { display: grid; place-items: center; width: 32px; height: 32px; border-radius: 50%; background: var(--ink-blue); color: white; font-weight: 700; font-size: .85rem; }
+.entrada-campo { display: grid; gap: 8px; }
+.entrada-campo label { display: flex; align-items: center; gap: 8px; font-weight: 600; font-size: .85rem; }
+.entrada-campo > div { display: flex; flex-wrap: wrap; gap: 10px; }
+.entrada-campo select { min-width: min(100%, 360px); padding: 8px 12px; font-size: .85rem; }
+.entrada-rotulo { font-weight: 600; font-size: .85rem; margin-bottom: 10px; }
+.entrada-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; }
+.entrada-perfil { display: grid; gap: 4px; align-content: start; text-align: left; padding: 18px; border: 1px solid var(--line); border-radius: 6px; background: white; min-height: 200px; transition: border-color .18s, box-shadow .18s, transform .18s; }
+.entrada-perfil:hover, .entrada-perfil:focus-visible { border-color: var(--ink-blue); box-shadow: 0 6px 18px rgba(53, 72, 202, .12); transform: translateY(-2px); }
+.entrada-icone { display: grid; place-items: center; width: 44px; height: 44px; border-radius: 8px; background: #EEF0FA; color: var(--ink-blue); margin-bottom: 8px; }
+.entrada-perfil strong { font-size: 1.05rem; color: var(--ink-blue); }
+.entrada-perfil small { color: var(--muted); font-size: .72rem; }
+.entrada-texto { font-size: .76rem; color: var(--dark); margin-top: 6px; }
+.entrada-cta { display: inline-flex; align-items: center; gap: 6px; margin-top: auto; padding-top: 10px; color: var(--ink-blue); font-weight: 700; font-size: .78rem; }
+.entrada-aviso { display: flex; align-items: center; gap: 6px; }
+
+/* Barra da sessão: em qual perfil e em qual casa a pessoa está. */
+.session-bar { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 10px 16px; padding: 12px 18px; margin: 6px 0 14px; border: 1px solid var(--line); border-radius: 6px; background: white; }
+.session-bar > div { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 14px; }
+.session-icon { display: grid; place-items: center; width: 36px; height: 36px; border-radius: 8px; background: #EEF0FA; color: var(--ink-blue); }
+.session-bar b { display: block; color: var(--ink-blue); }
+.session-bar small { color: var(--muted); font-size: .7rem; }
+.session-case { font-size: .78rem; color: var(--muted); padding-left: 14px; border-left: 1px solid var(--line); }
+@media (max-width: 1000px) { .entrada-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 767px) { .entrada-grid { grid-template-columns: 1fr; } .entrada-perfil { min-height: 0; } .session-case { border-left: 0; padding-left: 0; } }
+@media (max-width: 767px) {
+  .session-bar { padding: 6px 10px; margin: 4px 0 8px; gap: 6px; flex-wrap: nowrap; }
+  .session-bar > div { flex-wrap: nowrap; gap: 8px; min-width: 0; }
+  .session-icon, .session-bar small, .session-case { display: none; }
+  .session-bar .button { min-height: 44px; padding: 6px 10px; font-size: .72rem; }
+  .session-bar .text-button { font-size: .72rem; }
+}
+/* Sem a barra de canais embaixo (a entrada escolhe o perfil), o resumo do plano desce até a borda. */
+@media (max-width: 767px) { html:root { --bottom-nav: 0px; } }
+.session-bar, .journey-strip { max-width: 1100px; margin-left: auto; margin-right: auto; }
