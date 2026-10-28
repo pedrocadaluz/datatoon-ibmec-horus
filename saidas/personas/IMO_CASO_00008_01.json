@@ -1,0 +1,1745 @@
+{
+  "persona": "Marina",
+  "resumo": "Inquilina de apartamento em Fortaleza, com 3 dependentes e pet, e usa muito o app do banco.",
+  "passos": [
+    {
+      "passo": 0,
+      "resposta_dada": {},
+      "entrada": {
+        "versao_contrato": "1.0",
+        "imovel_id": "IMO_CASO_00008_01",
+        "respostas": {}
+      },
+      "saida": {
+        "versao_contrato": "1.0",
+        "imovel_id": "IMO_CASO_00008_01",
+        "cliente_id": "CASO_00008",
+        "status": "RECOMENDACAO_INICIAL",
+        "elegibilidade": {
+          "status": "ELEGIVEL",
+          "motivo": ""
+        },
+        "casa_gemea": {
+          "tipo_imovel": {
+            "valor": "APARTAMENTO",
+            "selo": "ESTIMADO",
+            "confianca": "MEDIA",
+            "evidencia": "complemento 'AP 204', sem condomínio pago"
+          },
+          "vinculo": {
+            "valor": "INQUILINO",
+            "selo": "ESTIMADO",
+            "confianca": "ALTA",
+            "evidencia": "aluguel recorrente de R$ 1.500/mês"
+          },
+          "uso_imovel": {
+            "valor": "MORADIA_HABITUAL",
+            "selo": "ESTIMADO",
+            "confianca": "ALTA",
+            "evidencia": "endereço compatível com o principal do cliente"
+          },
+          "area_m2": {
+            "valor": 125,
+            "selo": "OBSERVADO",
+            "confianca": "ALTA",
+            "evidencia": "CADASTRO_PUBLICO_MUNICIPAL"
+          },
+          "padrao_construtivo": {
+            "valor": "SUPERIOR",
+            "selo": "ESTIMADO",
+            "confianca": "BAIXA",
+            "evidencia": "indício pelo IPTU por m² = 1.84× a mediana de Fortaleza"
+          },
+          "material_parede": {
+            "valor": "ALVENARIA",
+            "selo": "OBSERVADO",
+            "confianca": "ALTA",
+            "evidencia": "cadastro"
+          },
+          "alerta_obra": {
+            "valor": "REFORMA_LEVE",
+            "selo": "ESTIMADO",
+            "confianca": "MEDIA",
+            "evidencia": "R$ 1.500 em material de construção em 24 meses"
+          },
+          "conteudo": {
+            "valor": 14000,
+            "selo": "ESTIMADO",
+            "confianca": "MEDIA",
+            "evidencia": "5 bem(ns) vinculado(s) + compras de 36 meses"
+          },
+          "area_faixa_m2": [
+            125,
+            125
+          ],
+          "conteudo_faixa": [
+            9300.0,
+            18600
+          ]
+        },
+        "recomendacao": {
+          "plano": "TOTAL",
+          "justificativa_curta": "Total: paga aluguel de R$ 1.500: se o imóvel ficar inabitável, continua devendo o aluguel; tem pet: danos a terceiros causados pelo animal.",
+          "confianca_geral": "ALTA",
+          "por_que_este_plano": [
+            "paga aluguel de R$ 1.500: se o imóvel ficar inabitável, continua devendo o aluguel",
+            "tem pet: danos a terceiros causados pelo animal",
+            "3 dependentes: danos a terceiros e despesas de hospedagem da família",
+            "bens estimados em R$ 9.300 a R$ 18.600"
+          ],
+          "por_que_nao_plano_abaixo": "O Prático não cobre aluguel, RC familiar nem despesas emergenciais, que respondem aos sinais citados acima. Em reais: o cliente paga cerca de R$ 1.500/mês de aluguel, então até R$ 4.500 a R$ 9.000 ficariam sem proteção se o imóvel ficasse inabitável.",
+          "por_que_nao_plano_acima": "É o plano mais completo.",
+          "campos_que_podem_mudar_o_plano": []
+        },
+        "coberturas": [
+          {
+            "cobertura": "INCENDIO_RAIO_EXPLOSAO_FUMACA",
+            "faixa_valor_min": 19400,
+            "faixa_valor_max": 52900,
+            "confianca": "MEDIA",
+            "regra": "prédio (área × CUB × fator de padrão × interesse no prédio) + conteúdo",
+            "justificativa": "Perda total possível: prédio R$ 10.113–R$ 34.282 (125 m² × CUB CE R$ 2.458/m² × fator 1,00–1,22; inquilino: prédio é do proprietário (CG 10); só benfeitorias, de 3% a 10%) + conteúdo R$ 9.300–R$ 18.600.",
+            "a_confirmar": "padrão de acabamento; valor aproximado dos bens no imóvel",
+            "observacao": ""
+          },
+          {
+            "cobertura": "DANOS_POR_AGUA",
+            "faixa_valor_min": 3800,
+            "faixa_valor_max": 9000,
+            "confianca": "MEDIA",
+            "regra": "10% do prédio + 30% do conteúdo",
+            "justificativa": "Vazamento, chuva pelo telhado ou rompimento de tubulação atingem acabamentos e parte dos bens, raramente tudo. É a 2ª causa de sinistro na carteira residencial da BB Seguros (14,6%).",
+            "a_confirmar": "padrão de acabamento; valor aproximado dos bens no imóvel",
+            "observacao": ""
+          },
+          {
+            "cobertura": "VENDAVAL_GRANIZO",
+            "faixa_valor_min": 1200,
+            "faixa_valor_max": 2900,
+            "confianca": "MEDIA",
+            "regra": "3% do prédio + 10% do conteúdo",
+            "justificativa": "Apartamento: risco concentrado em janelas e sacada; cobertura e fachada são do condomínio. Eventos climáticos são 11,5% dos sinistros da carteira residencial da BB Seguros.",
+            "a_confirmar": "padrão de acabamento; valor aproximado dos bens no imóvel",
+            "observacao": ""
+          },
+          {
+            "cobertura": "IMPACTO_VEICULOS_TERRESTRES",
+            "faixa_valor_min": 500,
+            "faixa_valor_max": 1000,
+            "confianca": "MEDIA",
+            "regra": "3% do prédio",
+            "justificativa": "Apartamento: impacto atinge sobretudo áreas do condomínio.",
+            "a_confirmar": "padrão de acabamento",
+            "observacao": ""
+          },
+          {
+            "cobertura": "QUEDA_AERONAVE",
+            "faixa_valor_min": 3900,
+            "faixa_valor_max": 10600,
+            "confianca": "MEDIA",
+            "regra": "20% de (prédio + conteúdo)",
+            "justificativa": "Evento raro, mas de grande dano; a faixa acompanha o valor em risco.",
+            "a_confirmar": "padrão de acabamento; valor aproximado dos bens no imóvel",
+            "observacao": "Percentual de referência adotado pela equipe; não consta nas Condições Gerais."
+          },
+          {
+            "cobertura": "DANOS_ELETRICOS",
+            "faixa_valor_min": 3500,
+            "faixa_valor_max": 6000,
+            "confianca": "ALTA",
+            "regra": "50% do valor de eletrônicos e eletrodomésticos",
+            "justificativa": "Um pico de energia costuma queimar parte dos aparelhos; base de R$ 7.000 a R$ 12.000.",
+            "a_confirmar": "valor aproximado dos bens no imóvel",
+            "observacao": "Danos elétricos foram 53,3% dos sinistros da carteira residencial da BB Seguros entre jan/2023 e mai/2026 (Monitor Mercantil, 21/07/2026)."
+          },
+          {
+            "cobertura": "ROUBO_FURTO_ARROMBAMENTO",
+            "faixa_valor_min": 4600,
+            "faixa_valor_max": 9300,
+            "confianca": "ALTA",
+            "regra": "50% do conteúdo",
+            "justificativa": "Num arrombamento são levados sobretudo bens portáteis; conteúdo R$ 9.300–R$ 18.600. Celulares, joias e dinheiro não são cobertos (CG 6.1).",
+            "a_confirmar": "valor aproximado dos bens no imóvel",
+            "observacao": ""
+          },
+          {
+            "cobertura": "QUEBRA_DE_VIDROS",
+            "faixa_valor_min": 5000,
+            "faixa_valor_max": 7500,
+            "confianca": "ALTA",
+            "regra": "R$ 40 a R$ 60 por m² de área (janelas, box, espelhos, tampos); máximo ≥ 1,5× o gasto recente com vidraçaria",
+            "justificativa": "Vidros e espelhos crescem com o tamanho do imóvel.",
+            "a_confirmar": "nenhuma: a faixa usa só dados de cadastro ou transações observadas",
+            "observacao": "Valor por m² é premissa da equipe."
+          },
+          {
+            "cobertura": "RESPONSABILIDADE_CIVIL_FAMILIAR",
+            "faixa_valor_min": 45000,
+            "faixa_valor_max": 110000,
+            "confianca": "BAIXA",
+            "regra": "faixa de referência: R$ 20–50 mil, mais R$ 10–30 mil com pet e R$ 5–10 mil por dependente (até 3)",
+            "justificativa": "Danos a terceiros não dependem do valor do imóvel; a faixa sobe quando há mais pessoas ou animais que podem causá-los (CG, RC Familiar 1.1 b e c).",
+            "a_confirmar": "se há pets, crianças ou atividades de risco (ex.: piscina)",
+            "observacao": "Faixa de referência da equipe, sem base estatística na base de dados."
+          },
+          {
+            "cobertura": "PERDA_PAGAMENTO_ALUGUEL",
+            "faixa_valor_min": 4500,
+            "faixa_valor_max": 9000,
+            "confianca": "ALTA",
+            "regra": "3 a 6 meses de aluguel (CG: até 6 meses, aluguel mensal ≤ LMI/6)",
+            "justificativa": "Base: aluguel pago de R$ 1.500/mês.",
+            "a_confirmar": "nenhuma: a faixa usa só dados de cadastro ou transações observadas",
+            "observacao": ""
+          },
+          {
+            "cobertura": "DESPESAS_EMERGENCIAIS",
+            "faixa_valor_min": 20000,
+            "faixa_valor_max": 50000,
+            "confianca": "MEDIA",
+            "regra": "LMI tal que 3% ao dia paguem R$ 150–300 por pessoa (hospedagem, alimentação, transporte)",
+            "justificativa": "Domicílio de 4 a 5 pessoa(s); a CG paga 3% do LMI por dia de desocupação.",
+            "a_confirmar": "quantas pessoas moram no imóvel",
+            "observacao": "Diárias por pessoa são premissa da equipe."
+          }
+        ],
+        "proximas_perguntas": [
+          {
+            "id": "conteudo",
+            "pergunta": "Somando móveis, eletrônicos e eletrodomésticos, quanto valem os bens neste imóvel? Estimamos entre R$ 9.300 e R$ 18.600.",
+            "opcoes": [
+              {
+                "valor": "MENOR",
+                "rotulo": "Menos que isso"
+              },
+              {
+                "valor": "NA_FAIXA",
+                "rotulo": "Nessa faixa"
+              },
+              {
+                "valor": "MAIOR",
+                "rotulo": "Mais que isso"
+              },
+              {
+                "valor": "NAO_SEI",
+                "rotulo": "Não sei"
+              }
+            ],
+            "aceita_numero": true,
+            "impacto": "estreita a faixa de incêndio em 31%",
+            "motivo": "valor dos bens define a necessidade de cobertura de roubo e a faixa de incêndio"
+          },
+          {
+            "id": "declaracao_unica",
+            "pergunta": "Confirmo que o imóvel fica em área urbana, tem paredes de alvenaria, não está em obra estrutural e não é tombado.",
+            "opcoes": [
+              {
+                "valor": "SIM",
+                "rotulo": "Sim"
+              },
+              {
+                "valor": "NAO",
+                "rotulo": "Não — o atendimento segue com o gerente"
+              }
+            ],
+            "aceita_numero": false,
+            "impacto": "elegibilidade",
+            "motivo": "substitui as perguntas de elegibilidade que os dados não respondem (CG 11, alínea a: declaração inexata faz perder o direito)"
+          }
+        ],
+        "jornada": {
+          "campos_formulario_tradicional": 8,
+          "perguntas_necessarias": 1,
+          "perguntas_evitadas": 7,
+          "percentual_evitado": 88
+        },
+        "canal": {
+          "semaforo": "VERDE",
+          "sugerido": "ONE_CLICK_BUY"
+        },
+        "personalizacao": {
+          "perfil": {
+            "arquetipo": "INQUILINO_COM_FAMILIA",
+            "rotulo": "Inquilino com família",
+            "descricao": "Protege o que é seu e o que pode causar a terceiros, sem pagar pelo prédio.",
+            "sinais": [
+              "vínculo: inquilino",
+              "dependentes ou pet na casa"
+            ],
+            "jornada": "EXPRESS",
+            "jornada_motivo": "maturidade digital 93 (70 ou mais)",
+            "tom": "direto e rápido: poucas palavras, um toque por decisão",
+            "modo": "NOVA_APOLICE",
+            "relacionamento_seguridade": 0
+          },
+          "necessidades": [
+            {
+              "cobertura": "DANOS_ELETRICOS",
+              "indice": 83,
+              "nivel": "ALTA",
+              "no_plano_recomendado": true,
+              "fatores": [
+                {
+                  "pontos": 30,
+                  "fator": "aparelhos de até R$ 12.000"
+                },
+                {
+                  "pontos": 8,
+                  "fator": "consumo de energia alto para o tamanho do imóvel"
+                }
+              ]
+            },
+            {
+              "cobertura": "RESPONSABILIDADE_CIVIL_FAMILIAR",
+              "indice": 80,
+              "nivel": "ALTA",
+              "no_plano_recomendado": true,
+              "fatores": [
+                {
+                  "pontos": 30,
+                  "fator": "pet em casa"
+                },
+                {
+                  "pontos": 40,
+                  "fator": "3 dependente(s) em casa"
+                }
+              ]
+            },
+            {
+              "cobertura": "PERDA_PAGAMENTO_ALUGUEL",
+              "indice": 70,
+              "nivel": "ALTA",
+              "no_plano_recomendado": true,
+              "fatores": [
+                {
+                  "pontos": 65,
+                  "fator": "paga aluguel: se o imóvel ficar inabitável, a dívida continua"
+                }
+              ]
+            },
+            {
+              "cobertura": "DANOS_POR_AGUA",
+              "indice": 50,
+              "nivel": "MEDIA",
+              "no_plano_recomendado": true,
+              "fatores": [
+                {
+                  "pontos": 20,
+                  "fator": "consumo de água de R$ 250/mês (mais pontos hidráulicos em uso)"
+                }
+              ]
+            },
+            {
+              "cobertura": "INCENDIO_RAIO_EXPLOSAO_FUMACA",
+              "indice": 35,
+              "nivel": "BAIXA",
+              "no_plano_recomendado": true,
+              "fatores": [
+                {
+                  "pontos": 15,
+                  "fator": "valor do imóvel e dos bens"
+                }
+              ]
+            },
+            {
+              "cobertura": "ROUBO_FURTO_ARROMBAMENTO",
+              "indice": 32,
+              "nivel": "BAIXA",
+              "no_plano_recomendado": true,
+              "fatores": [
+                {
+                  "pontos": 20,
+                  "fator": "bens de até R$ 14.000"
+                }
+              ]
+            },
+            {
+              "cobertura": "DESPESAS_EMERGENCIAIS",
+              "indice": 32,
+              "nivel": "BAIXA",
+              "no_plano_recomendado": true,
+              "fatores": [
+                {
+                  "pontos": 24,
+                  "fator": "mais pessoas para abrigar em caso de interdição"
+                }
+              ]
+            },
+            {
+              "cobertura": "VENDAVAL_GRANIZO",
+              "indice": 22,
+              "nivel": "BAIXA",
+              "no_plano_recomendado": true,
+              "fatores": []
+            },
+            {
+              "cobertura": "QUEBRA_DE_VIDROS",
+              "indice": 10,
+              "nivel": "BAIXA",
+              "no_plano_recomendado": true,
+              "fatores": []
+            },
+            {
+              "cobertura": "IMPACTO_VEICULOS_TERRESTRES",
+              "indice": 8,
+              "nivel": "BAIXA",
+              "no_plano_recomendado": true,
+              "fatores": []
+            },
+            {
+              "cobertura": "QUEDA_AERONAVE",
+              "indice": 3,
+              "nivel": "BAIXA",
+              "no_plano_recomendado": true,
+              "fatores": []
+            }
+          ],
+          "adicionais_sugeridos": [
+            {
+              "id": "EQUIPAMENTOS_PORTATEIS",
+              "nome": "Equipamentos portáteis",
+              "necessidade": 52,
+              "nivel": "MEDIA",
+              "por_que_para_voce": "Você comprou cerca de R$ 6.225 em eletrônicos. Danos elétricos não cobrem queda nem dano mecânico de notebook, tablet ou câmera; esta cobertura sim, dentro de casa.",
+              "clausula": "CG V1.6, item 4.1 g",
+              "dados_usados": "compras de eletrônicos em 36 meses e bens cadastrados do tipo eletrônico",
+              "pergunta": "Você tem notebook, tablet ou câmera que gostaria de proteger contra queda e roubo?",
+              "cuidado": "Celulares não são cobertos (CG 6.1); queda em líquido é exclusão da cobertura.",
+              "faixa_valor_min": 1600,
+              "faixa_valor_max": 3700,
+              "regra_da_faixa": "25% a 60% do valor de eletrônicos observado (premissa; os itens precisam ser listados na contratação)"
+            },
+            {
+              "id": "INDENIZACAO_VALOR_DE_NOVO",
+              "nome": "Indenização a valor de novo",
+              "necessidade": 47,
+              "nivel": "MEDIA",
+              "por_que_para_voce": "Você renovou cerca de R$ 18.550 em eletrônicos, eletrodomésticos e móveis nos últimos 36 meses. Sem esta opção, a indenização desconta a depreciação (tabela da CG).",
+              "clausula": "CG V1.6, itens 24.2 e 25.1",
+              "dados_usados": "compras de eletrônicos, eletrodomésticos e móveis em 36 meses",
+              "pergunta": null,
+              "cuidado": "Não tem limite próprio: muda a base de pagamento do conteúdo."
+            }
+          ],
+          "assistencias": {
+            "base": "Casa em Apuros",
+            "destaque": [
+              {
+                "nome": "Casa Funcionando",
+                "por_que": "conserta eletrodoméstico, ar-condicionado e TV; você tem até R$ 12.000 em aparelhos"
+              },
+              {
+                "nome": "Casa sem Insetos e Pragas",
+                "por_que": "desinsetização com orientação para a presença de animais"
+              }
+            ],
+            "so_em_plano_maior": [],
+            "beneficio_premium_sugerido": {
+              "nome": "Assistente virtual",
+              "por_que": "muitos aparelhos e rotina digital"
+            }
+          },
+          "alertas": [],
+          "mensagem_do_app": {
+            "titulo": "Um seguro feito para a sua casa",
+            "texto": "Você comprou cerca de R$ 6.225 em eletrônicos.",
+            "tom": "direto e rápido: poucas palavras, um toque por decisão"
+          },
+          "recibos": [
+            {
+              "dado": "compras de eletrônicos e eletrodomésticos (36 meses)",
+              "usado_para": "equipamentos portáteis, danos elétricos e assistência Casa Funcionando"
+            },
+            {
+              "dado": "bens cadastrados do tipo item de lazer",
+              "usado_para": "cobertura de bicicleta"
+            },
+            {
+              "dado": "consumo de água e energia",
+              "usado_para": "danos por água e danos elétricos"
+            },
+            {
+              "dado": "vínculo com o imóvel (aluguel, financiamento, crédito)",
+              "usado_para": "plano, aluguel e quanto do prédio é seu"
+            },
+            {
+              "dado": "dependentes e pet informados",
+              "usado_para": "responsabilidade civil, despesas emergenciais e assistências"
+            },
+            {
+              "dado": "uso do imóvel e ocupação",
+              "usado_para": "roubo, desocupação temporária e fechadura eletrônica"
+            },
+            {
+              "dado": "maturidade digital e uso do app",
+              "usado_para": "canal, tom e ritmo da conversa (nunca plano nem preço)"
+            },
+            {
+              "dado": "seguro residencial já contratado",
+              "usado_para": "modo de revisão em vez de nova apólice"
+            }
+          ],
+          "premissas": [
+            "Índice de necessidade: base proporcional à frequência de sinistros da carteira (Monitor Mercantil, 21/07/2026) mais sinais do imóvel; é premissa da equipe, não probabilidade de sinistro.",
+            "Faixas dos adicionais são percentuais de bens observados (premissa), sem dado de sinistro por imóvel.",
+            "Esta versão não usa idade nem renda do cliente em nenhuma regra de personalização."
+          ]
+        },
+        "explicacao": {
+          "passos": [
+            {
+              "id": "elegibilidade",
+              "titulo": "Este imóvel pode ser segurado?",
+              "resultado": "ELEGIVEL",
+              "motivo": "",
+              "checagens": [
+                {
+                  "regra": "Situação cadastral regular",
+                  "ok": true,
+                  "base": "Guia 9.1"
+                },
+                {
+                  "regra": "Paredes sem predomínio de material combustível",
+                  "ok": true,
+                  "base": "Guia 9.1",
+                  "estado": "OBSERVADO"
+                },
+                {
+                  "regra": "Sem obra estrutural em andamento",
+                  "ok": true,
+                  "pendente": false,
+                  "base": "CG V1.6, 7.1 w/x",
+                  "estado": "ESTIMADO"
+                },
+                {
+                  "regra": "Tipo de imóvel identificado",
+                  "ok": true,
+                  "base": "Guia 9.1"
+                }
+              ]
+            },
+            {
+              "id": "casa_gemea",
+              "titulo": "O que o banco já sabe da sua casa",
+              "texto": "Cada dado vem com selo (observado, estimado, a confirmar), confiança e evidência."
+            },
+            {
+              "id": "plano",
+              "titulo": "Qual plano faz sentido?",
+              "resultado": "Total",
+              "pontos_pratico": 1,
+              "pontos_total": 4,
+              "sinais_pratico": [
+                {
+                  "pontos": 1,
+                  "sinal": "bens estimados em R$ 9.300 a R$ 18.600"
+                }
+              ],
+              "sinais_total": [
+                {
+                  "pontos": 2,
+                  "sinal": "paga aluguel de R$ 1.500: se o imóvel ficar inabitável, continua devendo o aluguel"
+                },
+                {
+                  "pontos": 1,
+                  "sinal": "tem pet: danos a terceiros causados pelo animal"
+                },
+                {
+                  "pontos": 1,
+                  "sinal": "3 dependentes: danos a terceiros e despesas de hospedagem da família"
+                }
+              ],
+              "regra": "Total se pontos do Total >= 3, ou >= 2 com ao menos 1 ponto do Prático; senão Prático se pontos do Prático >= 2; senão Essencial. Nenhum sinal decide sozinho.",
+              "por_que_nao_o_de_baixo": "O Prático não cobre aluguel, RC familiar nem despesas emergenciais, que respondem aos sinais citados acima. Em reais: o cliente paga cerca de R$ 1.500/mês de aluguel, então até R$ 4.500 a R$ 9.000 ficariam sem proteção se o imóvel ficasse inabitável.",
+              "por_que_nao_o_de_cima": "É o plano mais completo."
+            },
+            {
+              "id": "faixas",
+              "titulo": "Quanto de cobertura",
+              "texto": "Cada faixa é o limite máximo de indenização sugerido (não é preço). A largura mostra a incerteza dos dados."
+            },
+            {
+              "id": "perguntas",
+              "titulo": "O que ainda pode mudar o resultado",
+              "campos_que_mudam_o_plano": [],
+              "texto": "Só perguntamos o que mudaria o plano, a elegibilidade ou estreitaria a faixa. Se nada mudaria, paramos."
+            },
+            {
+              "id": "canal",
+              "titulo": "Como seguir",
+              "semaforo": "VERDE",
+              "canal": "ONE_CLICK_BUY"
+            }
+          ],
+          "limites_do_motor": [
+            "Percentuais de perda por evento e pesos do plano são premissas da equipe (sem dado de sinistro por imóvel).",
+            "Faixa de reconstrução calibrada em cerca de 90% (teste cego da área: erro mediano de 13% no desenvolvimento e 16% no teste).",
+            "O motor decide e calcula com regras; IA generativa, quando usada, só redige texto."
+          ]
+        },
+        "respostas_aplicadas": []
+      },
+      "resumo": {
+        "status": "RECOMENDACAO_INICIAL",
+        "elegibilidade": "ELEGIVEL",
+        "plano": "TOTAL",
+        "confianca": "ALTA",
+        "semaforo": "VERDE",
+        "canal": "ONE_CLICK_BUY",
+        "faixa_incendio": [
+          19400,
+          52900
+        ],
+        "adicionais": [
+          "EQUIPAMENTOS_PORTATEIS",
+          "INDENIZACAO_VALOR_DE_NOVO"
+        ],
+        "perguntas_restantes": [
+          "conteudo",
+          "declaracao_unica"
+        ],
+        "perguntas_evitadas": 7
+      }
+    },
+    {
+      "passo": 1,
+      "resposta_dada": {
+        "conteudo": "NA_FAIXA"
+      },
+      "entrada": {
+        "versao_contrato": "1.0",
+        "imovel_id": "IMO_CASO_00008_01",
+        "respostas": {
+          "conteudo": "NA_FAIXA"
+        }
+      },
+      "saida": {
+        "versao_contrato": "1.0",
+        "imovel_id": "IMO_CASO_00008_01",
+        "cliente_id": "CASO_00008",
+        "status": "RECOMENDACAO_INICIAL",
+        "elegibilidade": {
+          "status": "ELEGIVEL",
+          "motivo": ""
+        },
+        "casa_gemea": {
+          "tipo_imovel": {
+            "valor": "APARTAMENTO",
+            "selo": "ESTIMADO",
+            "confianca": "MEDIA",
+            "evidencia": "complemento 'AP 204', sem condomínio pago"
+          },
+          "vinculo": {
+            "valor": "INQUILINO",
+            "selo": "ESTIMADO",
+            "confianca": "ALTA",
+            "evidencia": "aluguel recorrente de R$ 1.500/mês"
+          },
+          "uso_imovel": {
+            "valor": "MORADIA_HABITUAL",
+            "selo": "ESTIMADO",
+            "confianca": "ALTA",
+            "evidencia": "endereço compatível com o principal do cliente"
+          },
+          "area_m2": {
+            "valor": 125,
+            "selo": "OBSERVADO",
+            "confianca": "ALTA",
+            "evidencia": "CADASTRO_PUBLICO_MUNICIPAL"
+          },
+          "padrao_construtivo": {
+            "valor": "SUPERIOR",
+            "selo": "ESTIMADO",
+            "confianca": "BAIXA",
+            "evidencia": "indício pelo IPTU por m² = 1.84× a mediana de Fortaleza"
+          },
+          "material_parede": {
+            "valor": "ALVENARIA",
+            "selo": "OBSERVADO",
+            "confianca": "ALTA",
+            "evidencia": "cadastro"
+          },
+          "alerta_obra": {
+            "valor": "REFORMA_LEVE",
+            "selo": "ESTIMADO",
+            "confianca": "MEDIA",
+            "evidencia": "R$ 1.500 em material de construção em 24 meses"
+          },
+          "conteudo": {
+            "valor": 14000,
+            "selo": "CONFIRMADO",
+            "confianca": "ALTA",
+            "evidencia": "informado pelo cliente"
+          },
+          "area_faixa_m2": [
+            125,
+            125
+          ],
+          "conteudo_faixa": [
+            9300.0,
+            18600
+          ]
+        },
+        "recomendacao": {
+          "plano": "TOTAL",
+          "justificativa_curta": "Total: paga aluguel de R$ 1.500: se o imóvel ficar inabitável, continua devendo o aluguel; tem pet: danos a terceiros causados pelo animal.",
+          "confianca_geral": "ALTA",
+          "por_que_este_plano": [
+            "paga aluguel de R$ 1.500: se o imóvel ficar inabitável, continua devendo o aluguel",
+            "tem pet: danos a terceiros causados pelo animal",
+            "3 dependentes: danos a terceiros e despesas de hospedagem da família",
+            "bens estimados em R$ 9.300 a R$ 18.600"
+          ],
+          "por_que_nao_plano_abaixo": "O Prático não cobre aluguel, RC familiar nem despesas emergenciais, que respondem aos sinais citados acima. Em reais: o cliente paga cerca de R$ 1.500/mês de aluguel, então até R$ 4.500 a R$ 9.000 ficariam sem proteção se o imóvel ficasse inabitável.",
+          "por_que_nao_plano_acima": "É o plano mais completo.",
+          "campos_que_podem_mudar_o_plano": []
+        },
+        "coberturas": [
+          {
+            "cobertura": "INCENDIO_RAIO_EXPLOSAO_FUMACA",
+            "faixa_valor_min": 19400,
+            "faixa_valor_max": 52900,
+            "confianca": "MEDIA",
+            "regra": "prédio (área × CUB × fator de padrão × interesse no prédio) + conteúdo",
+            "justificativa": "Perda total possível: prédio R$ 10.113–R$ 34.282 (125 m² × CUB CE R$ 2.458/m² × fator 1,00–1,22; inquilino: prédio é do proprietário (CG 10); só benfeitorias, de 3% a 10%) + conteúdo R$ 9.300–R$ 18.600.",
+            "a_confirmar": "padrão de acabamento; valor aproximado dos bens no imóvel",
+            "observacao": ""
+          },
+          {
+            "cobertura": "DANOS_POR_AGUA",
+            "faixa_valor_min": 3800,
+            "faixa_valor_max": 9000,
+            "confianca": "MEDIA",
+            "regra": "10% do prédio + 30% do conteúdo",
+            "justificativa": "Vazamento, chuva pelo telhado ou rompimento de tubulação atingem acabamentos e parte dos bens, raramente tudo. É a 2ª causa de sinistro na carteira residencial da BB Seguros (14,6%).",
+            "a_confirmar": "padrão de acabamento; valor aproximado dos bens no imóvel",
+            "observacao": ""
+          },
+          {
+            "cobertura": "VENDAVAL_GRANIZO",
+            "faixa_valor_min": 1200,
+            "faixa_valor_max": 2900,
+            "confianca": "MEDIA",
+            "regra": "3% do prédio + 10% do conteúdo",
+            "justificativa": "Apartamento: risco concentrado em janelas e sacada; cobertura e fachada são do condomínio. Eventos climáticos são 11,5% dos sinistros da carteira residencial da BB Seguros.",
+            "a_confirmar": "padrão de acabamento; valor aproximado dos bens no imóvel",
+            "observacao": ""
+          },
+          {
+            "cobertura": "IMPACTO_VEICULOS_TERRESTRES",
+            "faixa_valor_min": 500,
+            "faixa_valor_max": 1000,
+            "confianca": "MEDIA",
+            "regra": "3% do prédio",
+            "justificativa": "Apartamento: impacto atinge sobretudo áreas do condomínio.",
+            "a_confirmar": "padrão de acabamento",
+            "observacao": ""
+          },
+          {
+            "cobertura": "QUEDA_AERONAVE",
+            "faixa_valor_min": 3900,
+            "faixa_valor_max": 10600,
+            "confianca": "MEDIA",
+            "regra": "20% de (prédio + conteúdo)",
+            "justificativa": "Evento raro, mas de grande dano; a faixa acompanha o valor em risco.",
+            "a_confirmar": "padrão de acabamento; valor aproximado dos bens no imóvel",
+            "observacao": "Percentual de referência adotado pela equipe; não consta nas Condições Gerais."
+          },
+          {
+            "cobertura": "DANOS_ELETRICOS",
+            "faixa_valor_min": 3500,
+            "faixa_valor_max": 6000,
+            "confianca": "ALTA",
+            "regra": "50% do valor de eletrônicos e eletrodomésticos",
+            "justificativa": "Um pico de energia costuma queimar parte dos aparelhos; base de R$ 7.000 a R$ 12.000.",
+            "a_confirmar": "valor aproximado dos bens no imóvel",
+            "observacao": "Danos elétricos foram 53,3% dos sinistros da carteira residencial da BB Seguros entre jan/2023 e mai/2026 (Monitor Mercantil, 21/07/2026)."
+          },
+          {
+            "cobertura": "ROUBO_FURTO_ARROMBAMENTO",
+            "faixa_valor_min": 4600,
+            "faixa_valor_max": 9300,
+            "confianca": "ALTA",
+            "regra": "50% do conteúdo",
+            "justificativa": "Num arrombamento são levados sobretudo bens portáteis; conteúdo R$ 9.300–R$ 18.600. Celulares, joias e dinheiro não são cobertos (CG 6.1).",
+            "a_confirmar": "valor aproximado dos bens no imóvel",
+            "observacao": ""
+          },
+          {
+            "cobertura": "QUEBRA_DE_VIDROS",
+            "faixa_valor_min": 5000,
+            "faixa_valor_max": 7500,
+            "confianca": "ALTA",
+            "regra": "R$ 40 a R$ 60 por m² de área (janelas, box, espelhos, tampos); máximo ≥ 1,5× o gasto recente com vidraçaria",
+            "justificativa": "Vidros e espelhos crescem com o tamanho do imóvel.",
+            "a_confirmar": "nenhuma: a faixa usa só dados de cadastro ou transações observadas",
+            "observacao": "Valor por m² é premissa da equipe."
+          },
+          {
+            "cobertura": "RESPONSABILIDADE_CIVIL_FAMILIAR",
+            "faixa_valor_min": 45000,
+            "faixa_valor_max": 110000,
+            "confianca": "BAIXA",
+            "regra": "faixa de referência: R$ 20–50 mil, mais R$ 10–30 mil com pet e R$ 5–10 mil por dependente (até 3)",
+            "justificativa": "Danos a terceiros não dependem do valor do imóvel; a faixa sobe quando há mais pessoas ou animais que podem causá-los (CG, RC Familiar 1.1 b e c).",
+            "a_confirmar": "se há pets, crianças ou atividades de risco (ex.: piscina)",
+            "observacao": "Faixa de referência da equipe, sem base estatística na base de dados."
+          },
+          {
+            "cobertura": "PERDA_PAGAMENTO_ALUGUEL",
+            "faixa_valor_min": 4500,
+            "faixa_valor_max": 9000,
+            "confianca": "ALTA",
+            "regra": "3 a 6 meses de aluguel (CG: até 6 meses, aluguel mensal ≤ LMI/6)",
+            "justificativa": "Base: aluguel pago de R$ 1.500/mês.",
+            "a_confirmar": "nenhuma: a faixa usa só dados de cadastro ou transações observadas",
+            "observacao": ""
+          },
+          {
+            "cobertura": "DESPESAS_EMERGENCIAIS",
+            "faixa_valor_min": 20000,
+            "faixa_valor_max": 50000,
+            "confianca": "MEDIA",
+            "regra": "LMI tal que 3% ao dia paguem R$ 150–300 por pessoa (hospedagem, alimentação, transporte)",
+            "justificativa": "Domicílio de 4 a 5 pessoa(s); a CG paga 3% do LMI por dia de desocupação.",
+            "a_confirmar": "quantas pessoas moram no imóvel",
+            "observacao": "Diárias por pessoa são premissa da equipe."
+          }
+        ],
+        "proximas_perguntas": [
+          {
+            "id": "declaracao_unica",
+            "pergunta": "Confirmo que o imóvel fica em área urbana, tem paredes de alvenaria, não está em obra estrutural e não é tombado.",
+            "opcoes": [
+              {
+                "valor": "SIM",
+                "rotulo": "Sim"
+              },
+              {
+                "valor": "NAO",
+                "rotulo": "Não — o atendimento segue com o gerente"
+              }
+            ],
+            "aceita_numero": false,
+            "impacto": "elegibilidade",
+            "motivo": "substitui as perguntas de elegibilidade que os dados não respondem (CG 11, alínea a: declaração inexata faz perder o direito)"
+          }
+        ],
+        "jornada": {
+          "campos_formulario_tradicional": 8,
+          "perguntas_necessarias": 1,
+          "perguntas_evitadas": 7,
+          "percentual_evitado": 88
+        },
+        "canal": {
+          "semaforo": "VERDE",
+          "sugerido": "ONE_CLICK_BUY"
+        },
+        "personalizacao": {
+          "perfil": {
+            "arquetipo": "INQUILINO_COM_FAMILIA",
+            "rotulo": "Inquilino com família",
+            "descricao": "Protege o que é seu e o que pode causar a terceiros, sem pagar pelo prédio.",
+            "sinais": [
+              "vínculo: inquilino",
+              "dependentes ou pet na casa"
+            ],
+            "jornada": "EXPRESS",
+            "jornada_motivo": "maturidade digital 93 (70 ou mais)",
+            "tom": "direto e rápido: poucas palavras, um toque por decisão",
+            "modo": "NOVA_APOLICE",
+            "relacionamento_seguridade": 0
+          },
+          "necessidades": [
+            {
+              "cobertura": "DANOS_ELETRICOS",
+              "indice": 83,
+              "nivel": "ALTA",
+              "no_plano_recomendado": true,
+              "fatores": [
+                {
+                  "pontos": 30,
+                  "fator": "aparelhos de até R$ 12.000"
+                },
+                {
+                  "pontos": 8,
+                  "fator": "consumo de energia alto para o tamanho do imóvel"
+                }
+              ]
+            },
+            {
+              "cobertura": "RESPONSABILIDADE_CIVIL_FAMILIAR",
+              "indice": 80,
+              "nivel": "ALTA",
+              "no_plano_recomendado": true,
+              "fatores": [
+                {
+                  "pontos": 30,
+                  "fator": "pet em casa"
+                },
+                {
+                  "pontos": 40,
+                  "fator": "3 dependente(s) em casa"
+                }
+              ]
+            },
+            {
+              "cobertura": "PERDA_PAGAMENTO_ALUGUEL",
+              "indice": 70,
+              "nivel": "ALTA",
+              "no_plano_recomendado": true,
+              "fatores": [
+                {
+                  "pontos": 65,
+                  "fator": "paga aluguel: se o imóvel ficar inabitável, a dívida continua"
+                }
+              ]
+            },
+            {
+              "cobertura": "DANOS_POR_AGUA",
+              "indice": 50,
+              "nivel": "MEDIA",
+              "no_plano_recomendado": true,
+              "fatores": [
+                {
+                  "pontos": 20,
+                  "fator": "consumo de água de R$ 250/mês (mais pontos hidráulicos em uso)"
+                }
+              ]
+            },
+            {
+              "cobertura": "INCENDIO_RAIO_EXPLOSAO_FUMACA",
+              "indice": 35,
+              "nivel": "BAIXA",
+              "no_plano_recomendado": true,
+              "fatores": [
+                {
+                  "pontos": 15,
+                  "fator": "valor do imóvel e dos bens"
+                }
+              ]
+            },
+            {
+              "cobertura": "ROUBO_FURTO_ARROMBAMENTO",
+              "indice": 32,
+              "nivel": "BAIXA",
+              "no_plano_recomendado": true,
+              "fatores": [
+                {
+                  "pontos": 20,
+                  "fator": "bens de até R$ 14.000"
+                }
+              ]
+            },
+            {
+              "cobertura": "DESPESAS_EMERGENCIAIS",
+              "indice": 32,
+              "nivel": "BAIXA",
+              "no_plano_recomendado": true,
+              "fatores": [
+                {
+                  "pontos": 24,
+                  "fator": "mais pessoas para abrigar em caso de interdição"
+                }
+              ]
+            },
+            {
+              "cobertura": "VENDAVAL_GRANIZO",
+              "indice": 22,
+              "nivel": "BAIXA",
+              "no_plano_recomendado": true,
+              "fatores": []
+            },
+            {
+              "cobertura": "QUEBRA_DE_VIDROS",
+              "indice": 10,
+              "nivel": "BAIXA",
+              "no_plano_recomendado": true,
+              "fatores": []
+            },
+            {
+              "cobertura": "IMPACTO_VEICULOS_TERRESTRES",
+              "indice": 8,
+              "nivel": "BAIXA",
+              "no_plano_recomendado": true,
+              "fatores": []
+            },
+            {
+              "cobertura": "QUEDA_AERONAVE",
+              "indice": 3,
+              "nivel": "BAIXA",
+              "no_plano_recomendado": true,
+              "fatores": []
+            }
+          ],
+          "adicionais_sugeridos": [
+            {
+              "id": "EQUIPAMENTOS_PORTATEIS",
+              "nome": "Equipamentos portáteis",
+              "necessidade": 52,
+              "nivel": "MEDIA",
+              "por_que_para_voce": "Você comprou cerca de R$ 6.225 em eletrônicos. Danos elétricos não cobrem queda nem dano mecânico de notebook, tablet ou câmera; esta cobertura sim, dentro de casa.",
+              "clausula": "CG V1.6, item 4.1 g",
+              "dados_usados": "compras de eletrônicos em 36 meses e bens cadastrados do tipo eletrônico",
+              "pergunta": "Você tem notebook, tablet ou câmera que gostaria de proteger contra queda e roubo?",
+              "cuidado": "Celulares não são cobertos (CG 6.1); queda em líquido é exclusão da cobertura.",
+              "faixa_valor_min": 1600,
+              "faixa_valor_max": 3700,
+              "regra_da_faixa": "25% a 60% do valor de eletrônicos observado (premissa; os itens precisam ser listados na contratação)"
+            },
+            {
+              "id": "INDENIZACAO_VALOR_DE_NOVO",
+              "nome": "Indenização a valor de novo",
+              "necessidade": 47,
+              "nivel": "MEDIA",
+              "por_que_para_voce": "Você renovou cerca de R$ 18.550 em eletrônicos, eletrodomésticos e móveis nos últimos 36 meses. Sem esta opção, a indenização desconta a depreciação (tabela da CG).",
+              "clausula": "CG V1.6, itens 24.2 e 25.1",
+              "dados_usados": "compras de eletrônicos, eletrodomésticos e móveis em 36 meses",
+              "pergunta": null,
+              "cuidado": "Não tem limite próprio: muda a base de pagamento do conteúdo."
+            }
+          ],
+          "assistencias": {
+            "base": "Casa em Apuros",
+            "destaque": [
+              {
+                "nome": "Casa Funcionando",
+                "por_que": "conserta eletrodoméstico, ar-condicionado e TV; você tem até R$ 12.000 em aparelhos"
+              },
+              {
+                "nome": "Casa sem Insetos e Pragas",
+                "por_que": "desinsetização com orientação para a presença de animais"
+              }
+            ],
+            "so_em_plano_maior": [],
+            "beneficio_premium_sugerido": {
+              "nome": "Assistente virtual",
+              "por_que": "muitos aparelhos e rotina digital"
+            }
+          },
+          "alertas": [],
+          "mensagem_do_app": {
+            "titulo": "Um seguro feito para a sua casa",
+            "texto": "Você comprou cerca de R$ 6.225 em eletrônicos.",
+            "tom": "direto e rápido: poucas palavras, um toque por decisão"
+          },
+          "recibos": [
+            {
+              "dado": "compras de eletrônicos e eletrodomésticos (36 meses)",
+              "usado_para": "equipamentos portáteis, danos elétricos e assistência Casa Funcionando"
+            },
+            {
+              "dado": "bens cadastrados do tipo item de lazer",
+              "usado_para": "cobertura de bicicleta"
+            },
+            {
+              "dado": "consumo de água e energia",
+              "usado_para": "danos por água e danos elétricos"
+            },
+            {
+              "dado": "vínculo com o imóvel (aluguel, financiamento, crédito)",
+              "usado_para": "plano, aluguel e quanto do prédio é seu"
+            },
+            {
+              "dado": "dependentes e pet informados",
+              "usado_para": "responsabilidade civil, despesas emergenciais e assistências"
+            },
+            {
+              "dado": "uso do imóvel e ocupação",
+              "usado_para": "roubo, desocupação temporária e fechadura eletrônica"
+            },
+            {
+              "dado": "maturidade digital e uso do app",
+              "usado_para": "canal, tom e ritmo da conversa (nunca plano nem preço)"
+            },
+            {
+              "dado": "seguro residencial já contratado",
+              "usado_para": "modo de revisão em vez de nova apólice"
+            }
+          ],
+          "premissas": [
+            "Índice de necessidade: base proporcional à frequência de sinistros da carteira (Monitor Mercantil, 21/07/2026) mais sinais do imóvel; é premissa da equipe, não probabilidade de sinistro.",
+            "Faixas dos adicionais são percentuais de bens observados (premissa), sem dado de sinistro por imóvel.",
+            "Esta versão não usa idade nem renda do cliente em nenhuma regra de personalização."
+          ]
+        },
+        "explicacao": {
+          "passos": [
+            {
+              "id": "elegibilidade",
+              "titulo": "Este imóvel pode ser segurado?",
+              "resultado": "ELEGIVEL",
+              "motivo": "",
+              "checagens": [
+                {
+                  "regra": "Situação cadastral regular",
+                  "ok": true,
+                  "base": "Guia 9.1"
+                },
+                {
+                  "regra": "Paredes sem predomínio de material combustível",
+                  "ok": true,
+                  "base": "Guia 9.1",
+                  "estado": "OBSERVADO"
+                },
+                {
+                  "regra": "Sem obra estrutural em andamento",
+                  "ok": true,
+                  "pendente": false,
+                  "base": "CG V1.6, 7.1 w/x",
+                  "estado": "ESTIMADO"
+                },
+                {
+                  "regra": "Tipo de imóvel identificado",
+                  "ok": true,
+                  "base": "Guia 9.1"
+                }
+              ]
+            },
+            {
+              "id": "casa_gemea",
+              "titulo": "O que o banco já sabe da sua casa",
+              "texto": "Cada dado vem com selo (observado, estimado, a confirmar), confiança e evidência."
+            },
+            {
+              "id": "plano",
+              "titulo": "Qual plano faz sentido?",
+              "resultado": "Total",
+              "pontos_pratico": 1,
+              "pontos_total": 4,
+              "sinais_pratico": [
+                {
+                  "pontos": 1,
+                  "sinal": "bens estimados em R$ 9.300 a R$ 18.600"
+                }
+              ],
+              "sinais_total": [
+                {
+                  "pontos": 2,
+                  "sinal": "paga aluguel de R$ 1.500: se o imóvel ficar inabitável, continua devendo o aluguel"
+                },
+                {
+                  "pontos": 1,
+                  "sinal": "tem pet: danos a terceiros causados pelo animal"
+                },
+                {
+                  "pontos": 1,
+                  "sinal": "3 dependentes: danos a terceiros e despesas de hospedagem da família"
+                }
+              ],
+              "regra": "Total se pontos do Total >= 3, ou >= 2 com ao menos 1 ponto do Prático; senão Prático se pontos do Prático >= 2; senão Essencial. Nenhum sinal decide sozinho.",
+              "por_que_nao_o_de_baixo": "O Prático não cobre aluguel, RC familiar nem despesas emergenciais, que respondem aos sinais citados acima. Em reais: o cliente paga cerca de R$ 1.500/mês de aluguel, então até R$ 4.500 a R$ 9.000 ficariam sem proteção se o imóvel ficasse inabitável.",
+              "por_que_nao_o_de_cima": "É o plano mais completo."
+            },
+            {
+              "id": "faixas",
+              "titulo": "Quanto de cobertura",
+              "texto": "Cada faixa é o limite máximo de indenização sugerido (não é preço). A largura mostra a incerteza dos dados."
+            },
+            {
+              "id": "perguntas",
+              "titulo": "O que ainda pode mudar o resultado",
+              "campos_que_mudam_o_plano": [],
+              "texto": "Só perguntamos o que mudaria o plano, a elegibilidade ou estreitaria a faixa. Se nada mudaria, paramos."
+            },
+            {
+              "id": "canal",
+              "titulo": "Como seguir",
+              "semaforo": "VERDE",
+              "canal": "ONE_CLICK_BUY"
+            }
+          ],
+          "limites_do_motor": [
+            "Percentuais de perda por evento e pesos do plano são premissas da equipe (sem dado de sinistro por imóvel).",
+            "Faixa de reconstrução calibrada em cerca de 90% (teste cego da área: erro mediano de 13% no desenvolvimento e 16% no teste).",
+            "O motor decide e calcula com regras; IA generativa, quando usada, só redige texto."
+          ]
+        },
+        "respostas_aplicadas": [
+          "conteudo"
+        ]
+      },
+      "resumo": {
+        "status": "RECOMENDACAO_INICIAL",
+        "elegibilidade": "ELEGIVEL",
+        "plano": "TOTAL",
+        "confianca": "ALTA",
+        "semaforo": "VERDE",
+        "canal": "ONE_CLICK_BUY",
+        "faixa_incendio": [
+          19400,
+          52900
+        ],
+        "adicionais": [
+          "EQUIPAMENTOS_PORTATEIS",
+          "INDENIZACAO_VALOR_DE_NOVO"
+        ],
+        "perguntas_restantes": [
+          "declaracao_unica"
+        ],
+        "perguntas_evitadas": 7
+      }
+    },
+    {
+      "passo": 2,
+      "resposta_dada": {
+        "declaracao_unica": "SIM"
+      },
+      "entrada": {
+        "versao_contrato": "1.0",
+        "imovel_id": "IMO_CASO_00008_01",
+        "respostas": {
+          "conteudo": "NA_FAIXA",
+          "declaracao_unica": "SIM"
+        }
+      },
+      "saida": {
+        "versao_contrato": "1.0",
+        "imovel_id": "IMO_CASO_00008_01",
+        "cliente_id": "CASO_00008",
+        "status": "RECOMENDACAO_CONFIRMADA",
+        "elegibilidade": {
+          "status": "ELEGIVEL",
+          "motivo": ""
+        },
+        "casa_gemea": {
+          "tipo_imovel": {
+            "valor": "APARTAMENTO",
+            "selo": "ESTIMADO",
+            "confianca": "MEDIA",
+            "evidencia": "complemento 'AP 204', sem condomínio pago"
+          },
+          "vinculo": {
+            "valor": "INQUILINO",
+            "selo": "ESTIMADO",
+            "confianca": "ALTA",
+            "evidencia": "aluguel recorrente de R$ 1.500/mês"
+          },
+          "uso_imovel": {
+            "valor": "MORADIA_HABITUAL",
+            "selo": "ESTIMADO",
+            "confianca": "ALTA",
+            "evidencia": "endereço compatível com o principal do cliente"
+          },
+          "area_m2": {
+            "valor": 125,
+            "selo": "OBSERVADO",
+            "confianca": "ALTA",
+            "evidencia": "CADASTRO_PUBLICO_MUNICIPAL"
+          },
+          "padrao_construtivo": {
+            "valor": "SUPERIOR",
+            "selo": "ESTIMADO",
+            "confianca": "BAIXA",
+            "evidencia": "indício pelo IPTU por m² = 1.84× a mediana de Fortaleza"
+          },
+          "material_parede": {
+            "valor": "ALVENARIA",
+            "selo": "CONFIRMADO",
+            "confianca": "ALTA",
+            "evidencia": "declaração do cliente"
+          },
+          "alerta_obra": {
+            "valor": "REFORMA_LEVE",
+            "selo": "ESTIMADO",
+            "confianca": "MEDIA",
+            "evidencia": "R$ 1.500 em material de construção em 24 meses"
+          },
+          "conteudo": {
+            "valor": 14000,
+            "selo": "CONFIRMADO",
+            "confianca": "ALTA",
+            "evidencia": "informado pelo cliente"
+          },
+          "area_faixa_m2": [
+            125,
+            125
+          ],
+          "conteudo_faixa": [
+            9300.0,
+            18600
+          ]
+        },
+        "recomendacao": {
+          "plano": "TOTAL",
+          "justificativa_curta": "Total: paga aluguel de R$ 1.500: se o imóvel ficar inabitável, continua devendo o aluguel; tem pet: danos a terceiros causados pelo animal.",
+          "confianca_geral": "ALTA",
+          "por_que_este_plano": [
+            "paga aluguel de R$ 1.500: se o imóvel ficar inabitável, continua devendo o aluguel",
+            "tem pet: danos a terceiros causados pelo animal",
+            "3 dependentes: danos a terceiros e despesas de hospedagem da família",
+            "bens estimados em R$ 9.300 a R$ 18.600"
+          ],
+          "por_que_nao_plano_abaixo": "O Prático não cobre aluguel, RC familiar nem despesas emergenciais, que respondem aos sinais citados acima. Em reais: o cliente paga cerca de R$ 1.500/mês de aluguel, então até R$ 4.500 a R$ 9.000 ficariam sem proteção se o imóvel ficasse inabitável.",
+          "por_que_nao_plano_acima": "É o plano mais completo.",
+          "campos_que_podem_mudar_o_plano": []
+        },
+        "coberturas": [
+          {
+            "cobertura": "INCENDIO_RAIO_EXPLOSAO_FUMACA",
+            "faixa_valor_min": 19400,
+            "faixa_valor_max": 52900,
+            "confianca": "MEDIA",
+            "regra": "prédio (área × CUB × fator de padrão × interesse no prédio) + conteúdo",
+            "justificativa": "Perda total possível: prédio R$ 10.113–R$ 34.282 (125 m² × CUB CE R$ 2.458/m² × fator 1,00–1,22; inquilino: prédio é do proprietário (CG 10); só benfeitorias, de 3% a 10%) + conteúdo R$ 9.300–R$ 18.600.",
+            "a_confirmar": "padrão de acabamento; valor aproximado dos bens no imóvel",
+            "observacao": ""
+          },
+          {
+            "cobertura": "DANOS_POR_AGUA",
+            "faixa_valor_min": 3800,
+            "faixa_valor_max": 9000,
+            "confianca": "MEDIA",
+            "regra": "10% do prédio + 30% do conteúdo",
+            "justificativa": "Vazamento, chuva pelo telhado ou rompimento de tubulação atingem acabamentos e parte dos bens, raramente tudo. É a 2ª causa de sinistro na carteira residencial da BB Seguros (14,6%).",
+            "a_confirmar": "padrão de acabamento; valor aproximado dos bens no imóvel",
+            "observacao": ""
+          },
+          {
+            "cobertura": "VENDAVAL_GRANIZO",
+            "faixa_valor_min": 1200,
+            "faixa_valor_max": 2900,
+            "confianca": "MEDIA",
+            "regra": "3% do prédio + 10% do conteúdo",
+            "justificativa": "Apartamento: risco concentrado em janelas e sacada; cobertura e fachada são do condomínio. Eventos climáticos são 11,5% dos sinistros da carteira residencial da BB Seguros.",
+            "a_confirmar": "padrão de acabamento; valor aproximado dos bens no imóvel",
+            "observacao": ""
+          },
+          {
+            "cobertura": "IMPACTO_VEICULOS_TERRESTRES",
+            "faixa_valor_min": 500,
+            "faixa_valor_max": 1000,
+            "confianca": "MEDIA",
+            "regra": "3% do prédio",
+            "justificativa": "Apartamento: impacto atinge sobretudo áreas do condomínio.",
+            "a_confirmar": "padrão de acabamento",
+            "observacao": ""
+          },
+          {
+            "cobertura": "QUEDA_AERONAVE",
+            "faixa_valor_min": 3900,
+            "faixa_valor_max": 10600,
+            "confianca": "MEDIA",
+            "regra": "20% de (prédio + conteúdo)",
+            "justificativa": "Evento raro, mas de grande dano; a faixa acompanha o valor em risco.",
+            "a_confirmar": "padrão de acabamento; valor aproximado dos bens no imóvel",
+            "observacao": "Percentual de referência adotado pela equipe; não consta nas Condições Gerais."
+          },
+          {
+            "cobertura": "DANOS_ELETRICOS",
+            "faixa_valor_min": 3500,
+            "faixa_valor_max": 6000,
+            "confianca": "ALTA",
+            "regra": "50% do valor de eletrônicos e eletrodomésticos",
+            "justificativa": "Um pico de energia costuma queimar parte dos aparelhos; base de R$ 7.000 a R$ 12.000.",
+            "a_confirmar": "valor aproximado dos bens no imóvel",
+            "observacao": "Danos elétricos foram 53,3% dos sinistros da carteira residencial da BB Seguros entre jan/2023 e mai/2026 (Monitor Mercantil, 21/07/2026)."
+          },
+          {
+            "cobertura": "ROUBO_FURTO_ARROMBAMENTO",
+            "faixa_valor_min": 4600,
+            "faixa_valor_max": 9300,
+            "confianca": "ALTA",
+            "regra": "50% do conteúdo",
+            "justificativa": "Num arrombamento são levados sobretudo bens portáteis; conteúdo R$ 9.300–R$ 18.600. Celulares, joias e dinheiro não são cobertos (CG 6.1).",
+            "a_confirmar": "valor aproximado dos bens no imóvel",
+            "observacao": ""
+          },
+          {
+            "cobertura": "QUEBRA_DE_VIDROS",
+            "faixa_valor_min": 5000,
+            "faixa_valor_max": 7500,
+            "confianca": "ALTA",
+            "regra": "R$ 40 a R$ 60 por m² de área (janelas, box, espelhos, tampos); máximo ≥ 1,5× o gasto recente com vidraçaria",
+            "justificativa": "Vidros e espelhos crescem com o tamanho do imóvel.",
+            "a_confirmar": "nenhuma: a faixa usa só dados de cadastro ou transações observadas",
+            "observacao": "Valor por m² é premissa da equipe."
+          },
+          {
+            "cobertura": "RESPONSABILIDADE_CIVIL_FAMILIAR",
+            "faixa_valor_min": 45000,
+            "faixa_valor_max": 110000,
+            "confianca": "BAIXA",
+            "regra": "faixa de referência: R$ 20–50 mil, mais R$ 10–30 mil com pet e R$ 5–10 mil por dependente (até 3)",
+            "justificativa": "Danos a terceiros não dependem do valor do imóvel; a faixa sobe quando há mais pessoas ou animais que podem causá-los (CG, RC Familiar 1.1 b e c).",
+            "a_confirmar": "se há pets, crianças ou atividades de risco (ex.: piscina)",
+            "observacao": "Faixa de referência da equipe, sem base estatística na base de dados."
+          },
+          {
+            "cobertura": "PERDA_PAGAMENTO_ALUGUEL",
+            "faixa_valor_min": 4500,
+            "faixa_valor_max": 9000,
+            "confianca": "ALTA",
+            "regra": "3 a 6 meses de aluguel (CG: até 6 meses, aluguel mensal ≤ LMI/6)",
+            "justificativa": "Base: aluguel pago de R$ 1.500/mês.",
+            "a_confirmar": "nenhuma: a faixa usa só dados de cadastro ou transações observadas",
+            "observacao": ""
+          },
+          {
+            "cobertura": "DESPESAS_EMERGENCIAIS",
+            "faixa_valor_min": 20000,
+            "faixa_valor_max": 50000,
+            "confianca": "MEDIA",
+            "regra": "LMI tal que 3% ao dia paguem R$ 150–300 por pessoa (hospedagem, alimentação, transporte)",
+            "justificativa": "Domicílio de 4 a 5 pessoa(s); a CG paga 3% do LMI por dia de desocupação.",
+            "a_confirmar": "quantas pessoas moram no imóvel",
+            "observacao": "Diárias por pessoa são premissa da equipe."
+          }
+        ],
+        "proximas_perguntas": [],
+        "jornada": {
+          "campos_formulario_tradicional": 8,
+          "perguntas_necessarias": 1,
+          "perguntas_evitadas": 7,
+          "percentual_evitado": 88
+        },
+        "canal": {
+          "semaforo": "VERDE",
+          "sugerido": "ONE_CLICK_BUY"
+        },
+        "personalizacao": {
+          "perfil": {
+            "arquetipo": "INQUILINO_COM_FAMILIA",
+            "rotulo": "Inquilino com família",
+            "descricao": "Protege o que é seu e o que pode causar a terceiros, sem pagar pelo prédio.",
+            "sinais": [
+              "vínculo: inquilino",
+              "dependentes ou pet na casa"
+            ],
+            "jornada": "EXPRESS",
+            "jornada_motivo": "maturidade digital 93 (70 ou mais)",
+            "tom": "direto e rápido: poucas palavras, um toque por decisão",
+            "modo": "NOVA_APOLICE",
+            "relacionamento_seguridade": 0
+          },
+          "necessidades": [
+            {
+              "cobertura": "DANOS_ELETRICOS",
+              "indice": 83,
+              "nivel": "ALTA",
+              "no_plano_recomendado": true,
+              "fatores": [
+                {
+                  "pontos": 30,
+                  "fator": "aparelhos de até R$ 12.000"
+                },
+                {
+                  "pontos": 8,
+                  "fator": "consumo de energia alto para o tamanho do imóvel"
+                }
+              ]
+            },
+            {
+              "cobertura": "RESPONSABILIDADE_CIVIL_FAMILIAR",
+              "indice": 80,
+              "nivel": "ALTA",
+              "no_plano_recomendado": true,
+              "fatores": [
+                {
+                  "pontos": 30,
+                  "fator": "pet em casa"
+                },
+                {
+                  "pontos": 40,
+                  "fator": "3 dependente(s) em casa"
+                }
+              ]
+            },
+            {
+              "cobertura": "PERDA_PAGAMENTO_ALUGUEL",
+              "indice": 70,
+              "nivel": "ALTA",
+              "no_plano_recomendado": true,
+              "fatores": [
+                {
+                  "pontos": 65,
+                  "fator": "paga aluguel: se o imóvel ficar inabitável, a dívida continua"
+                }
+              ]
+            },
+            {
+              "cobertura": "DANOS_POR_AGUA",
+              "indice": 50,
+              "nivel": "MEDIA",
+              "no_plano_recomendado": true,
+              "fatores": [
+                {
+                  "pontos": 20,
+                  "fator": "consumo de água de R$ 250/mês (mais pontos hidráulicos em uso)"
+                }
+              ]
+            },
+            {
+              "cobertura": "INCENDIO_RAIO_EXPLOSAO_FUMACA",
+              "indice": 35,
+              "nivel": "BAIXA",
+              "no_plano_recomendado": true,
+              "fatores": [
+                {
+                  "pontos": 15,
+                  "fator": "valor do imóvel e dos bens"
+                }
+              ]
+            },
+            {
+              "cobertura": "ROUBO_FURTO_ARROMBAMENTO",
+              "indice": 32,
+              "nivel": "BAIXA",
+              "no_plano_recomendado": true,
+              "fatores": [
+                {
+                  "pontos": 20,
+                  "fator": "bens de até R$ 14.000"
+                }
+              ]
+            },
+            {
+              "cobertura": "DESPESAS_EMERGENCIAIS",
+              "indice": 32,
+              "nivel": "BAIXA",
+              "no_plano_recomendado": true,
+              "fatores": [
+                {
+                  "pontos": 24,
+                  "fator": "mais pessoas para abrigar em caso de interdição"
+                }
+              ]
+            },
+            {
+              "cobertura": "VENDAVAL_GRANIZO",
+              "indice": 22,
+              "nivel": "BAIXA",
+              "no_plano_recomendado": true,
+              "fatores": []
+            },
+            {
+              "cobertura": "QUEBRA_DE_VIDROS",
+              "indice": 10,
+              "nivel": "BAIXA",
+              "no_plano_recomendado": true,
+              "fatores": []
+            },
+            {
+              "cobertura": "IMPACTO_VEICULOS_TERRESTRES",
+              "indice": 8,
+              "nivel": "BAIXA",
+              "no_plano_recomendado": true,
+              "fatores": []
+            },
+            {
+              "cobertura": "QUEDA_AERONAVE",
+              "indice": 3,
+              "nivel": "BAIXA",
+              "no_plano_recomendado": true,
+              "fatores": []
+            }
+          ],
+          "adicionais_sugeridos": [
+            {
+              "id": "EQUIPAMENTOS_PORTATEIS",
+              "nome": "Equipamentos portáteis",
+              "necessidade": 52,
+              "nivel": "MEDIA",
+              "por_que_para_voce": "Você comprou cerca de R$ 6.225 em eletrônicos. Danos elétricos não cobrem queda nem dano mecânico de notebook, tablet ou câmera; esta cobertura sim, dentro de casa.",
+              "clausula": "CG V1.6, item 4.1 g",
+              "dados_usados": "compras de eletrônicos em 36 meses e bens cadastrados do tipo eletrônico",
+              "pergunta": "Você tem notebook, tablet ou câmera que gostaria de proteger contra queda e roubo?",
+              "cuidado": "Celulares não são cobertos (CG 6.1); queda em líquido é exclusão da cobertura.",
+              "faixa_valor_min": 1600,
+              "faixa_valor_max": 3700,
+              "regra_da_faixa": "25% a 60% do valor de eletrônicos observado (premissa; os itens precisam ser listados na contratação)"
+            },
+            {
+              "id": "INDENIZACAO_VALOR_DE_NOVO",
+              "nome": "Indenização a valor de novo",
+              "necessidade": 47,
+              "nivel": "MEDIA",
+              "por_que_para_voce": "Você renovou cerca de R$ 18.550 em eletrônicos, eletrodomésticos e móveis nos últimos 36 meses. Sem esta opção, a indenização desconta a depreciação (tabela da CG).",
+              "clausula": "CG V1.6, itens 24.2 e 25.1",
+              "dados_usados": "compras de eletrônicos, eletrodomésticos e móveis em 36 meses",
+              "pergunta": null,
+              "cuidado": "Não tem limite próprio: muda a base de pagamento do conteúdo."
+            }
+          ],
+          "assistencias": {
+            "base": "Casa em Apuros",
+            "destaque": [
+              {
+                "nome": "Casa Funcionando",
+                "por_que": "conserta eletrodoméstico, ar-condicionado e TV; você tem até R$ 12.000 em aparelhos"
+              },
+              {
+                "nome": "Casa sem Insetos e Pragas",
+                "por_que": "desinsetização com orientação para a presença de animais"
+              }
+            ],
+            "so_em_plano_maior": [],
+            "beneficio_premium_sugerido": {
+              "nome": "Assistente virtual",
+              "por_que": "muitos aparelhos e rotina digital"
+            }
+          },
+          "alertas": [],
+          "mensagem_do_app": {
+            "titulo": "Um seguro feito para a sua casa",
+            "texto": "Você comprou cerca de R$ 6.225 em eletrônicos.",
+            "tom": "direto e rápido: poucas palavras, um toque por decisão"
+          },
+          "recibos": [
+            {
+              "dado": "compras de eletrônicos e eletrodomésticos (36 meses)",
+              "usado_para": "equipamentos portáteis, danos elétricos e assistência Casa Funcionando"
+            },
+            {
+              "dado": "bens cadastrados do tipo item de lazer",
+              "usado_para": "cobertura de bicicleta"
+            },
+            {
+              "dado": "consumo de água e energia",
+              "usado_para": "danos por água e danos elétricos"
+            },
+            {
+              "dado": "vínculo com o imóvel (aluguel, financiamento, crédito)",
+              "usado_para": "plano, aluguel e quanto do prédio é seu"
+            },
+            {
+              "dado": "dependentes e pet informados",
+              "usado_para": "responsabilidade civil, despesas emergenciais e assistências"
+            },
+            {
+              "dado": "uso do imóvel e ocupação",
+              "usado_para": "roubo, desocupação temporária e fechadura eletrônica"
+            },
+            {
+              "dado": "maturidade digital e uso do app",
+              "usado_para": "canal, tom e ritmo da conversa (nunca plano nem preço)"
+            },
+            {
+              "dado": "seguro residencial já contratado",
+              "usado_para": "modo de revisão em vez de nova apólice"
+            }
+          ],
+          "premissas": [
+            "Índice de necessidade: base proporcional à frequência de sinistros da carteira (Monitor Mercantil, 21/07/2026) mais sinais do imóvel; é premissa da equipe, não probabilidade de sinistro.",
+            "Faixas dos adicionais são percentuais de bens observados (premissa), sem dado de sinistro por imóvel.",
+            "Esta versão não usa idade nem renda do cliente em nenhuma regra de personalização."
+          ]
+        },
+        "explicacao": {
+          "passos": [
+            {
+              "id": "elegibilidade",
+              "titulo": "Este imóvel pode ser segurado?",
+              "resultado": "ELEGIVEL",
+              "motivo": "",
+              "checagens": [
+                {
+                  "regra": "Situação cadastral regular",
+                  "ok": true,
+                  "base": "Guia 9.1"
+                },
+                {
+                  "regra": "Paredes sem predomínio de material combustível",
+                  "ok": true,
+                  "base": "Guia 9.1",
+                  "estado": "CONFIRMADO"
+                },
+                {
+                  "regra": "Sem obra estrutural em andamento",
+                  "ok": true,
+                  "pendente": false,
+                  "base": "CG V1.6, 7.1 w/x",
+                  "estado": "ESTIMADO"
+                },
+                {
+                  "regra": "Tipo de imóvel identificado",
+                  "ok": true,
+                  "base": "Guia 9.1"
+                }
+              ]
+            },
+            {
+              "id": "casa_gemea",
+              "titulo": "O que o banco já sabe da sua casa",
+              "texto": "Cada dado vem com selo (observado, estimado, a confirmar), confiança e evidência."
+            },
+            {
+              "id": "plano",
+              "titulo": "Qual plano faz sentido?",
+              "resultado": "Total",
+              "pontos_pratico": 1,
+              "pontos_total": 4,
+              "sinais_pratico": [
+                {
+                  "pontos": 1,
+                  "sinal": "bens estimados em R$ 9.300 a R$ 18.600"
+                }
+              ],
+              "sinais_total": [
+                {
+                  "pontos": 2,
+                  "sinal": "paga aluguel de R$ 1.500: se o imóvel ficar inabitável, continua devendo o aluguel"
+                },
+                {
+                  "pontos": 1,
+                  "sinal": "tem pet: danos a terceiros causados pelo animal"
+                },
+                {
+                  "pontos": 1,
+                  "sinal": "3 dependentes: danos a terceiros e despesas de hospedagem da família"
+                }
+              ],
+              "regra": "Total se pontos do Total >= 3, ou >= 2 com ao menos 1 ponto do Prático; senão Prático se pontos do Prático >= 2; senão Essencial. Nenhum sinal decide sozinho.",
+              "por_que_nao_o_de_baixo": "O Prático não cobre aluguel, RC familiar nem despesas emergenciais, que respondem aos sinais citados acima. Em reais: o cliente paga cerca de R$ 1.500/mês de aluguel, então até R$ 4.500 a R$ 9.000 ficariam sem proteção se o imóvel ficasse inabitável.",
+              "por_que_nao_o_de_cima": "É o plano mais completo."
+            },
+            {
+              "id": "faixas",
+              "titulo": "Quanto de cobertura",
+              "texto": "Cada faixa é o limite máximo de indenização sugerido (não é preço). A largura mostra a incerteza dos dados."
+            },
+            {
+              "id": "perguntas",
+              "titulo": "O que ainda pode mudar o resultado",
+              "campos_que_mudam_o_plano": [],
+              "texto": "Só perguntamos o que mudaria o plano, a elegibilidade ou estreitaria a faixa. Se nada mudaria, paramos."
+            },
+            {
+              "id": "canal",
+              "titulo": "Como seguir",
+              "semaforo": "VERDE",
+              "canal": "ONE_CLICK_BUY"
+            }
+          ],
+          "limites_do_motor": [
+            "Percentuais de perda por evento e pesos do plano são premissas da equipe (sem dado de sinistro por imóvel).",
+            "Faixa de reconstrução calibrada em cerca de 90% (teste cego da área: erro mediano de 13% no desenvolvimento e 16% no teste).",
+            "O motor decide e calcula com regras; IA generativa, quando usada, só redige texto."
+          ]
+        },
+        "respostas_aplicadas": [
+          "conteudo",
+          "declaracao_unica"
+        ]
+      },
+      "resumo": {
+        "status": "RECOMENDACAO_CONFIRMADA",
+        "elegibilidade": "ELEGIVEL",
+        "plano": "TOTAL",
+        "confianca": "ALTA",
+        "semaforo": "VERDE",
+        "canal": "ONE_CLICK_BUY",
+        "faixa_incendio": [
+          19400,
+          52900
+        ],
+        "adicionais": [
+          "EQUIPAMENTOS_PORTATEIS",
+          "INDENIZACAO_VALOR_DE_NOVO"
+        ],
+        "perguntas_restantes": [],
+        "perguntas_evitadas": 7
+      }
+    }
+  ]
+}

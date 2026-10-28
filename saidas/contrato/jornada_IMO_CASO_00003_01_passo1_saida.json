@@ -267,6 +267,304 @@
     "semaforo": "AMARELO",
     "sugerido": "APP_COM_CONFIRMACAO"
   },
+  "personalizacao": {
+    "perfil": {
+      "arquetipo": "LOCADOR",
+      "rotulo": "Locador",
+      "descricao": "Vive da renda do aluguel: precisa proteger o imóvel e a renda que ele gera.",
+      "sinais": [
+        "vínculo: recebe aluguel do imóvel"
+      ],
+      "jornada": "GUIADA",
+      "jornada_motivo": "maturidade digital 66 (35 a 69)",
+      "tom": "passo a passo, com exemplos do dia a dia e o motivo de cada pergunta",
+      "modo": "NOVA_APOLICE",
+      "relacionamento_seguridade": 0
+    },
+    "necessidades": [
+      {
+        "cobertura": "PERDA_PAGAMENTO_ALUGUEL",
+        "indice": 70,
+        "nivel": "ALTA",
+        "no_plano_recomendado": true,
+        "fatores": [
+          {
+            "pontos": 65,
+            "fator": "recebe aluguel: a renda para após um sinistro"
+          }
+        ]
+      },
+      {
+        "cobertura": "DANOS_ELETRICOS",
+        "indice": 53,
+        "nivel": "MEDIA",
+        "no_plano_recomendado": true,
+        "fatores": [
+          {
+            "pontos": 8,
+            "fator": "consumo de energia alto para o tamanho do imóvel"
+          }
+        ]
+      },
+      {
+        "cobertura": "DANOS_POR_AGUA",
+        "indice": 50,
+        "nivel": "MEDIA",
+        "no_plano_recomendado": true,
+        "fatores": [
+          {
+            "pontos": 20,
+            "fator": "consumo de água de R$ 200/mês (mais pontos hidráulicos em uso)"
+          }
+        ]
+      },
+      {
+        "cobertura": "VENDAVAL_GRANIZO",
+        "indice": 47,
+        "nivel": "MEDIA",
+        "no_plano_recomendado": true,
+        "fatores": [
+          {
+            "pontos": 25,
+            "fator": "casa: telhado e esquadrias expostos"
+          }
+        ]
+      },
+      {
+        "cobertura": "IMPACTO_VEICULOS_TERRESTRES",
+        "indice": 28,
+        "nivel": "BAIXA",
+        "no_plano_recomendado": true,
+        "fatores": [
+          {
+            "pontos": 20,
+            "fator": "casa: muro, portão e fachada voltados para a rua"
+          }
+        ]
+      },
+      {
+        "cobertura": "ROUBO_FURTO_ARROMBAMENTO",
+        "indice": 27,
+        "nivel": "BAIXA",
+        "no_plano_recomendado": true,
+        "fatores": [
+          {
+            "pontos": 15,
+            "fator": "casa: mais acessos expostos a arrombamento"
+          }
+        ]
+      },
+      {
+        "cobertura": "RESPONSABILIDADE_CIVIL_FAMILIAR",
+        "indice": 25,
+        "nivel": "BAIXA",
+        "no_plano_recomendado": true,
+        "fatores": [
+          {
+            "pontos": 15,
+            "fator": "1 dependente(s) em casa"
+          }
+        ]
+      },
+      {
+        "cobertura": "INCENDIO_RAIO_EXPLOSAO_FUMACA",
+        "indice": 20,
+        "nivel": "BAIXA",
+        "no_plano_recomendado": true,
+        "fatores": []
+      },
+      {
+        "cobertura": "QUEBRA_DE_VIDROS",
+        "indice": 20,
+        "nivel": "BAIXA",
+        "no_plano_recomendado": true,
+        "fatores": [
+          {
+            "pontos": 10,
+            "fator": "casa: mais janelas e portas de vidro"
+          }
+        ]
+      },
+      {
+        "cobertura": "DESPESAS_EMERGENCIAIS",
+        "indice": 16,
+        "nivel": "BAIXA",
+        "no_plano_recomendado": true,
+        "fatores": [
+          {
+            "pontos": 8,
+            "fator": "mais pessoas para abrigar em caso de interdição"
+          }
+        ]
+      },
+      {
+        "cobertura": "QUEDA_AERONAVE",
+        "indice": 3,
+        "nivel": "BAIXA",
+        "no_plano_recomendado": true,
+        "fatores": []
+      }
+    ],
+    "adicionais_sugeridos": [],
+    "assistencias": {
+      "base": "Casa em Apuros",
+      "destaque": [
+        {
+          "nome": "Casa Limpa",
+          "por_que": "limpeza de calhas e caixa d'água evita infiltração (que a cobertura não paga)"
+        },
+        {
+          "nome": "Casa Segura",
+          "por_que": "tela de proteção, película em box e check-up residencial para a família"
+        }
+      ],
+      "so_em_plano_maior": [],
+      "beneficio_premium_sugerido": {
+        "nome": "Decoração online",
+        "por_que": "móveis ou reforma recentes"
+      }
+    },
+    "alertas": [
+      {
+        "tipo": "BENS_DE_TERCEIROS",
+        "texto": "Bens do inquilino não são cobertos (CG V1.6, 6.1 r): o conteúdo considerado é reduzido."
+      }
+    ],
+    "mensagem_do_app": {
+      "titulo": "Um seguro feito para a sua casa",
+      "texto": "Montamos uma sugestão (Total) com o que o banco já sabe do seu imóvel.",
+      "tom": "passo a passo, com exemplos do dia a dia e o motivo de cada pergunta"
+    },
+    "recibos": [
+      {
+        "dado": "compras de eletrônicos e eletrodomésticos (36 meses)",
+        "usado_para": "equipamentos portáteis, danos elétricos e assistência Casa Funcionando"
+      },
+      {
+        "dado": "bens cadastrados do tipo item de lazer",
+        "usado_para": "cobertura de bicicleta"
+      },
+      {
+        "dado": "consumo de água e energia",
+        "usado_para": "danos por água e danos elétricos"
+      },
+      {
+        "dado": "vínculo com o imóvel (aluguel, financiamento, crédito)",
+        "usado_para": "plano, aluguel e quanto do prédio é seu"
+      },
+      {
+        "dado": "dependentes e pet informados",
+        "usado_para": "responsabilidade civil, despesas emergenciais e assistências"
+      },
+      {
+        "dado": "uso do imóvel e ocupação",
+        "usado_para": "roubo, desocupação temporária e fechadura eletrônica"
+      },
+      {
+        "dado": "maturidade digital e uso do app",
+        "usado_para": "canal, tom e ritmo da conversa (nunca plano nem preço)"
+      },
+      {
+        "dado": "seguro residencial já contratado",
+        "usado_para": "modo de revisão em vez de nova apólice"
+      }
+    ],
+    "premissas": [
+      "Índice de necessidade: base proporcional à frequência de sinistros da carteira (Monitor Mercantil, 21/07/2026) mais sinais do imóvel; é premissa da equipe, não probabilidade de sinistro.",
+      "Faixas dos adicionais são percentuais de bens observados (premissa), sem dado de sinistro por imóvel.",
+      "Esta versão não usa idade nem renda do cliente em nenhuma regra de personalização."
+    ]
+  },
+  "explicacao": {
+    "passos": [
+      {
+        "id": "elegibilidade",
+        "titulo": "Este imóvel pode ser segurado?",
+        "resultado": "ELEGIVEL",
+        "motivo": "",
+        "checagens": [
+          {
+            "regra": "Situação cadastral regular",
+            "ok": true,
+            "base": "Guia 9.1"
+          },
+          {
+            "regra": "Paredes sem predomínio de material combustível",
+            "ok": true,
+            "base": "Guia 9.1",
+            "estado": "A_CONFIRMAR"
+          },
+          {
+            "regra": "Sem obra estrutural em andamento",
+            "ok": true,
+            "pendente": false,
+            "base": "CG V1.6, 7.1 w/x",
+            "estado": "CONFIRMADO"
+          },
+          {
+            "regra": "Tipo de imóvel identificado",
+            "ok": true,
+            "base": "Guia 9.1"
+          }
+        ]
+      },
+      {
+        "id": "casa_gemea",
+        "titulo": "O que o banco já sabe da sua casa",
+        "texto": "Cada dado vem com selo (observado, estimado, a confirmar), confiança e evidência."
+      },
+      {
+        "id": "plano",
+        "titulo": "Qual plano faz sentido?",
+        "resultado": "Total",
+        "pontos_pratico": 1,
+        "pontos_total": 3,
+        "sinais_pratico": [
+          {
+            "pontos": 1,
+            "sinal": "casa: mais portas e janelas expostas a arrombamento"
+          }
+        ],
+        "sinais_total": [
+          {
+            "pontos": 2,
+            "sinal": "recebe cerca de R$ 8.350/mês de aluguel: renda que pararia após um sinistro"
+          },
+          {
+            "pontos": 1,
+            "sinal": "1 dependente: danos a terceiros e despesas de hospedagem da família"
+          }
+        ],
+        "regra": "Total se pontos do Total >= 3, ou >= 2 com ao menos 1 ponto do Prático; senão Prático se pontos do Prático >= 2; senão Essencial. Nenhum sinal decide sozinho.",
+        "por_que_nao_o_de_baixo": "O Prático não cobre aluguel, RC familiar nem despesas emergenciais, que respondem aos sinais citados acima. Em reais: o cliente recebe cerca de R$ 8.350/mês de aluguel, então até R$ 25.050 a R$ 50.100 ficariam sem proteção se o imóvel ficasse inabitável.",
+        "por_que_nao_o_de_cima": "É o plano mais completo."
+      },
+      {
+        "id": "faixas",
+        "titulo": "Quanto de cobertura",
+        "texto": "Cada faixa é o limite máximo de indenização sugerido (não é preço). A largura mostra a incerteza dos dados."
+      },
+      {
+        "id": "perguntas",
+        "titulo": "O que ainda pode mudar o resultado",
+        "campos_que_mudam_o_plano": [
+          "vinculo"
+        ],
+        "texto": "Só perguntamos o que mudaria o plano, a elegibilidade ou estreitaria a faixa. Se nada mudaria, paramos."
+      },
+      {
+        "id": "canal",
+        "titulo": "Como seguir",
+        "semaforo": "AMARELO",
+        "canal": "APP_COM_CONFIRMACAO"
+      }
+    ],
+    "limites_do_motor": [
+      "Percentuais de perda por evento e pesos do plano são premissas da equipe (sem dado de sinistro por imóvel).",
+      "Faixa de reconstrução calibrada em cerca de 90% (teste cego da área: erro mediano de 13% no desenvolvimento e 16% no teste).",
+      "O motor decide e calcula com regras; IA generativa, quando usada, só redige texto."
+    ]
+  },
   "respostas_aplicadas": [
     "obra"
   ]

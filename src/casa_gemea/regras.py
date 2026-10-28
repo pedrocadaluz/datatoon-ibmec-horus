@@ -140,6 +140,8 @@ def pontuar_plano(r: pd.Series) -> dict:
         "pontos_total": pontos_t,
         "motivos_pratico": [m for _, m in pratico],
         "motivos_total": [m for _, m in total],
+        "sinais_pratico": pratico,
+        "sinais_total": total,
     }
 
 
