@@ -18,7 +18,7 @@ RAIZ = Path(__file__).resolve().parents[1]
 MAX_NUMERO_JSON = 9_007_199_254_740_991  # Precisão inteira segura do navegador (2**53 - 1).
 sys.path.insert(0, str(RAIZ / "src"))
 
-from casa_gemea.motor import Motor, VERSAO_CONTRATO  # noqa: E402
+from casa_gemea.motor import RESPOSTAS_ADICIONAIS, Motor, VERSAO_CONTRATO  # noqa: E402
 from casa_gemea.perguntas import OPCOES  # noqa: E402
 from casa_gemea.config import BASES  # noqa: E402
 
@@ -34,12 +34,16 @@ class Entrada(BaseModel):
     model_config = ConfigDict(extra="forbid")
     versao_contrato: Literal["1.0"] = VERSAO_CONTRATO
     imovel_id: str = Field(min_length=1, max_length=80)
-    respostas: dict[str, StrictStr | StrictInt | StrictFloat] = Field(default_factory=dict, max_length=8)
+    respostas: dict[str, StrictStr | StrictInt | StrictFloat] = Field(default_factory=dict, max_length=12)
 
     @field_validator("respostas")
     @classmethod
     def respostas_validas(cls, respostas):
         for campo, valor in respostas.items():
+            if campo in RESPOSTAS_ADICIONAIS:  # perguntas dos adicionais: SIM, NAO ou NAO_SEI
+                if valor not in RESPOSTAS_ADICIONAIS[campo]:
+                    raise ValueError("Resposta fora das opções do motor.")
+                continue
             if campo not in OPCOES or campo == "vinculo_locador":
                 raise ValueError("Pergunta desconhecida.")
             if isinstance(valor, (float, int)):
