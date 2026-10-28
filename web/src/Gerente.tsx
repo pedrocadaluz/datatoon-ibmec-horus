@@ -98,11 +98,13 @@ export function ManagerFlow({ data, initial, history, busy, passo, onPasso, ques
         {rec.campos_que_podem_mudar_o_plano.length > 0 && <p className="manager-alert"><Icon name="info" size={16} />O plano ainda pode mudar com: {rec.campos_que_podem_mudar_o_plano.map(c => (nomes[c] ?? c.replace(/_/g, ' ')).toLowerCase()).join(', ')}.</p>}
         <button className="button primary" onClick={() => onPasso(perguntas ? 2 : 3)}>{perguntas ? 'Começar as perguntas sugeridas' : 'Ver resultado para o cliente'} <Icon name="arrow" size={16} /></button>
       </section>
-      <div className="manager-grid"><Manager data={data} /><Recommendation data={data} initial={initial} pending={busy} /></div>
+      <details className="manager-more"><summary>Ficha técnica: cada dado com selo e evidência</summary><Manager data={data} /></details>
+      <details className="manager-more"><summary>Recomendação técnica do motor</summary><Recommendation data={data} initial={initial} pending={busy} /></details>
     </>}
 
     {passo === 2 && <>
-      <div className="manager-grid">{question}<ManagerQueue data={data} /></div>
+      {question}
+      <details className="manager-more"><summary>Por que perguntar, e por que agora</summary><ManagerQueue data={data} /></details>
       <div className="manager-nav"><button className="button secondary" onClick={() => onPasso(1)}>← Relatório inicial</button><button className="button primary" onClick={() => onPasso(3)}>Ver resultado para o cliente <Icon name="arrow" size={16} /></button></div>
     </>}
 

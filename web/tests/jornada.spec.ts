@@ -47,6 +47,8 @@ test('cliente percorre jornada real, muda plano e confirma faixa', async ({ page
   await page.evaluate(() => window.scrollTo(0, 0))
   await page.screenshot({ path: 'evidencias/cliente-confirmado.png', fullPage: true })
   await page.getByRole('button', { name: 'Gerente', exact: true }).click()
+  await page.getByRole('button', { name: 'Relatório inicial' }).click()
+  await page.getByText('Ficha técnica: cada dado com selo e evidência').click()
   await expect(page.getByText('declaração do cliente', { exact: true }).first()).toBeVisible()
   await page.getByRole('button', { name: 'Agente', exact: true }).click()
   await expect(page.getByLabel('Entrada JSON')).toContainText('160')
