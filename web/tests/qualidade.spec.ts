@@ -35,7 +35,6 @@ test('justificativa, contador e aluguel usam os campos reais do motor', async ({
   await expect(page.getByTestId('por-que-nao-PRATICO')).toContainText('Perda ou pagamento de aluguel')
   await expect(page.getByTestId('por-que-nao-ESSENCIAL')).toContainText('Roubo e furto com arrombamento')
   await page.getByRole('button', { name: 'Gerente', exact: true }).click()
-  await page.getByText('Recomendação técnica do motor').click()
   await expect(page.locator('.short-reason')).toContainText(result.recomendacao.justificativa_curta.replace(/[\u2013\u2014]/g, ', '))
   await expect(page.locator('.rental-highlight strong').first()).toContainText('R$')
   await page.locator('.all-coverages > summary').click()
