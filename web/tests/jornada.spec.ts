@@ -134,3 +134,13 @@ test('SAC: abertura, roteiro com respostas prontas e encerramento com registro',
   await page.getByRole('button', { name: 'Registrar atendimento' }).click()
   await expect(page.getByRole('status').filter({ hasText: 'Atendimento registrado' })).toBeVisible()
 })
+
+test('apartamento aparece como prédio e casa como casa', async ({ page }) => {
+  await page.goto('/')
+  await expect(page.locator('.house-hero .house-art')).toHaveAttribute('data-tipo', 'casa')
+  await page.getByLabel('Imóvel do Teste Comum').selectOption('IMO_CASO_00002_01')
+  await expect(page.getByTestId('caso-atual')).toContainText('IMO_CASO_00002_01')
+  await expect(page.locator('.house-hero .house-art')).toHaveAttribute('data-tipo', 'apartamento')
+  await page.getByRole('button', { name: 'Como usar' }).click()
+  await expect(page.getByRole('dialog', { name: 'Como usar' })).toContainText('Escolha um imóvel')
+})

@@ -36,10 +36,21 @@ export function HouseArt({ casa, aplicadas = [], status }: { casa: Casa; aplicad
   const telhado = cor(casa.tipo_imovel, '#5A6FFF', '#C9D1FF')
   const porta = cor(casa.vinculo, '#FCFC30', '#FFFBC8')
   const janela = firme(casa.uso_imovel) ? { fill: luz, stroke: '#3548CA' } : cor(casa.uso_imovel, luz, '#F7F8E8')
-  return <svg className="house-art" viewBox="0 0 600 280" role="img" data-progresso={`${firmes}/${total}`}
-    aria-label={`Ilustração da sua Casa Gêmea, com ${firmes} de ${total} dados confirmados. Cores mais claras e cinza indicam estimativas. Não representa a planta real do imóvel.`}>
+  const apartamento = casa.tipo_imovel.valor === 'APARTAMENTO'
+  return <svg className="house-art" viewBox="0 0 600 280" role="img" data-progresso={`${firmes}/${total}`} data-tipo={apartamento ? 'apartamento' : 'casa'}
+    aria-label={`Ilustração da sua Casa Gêmea (${apartamento ? 'apartamento' : 'casa'}), com ${firmes} de ${total} dados confirmados. Cores mais claras e cinza indicam estimativas. Não representa a planta real do imóvel.`}>
     <rect x="40" y="236" width="520" height="14" rx="7" fill="#E6E9F7" />
-    <g className={`house-grow ${status === 'RECOMENDACAO_CONFIRMADA' ? 'complete' : ''}`} style={{ transform: `scale(${escala})` }}>
+    {apartamento ? <g className={`house-grow ${status === 'RECOMENDACAO_CONFIRMADA' ? 'complete' : ''}`} style={{ transform: `scale(${escala})` }}>
+      <g key={`predio-${paredes.fill}`} className="part"><rect x="200" y="44" width="200" height="192" rx="4" {...paredes} strokeWidth="3" /></g>
+      <g key={`topo-${telhado.fill}`} className="part"><rect x="190" y="32" width="220" height="16" rx="3" {...telhado} strokeWidth="3" /></g>
+      <g aria-hidden="true">{[64, 152].map(y => [222, 278, 334].map(x => <rect key={`${x}-${y}`} x={x} y={y} width="44" height="30" rx="3" fill="#E8EBF5" stroke="#C5CAD9" strokeWidth="2" />))}</g>
+      <rect x="208" y="102" width="184" height="42" rx="4" fill="#F0F2FF" stroke="#9AA8F5" strokeWidth="1.5" strokeDasharray="5 4" />
+      <path d="M396 123h22" stroke="#3548CA" strokeWidth="2" /><text x="424" y="128" fontSize="14" fontWeight="600" fill="#2F3FB0">seu apartamento</text>
+      <g key={`janelas-${janela.fill}`} className="part">{[222, 278, 334].map(x => <rect key={x} x={x} y="108" width="44" height="30" rx="3" {...janela} strokeWidth="3" />)}</g>
+      {casa.conteudo.selo === 'CONFIRMADO' && <g className="part"><rect x="286" y="114" width="28" height="18" rx="2" fill="#3548CA" /></g>}
+      <g key={`porta-${porta.fill}`} className="part"><rect x="280" y="194" width="40" height="42" rx="3" {...porta} strokeWidth="3" /></g>
+      {aplicadas.includes('declaracao_unica') && <g className="part house-seal"><circle cx="446" cy="40" r="20" fill="#FCFC30" stroke="#3548CA" strokeWidth="3" /><path d="m436 40 7 7 13-14" stroke="#3548CA" strokeWidth="3.5" fill="none" strokeLinecap="round" /></g>}
+    </g> : <g className={`house-grow ${status === 'RECOMENDACAO_CONFIRMADA' ? 'complete' : ''}`} style={{ transform: `scale(${escala})` }}>
       <g key={`paredes-${paredes.fill}`} className="part"><rect x="190" y="118" width="220" height="118" rx="4" {...paredes} strokeWidth="3" /></g>
       <g key={`telhado-${telhado.fill}`} className="part"><path d="M168 124 300 42l132 82Z" {...telhado} strokeWidth="3" strokeLinejoin="round" /></g>
       <g key={`porta-${porta.fill}`} className="part"><rect x="278" y="168" width="44" height="68" rx="3" {...porta} strokeWidth="3" /><circle cx="312" cy="204" r="3" fill={porta.stroke} /></g>
@@ -49,7 +60,7 @@ export function HouseArt({ casa, aplicadas = [], status }: { casa: Casa; aplicad
       </g>
       {casa.conteudo.selo === 'CONFIRMADO' && <g className="part"><rect x="350" y="158" width="28" height="18" rx="2" fill="#3548CA" /><path d="M358 180h12" stroke="#3548CA" strokeWidth="3" /></g>}
       {aplicadas.includes('declaracao_unica') && <g className="part house-seal"><circle cx="300" cy="96" r="20" fill="#FCFC30" stroke="#3548CA" strokeWidth="3" /><path d="m290 96 7 7 13-14" stroke="#3548CA" strokeWidth="3.5" fill="none" strokeLinecap="round" /></g>}
-    </g>
+    </g>}
     {obra && <g className="part scaffold"><path d="m470 236 16-58 16 58Z" fill="#F29D38" stroke="#805300" strokeWidth="2" /><path d="M476 214h20M481 196h10" stroke="#FFFFFF" strokeWidth="4" /></g>}
     <g className="area-label"><path d="M190 262h220M190 256v12M410 256v12" stroke={firme(casa.area_m2) ? '#3548CA' : '#C5CAD9'} strokeWidth="2" />
       <rect x="252" y="252" width="96" height="20" rx="10" fill="#FFFFFF" /><text x="300" y="267" textAnchor="middle" fontSize="14" fontWeight="600" fill={firme(casa.area_m2) ? '#3548CA' : '#5B6175'}>{area}</text></g>

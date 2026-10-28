@@ -199,3 +199,16 @@ details.why-card[open] > summary { margin-bottom: 6px; }
 /* Gerente: as três páginas com a mesma largura. */
 .manager-flow:not(.sac-flow) { width: 100%; max-width: 1100px; margin: 0 auto; }
 .manager-flow:not(.sac-flow) .manager-result { max-width: none; }
+
+/* Guia "Como usar". */
+.help-body { display: grid; gap: 14px; }
+.help-steps { margin: 0; padding-left: 20px; display: grid; gap: 8px; font-size: .82rem; }
+.help-canais { margin: 0; display: grid; gap: 8px; }
+.help-canais div { padding: 10px 12px; border: 1px solid var(--line); border-radius: 4px; background: var(--paper); }
+.help-canais dt { font-weight: 700; color: var(--ink-blue); font-size: .8rem; }
+.help-canais dd { margin: 2px 0 0; font-size: .78rem; }
+.help-body > .button { justify-self: start; }
+.help-sheet, .email-sheet { width: min(640px, calc(100vw - 28px)); }
+.help-sheet .sheet-header, .email-sheet .sheet-header { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 16px 22px; border-bottom: 1px solid var(--line); }
+.help-sheet .sheet-header h2, .email-sheet .sheet-header h2 { margin: 0; font-size: 1.1rem; }
+.help-sheet .sheet-scroll, .email-sheet .sheet-scroll { padding: 18px 22px 22px; max-height: calc(100dvh - 140px); overflow-y: auto; }

@@ -47,6 +47,7 @@ for (const width of [360, 390, 430, 768, 1280]) {
       expect(await page.evaluate(() => document.documentElement.scrollWidth > innerWidth), name).toBe(false)
       if (width === 390) await page.screenshot({ path: `evidencias/pwa-celular-${name.toLowerCase()}.png` })
     }
+    await page.getByRole('button', { name: 'Como usar' }).click()
     await page.getByRole('button', { name: 'Modo apresentação' }).click()
     await expect(page.locator('.presentation-bar')).toBeVisible()
     expect(await page.evaluate(() => document.documentElement.scrollWidth > innerWidth)).toBe(false)
