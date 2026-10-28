@@ -226,3 +226,9 @@ dados_brutos/
 Seguro_Residencial_Desenvolvimento/
 Seguro_Residencial_Teste_Comum/
 DatathonBBDW-GuiaDosTimes.pdf
+
+# Material de trabalho dos agentes (briefs e referências), não é entrega
+_referencias_frontend/
+web/test-results/
+web/playwright-report/
+api/*.log

@@ -20,11 +20,11 @@ O mesmo motor serve a todos os canais: o cliente no app, o gerente na agência, 
 
 | Nome | Papel |
 |---|---|
-| Ludmila | _a preencher_ |
-| Milton | _a preencher_ |
-| Anna | _a preencher_ |
-| Isabella | _a preencher_ |
-| Pedro | _a preencher_ |
+| Ludmila Guedes | Ideia da Casa Gêmea e motor de regras |
+| Milton Rodrigues | _a preencher_ |
+| Anna Clara Melo | _a preencher_ |
+| Isabella Rodrigues | _a preencher_ |
+| Pedro Arthur Miranda | _a preencher_ |
 
 ---
 
@@ -83,14 +83,14 @@ Cada informação recebe um **selo** e uma confiança, para nunca apresentar est
 | Bens | Mínimo: bens ponderados ou 50% das compras de 36 meses · máximo: bens cadastrados ou compras |
 
 ### 2. Regras do seguro
-Base oficial: [Condições Gerais do Seguro Residencial BB Seguros v1.3](https://assets-bbsegurosportal.bbseguros.com.br/2024-10/SEGURO_RESIDENCIAL_V-1.3_0.pdf), Processo SUSEP 15414.606453/2020-10 ("CG").
+Base oficial: Condições Gerais do Seguro Residencial BB Seguros V1.6 (vigência desde 11/08/2026; ver [`docs/10_reconciliacao_cg.md`](docs/10_reconciliacao_cg.md)), Processo SUSEP 15414.606453/2020-10 ("CG").
 
 - **Elegibilidade em 3 níveis:**
 
   | Nível | Quando |
   |---|---|
   | `NAO` | Situação irregular ou parede combustível |
-  | `PENDENTE_VALIDACAO` | Possível obra relevante (CG 7.1 x/y) |
+  | `PENDENTE_VALIDACAO` | Possível obra relevante (CG 7.1 w/x) |
   | `SIM` | Demais casos, sujeitos à declaração única do cliente |
 
 - **Plano por pontuação.** Nenhum sinal decide sozinho.
@@ -195,9 +195,9 @@ Inquilinos e locadores vão ao Total porque as CG (Perda de Aluguel 1.1) cobrem 
 
 | Métrica | Resultado | Como foi medido |
 |---|---|---|
-| **Faixa contém o valor real** | **94,8%** (incêndio 97,2%; vidros 82,6%) | Área e padrão escondidos em 1.016 imóveis; modelo retreinado em validação cruzada de 5 dobras |
+| **Faixa de reconstrução contém o custo real** | **cerca de 89%** (faixa calibrada em ~90%) | Área e padrão reais escondidos (273 imóveis), custo verdadeiro = área real × CUB × fator do padrão real; ver `docs/12_avaliacao_modelo.md` (E3). O teste de `validacao.py` (97%) compara com o centro da própria faixa e é otimista |
 | Erro do centro da faixa | 6% a 13% (mediana por cobertura) | Mesmo teste |
-| Modelo de área | Erro mediano 13,4% · R² 0,86 (log) · intervalo de 80% contém o real em 79,9% | Validação cruzada de 5 dobras |
+| Modelo de área | Erro mediano 13,4% · R² 0,86 (log) · intervalo de 80% contém o real em 79,9% | Validação cruzada de 5 dobras por cliente. **Teste cego** (treino só no desenvolvimento, n = 46 imóveis do teste com área real): erro mediano 16,2% (IC 95%: 12,8% a 21,8%), cobertura 78%; sem overfitting nem vazamento (`docs/13_diagnostico_ajuste.md`) |
 | Estabilidade do plano | Limiares de bens ±20% mudam 3,6% / 1,4% dos planos | [`docs/02_regras_seguro.md`](docs/02_regras_seguro.md) |
 | Confiança geral | Alta 69% · Média 22% · Baixa 9% | Antes da análise de impacto: alta 37% |
 
@@ -227,29 +227,30 @@ streamlit run demo/app.py                   # demo: jornada de cotação (client
 ## Estrutura do projeto
 
 ```
-├── README.md
+├── README.md · CLAUDE.md          visão geral e contexto de trabalho
 ├── requirements.txt · .python-version
-├── src/casa_gemea/            motor (pacote Python)
-│   ├── config.py              caminhos, selos, limiares, campos proibidos
-│   ├── carregar.py            leitura e junção das tabelas
-│   ├── area.py                modelo de área (log-linear, validação cruzada)
-│   ├── calibracao.py          IPTU e aluguel por m² por cidade
-│   ├── inferencias.py         Casa Gêmea: cada campo com selo, confiança e evidência
-│   ├── regras.py              elegibilidade, plano, faixas, comparação, canal
-│   ├── perguntas.py           análise de impacto, perguntas e confiança geral
-│   ├── recomendacao.py        junta regras e perguntas por imóvel
-│   ├── validacao.py           teste das faixas escondendo dados reais
-│   ├── entrega.py             monta e valida os templates oficiais
-│   ├── motor.py               contrato JSON: respostas → recomendação atualizada
-│   └── pipeline.py            dados → Casa Gêmea → recomendação
-├── scripts/                   etapas executáveis (01 a 04)
-├── demo/app.py                demo Streamlit no formato da jornada de cotação
-├── .streamlit/config.toml     tema da demo
-├── entrega/                   os 2 CSVs da entrega (templates oficiais preenchidos)
-├── saidas/                    arquivos intermediários gerados (Casa Gêmea, recomendação, validação, contrato)
-├── docs/                      relatórios de cada etapa e fontes externas
-└── dados_externos/            CUB por UF, fatores Sinduscon, Condições Gerais BB
+├── src/casa_gemea/                motor (pacote Python, uma responsabilidade por módulo)
+│   ├── config.py                  caminhos, selos, limiares, campos sensíveis
+│   ├── carregar.py                leitura e junção das tabelas
+│   ├── area.py · calibracao.py    modelo de área e parâmetros por cidade
+│   ├── inferencias.py             Casa Gêmea: cada campo com selo, confiança e evidência
+│   ├── regras.py                  elegibilidade, plano, faixas, comparação, canal
+│   ├── perguntas.py               análise de impacto, perguntas e confiança geral
+│   ├── recomendacao.py · pipeline.py   junta regras e perguntas por imóvel
+│   ├── validacao.py               teste das faixas escondendo dados reais
+│   ├── entrega.py                 monta e valida os templates oficiais
+│   └── motor.py                   contrato JSON: respostas → recomendação atualizada
+├── api/                           FastAPI fina sobre o motor (sem regras próprias)
+├── web/                           web-app (React + TypeScript, PWA): web e celular
+├── scripts/                       etapas executáveis, em ordem (01 a 04 pipeline; 05 rodar o web-app; 06 auditoria de proxy; 07 análise de colunas)
+├── entrega/                       os 2 CSVs da entrega (templates oficiais preenchidos)
+├── saidas/                        arquivos gerados (Casa Gêmea, recomendação, validação, auditoria, contrato)
+├── docs/                          relatórios por etapa (índice em docs/README.md)
+├── dados_externos/                CUB por UF, fatores Sinduscon, Condições Gerais BB (V1.6 vigente, v1.3 e v2.3 para comparação)
+└── demo/ · .streamlit/            demo Streamlit anterior (legado; a interface oficial é `web/`)
 ```
+
+As bases originais da organização (`Seguro_Residencial_*`) ficam na raiz, ignoradas pelo Git.
 
 ---
 
@@ -274,7 +275,7 @@ Detalhes (fonte, data, licença, método e limitações) em [`docs/fontes_extern
 
 | Fonte | Uso |
 |---|---|
-| Condições Gerais do Seguro Residencial BB Seguros v1.3 (SUSEP 15414.606453/2020-10) | Coberturas, exclusões, limites, Primeiro Risco Absoluto |
+| Condições Gerais do Seguro Residencial BB Seguros V1.6 (SUSEP 15414.606453/2020-10) | Coberturas, exclusões, limites, Primeiro Risco Absoluto |
 | CUB R8-N por UF (Sinduscons, ago–set/2026) | Custo de reconstrução por m² |
 | Tabela CUB Sinduscon-MG (abr/2025) | Fatores de tipo (casa × apartamento) e padrão |
 | Monitor Mercantil (21/07/2026) | Distribuição de sinistros da carteira BB, só como contexto |
@@ -282,6 +283,8 @@ Detalhes (fonte, data, licença, método e limitações) em [`docs/fontes_extern
 ---
 
 ## Premissas
+
+- **Pesos do plano (pet, dependentes e a regra "um ponto de Total junto com um de Prático vira Total")** são premissas de negócio, sem rótulo para calibrar. O plano é sensível a eles: variar cada peso em ±1 muda de 12% a 40% dos imóveis (`docs/12_avaliacao_modelo.md`, E5). Já é robusto a conteúdo, vidros, eletrônicos e vínculo.
 
 - **Percentuais de perda por evento** são premissas da equipe, porque não há dado de sinistro por imóvel. Ficam no topo da seção de faixas em `regras.py`:
 
@@ -297,7 +300,7 @@ Detalhes (fonte, data, licença, método e limitações) em [`docs/fontes_extern
 
   | Situação | Prédio |
   |---|---|
-  | Apartamento | 10% a 30% (estrutura no seguro do condomínio, CG 5.4 e 15.2) |
+  | Apartamento | 10% a 30% (estrutura no seguro do condomínio, CG 5.3 e 15.2.1) |
   | Casa financiada | 50% a 100% |
   | Inquilino | Só benfeitorias |
 
