@@ -1,9 +1,5 @@
 # Etapa 02 — Regras do seguro
-<<<<<<< Updated upstream
 _Gerado por `scripts/02_aplicar_regras.py` em 28/10/2026. Tempo de execução: 4,4 s para 2716 imóveis._
-=======
-_Gerado por `scripts/02_aplicar_regras.py` em 28/10/2026. Tempo de execução: 3,1 s para 2716 imóveis._
->>>>>>> Stashed changes
 
 Na base de teste, **138 de 138 imóveis** receberam elegibilidade, plano, 1283 linhas de cobertura com faixa em reais, confiança, justificativa e comparação com os planos vizinhos.
 
@@ -163,7 +159,7 @@ IPTU por m² vem de imóveis com área real; aluguel por m² vem de inquilinos c
 ## 5. Confiança e canal
 
 - **Confiança de cada cobertura:** média da confiança dos dados que ela usa (alta = 0, média = 1, baixa = 2). Até 0,5 é alta, até 1,2 é média, acima é baixa.
-- **Confiança geral:** mede a chance de o plano mudar depois das perguntas (ver seção 7). Alta: nenhuma resposta plausível muda o plano. Média: um campo pode mudar o plano. Baixa: dois ou mais campos podem mudar o plano, ou a elegibilidade depende de confirmação.
+- **Confiança geral:** mede a chance de o plano mudar depois das perguntas (ver seção 6). Alta: nenhuma resposta plausível muda o plano. Média: um campo pode mudar o plano. Baixa: dois ou mais campos podem mudar o plano, ou a elegibilidade depende de confirmação.
 - **Semáforo:** vermelho se condicionado, vínculo a confirmar ou obra a confirmar (vai ao gerente); verde com confiança alta; amarelo nos demais.
 - **Canal:** verde + usuário de app = One Click Buy. Dados de app só escolhem o canal, nunca o plano.
 
@@ -180,29 +176,7 @@ IPTU por m² vem de imóveis com área real; aluguel por m² vem de inquilinos c
 | ATENDIMENTO_ASSISTIDO | 15 | 10,9 |
 | APP_COM_CONFIRMACAO | 12 | 8,7 |
 
-## 6. Personalização: coberturas adicionais
-
-O produto permite incluir coberturas além do plano, pagas à parte (CG 4.1). O motor sugere só as que têm sinal nos dados do cliente (`src/casa_gemea/adicionais.py`); elas não entram no template de coberturas, que segue o catálogo dos planos.
-
-| Adicional | Quando é sugerido | Por quê |
-|---|---|---|
-| Responsabilidade Civil Familiar (CG 4.1 m) | Pet ou dependentes, plano Essencial ou Prático | Quem não precisa do Total inteiro ainda pode cobrir danos a terceiros |
-| Equipamentos Portáteis (CG 4.1 g) | Eletrônicos do cliente ≥ 15.000 reais | Cobre queda e quebra acidental, que nenhum plano cobre |
-| Bicicleta (CG 4.1 b) | Itens de lazer ≥ 5.000 reais | Roubo também fora de casa; sugerida como pergunta ("se houver bicicleta") |
-| Desocupação Temporária (CG 4.1 f) | Segunda residência ou imóvel vazio | Mantém a proteção em períodos de 30 a 60 dias sem moradores |
-
-Alagamento, Danos por Chuva e Rompimento de Tubulações não são sugeridos: Danos por Água, presente nos três planos, já os contempla (CG 4.3). Os limiares de valor ficam no quinto superior da base de teste, para sugerir só onde há valor em jogo.
-
-Adicionais sugeridos por imóvel (base de teste):
-
-| valor | imóveis | % |
-|---|---|---|
-| 0 | 56 | 40,6 |
-| 1 | 55 | 39,9 |
-| 2 | 23 | 16,7 |
-| 3 | 4 | 2,9 |
-
-## 7. Perguntas que mudam o resultado
+## 6. Perguntas que mudam o resultado
 
 Para cada campo incerto, o motor simula as respostas plausíveis e refaz a recomendação (`src/casa_gemea/perguntas.py`).
 
@@ -236,7 +210,7 @@ Campos que podem mudar o plano (base de desenvolvimento, imóveis):
 | ocupacao | 100 | 14,2 |
 | tipo_imovel | 88 | 12,5 |
 
-## 8. Validação das faixas escondendo dados reais
+## 7. Validação das faixas escondendo dados reais
 
 Nos 1016 imóveis da base de desenvolvimento com área cadastrada, o motor foi rodado escondendo a área e o padrão construtivo, com o modelo de área retreinado em validação cruzada (5 dobras: nenhum imóvel é avaliado por um modelo que o viu). Valor real = centro da faixa calculada com os dados cadastrados (`src/casa_gemea/validacao.py`).
 
@@ -251,7 +225,7 @@ Nos 1016 imóveis da base de desenvolvimento com área cadastrada, o motor foi r
 
 No total, a faixa contém o valor real em **97,1%** dos casos. As faixas de prédio são conservadoras porque também carregam a incerteza do interesse segurável (ex.: partes privativas de apartamento de 10% a 30%), que não é testada aqui. Quebra de vidros depende só da área e acompanha o intervalo de 80% do modelo de área. **Atenção:** aqui o "valor real" é o centro da faixa calculada com os dados cadastrados (inclusive o padrão estimado pelo IPTU), então este número é otimista. Contra o custo de reconstrução verdadeiro (área real × CUB × fator do padrão real), a cobertura medida em `docs/12_avaliacao_modelo.md` (E3) é de cerca de 89%.
 
-## 9. Testado e descartado
+## 8. Testado e descartado
 
 | Ideia | Resultado na base de desenvolvimento | Decisão |
 |---|---|---|
@@ -260,7 +234,7 @@ No total, a faixa contém o valor real em **97,1%** dos casos. As faixas de pré
 | Ajuste de RC familiar para clientes com 2 imóveis | CG, RC Familiar 1.1: a cobertura é ligada ao imóvel segurado | Sem mudança: não há duplicidade |
 | Confiança geral por contagem de campos a confirmar | Marcava como média campos que não mudam nada (ex.: área de quem já é Total) | Substituída pela análise de impacto |
 
-## 10. Casos contrastantes (base de teste)
+## 9. Casos contrastantes (base de teste)
 
 #### IMO_CASO_00058_02 — Essencial (amarelo)
 
@@ -268,7 +242,7 @@ No total, a faixa contém o valor real em **97,1%** dos casos. As faixas de pré
 - **Elegibilidade:** ELEGIVEL
 - **Por que este plano:** poucos sinais de necessidade além da proteção básica.
 - **Por que não o de baixo:** É o plano de entrada.
-- **Por que não o de cima:** O Prático acrescenta roubo e quebra de vidros, mas os sinais de bens de valor são baixos (bens estimados em R$ 8.900 a R$ 17.800). Como o cliente tem 2 dependentes, a RC familiar pode ser incluída como opcional, sem migrar para o Total.
+- **Por que não o de cima:** O Prático acrescenta roubo e quebra de vidros, mas os sinais de bens de valor são baixos (bens estimados em R$ 8.900 a R$ 17.800). Como o cliente tem 2 dependentes, o Total vale a pena se ele quiser proteção contra danos a terceiros.
 - **Confiança geral:** MEDIA · **canal:** APP_COM_CONFIRMACAO · **conflitos:** apartamento sem condomínio pago
 
 | Cobertura | Mín (R$) | Máx (R$) | Confiança |
@@ -286,7 +260,7 @@ No total, a faixa contém o valor real em **97,1%** dos casos. As faixas de pré
 - **Elegibilidade:** ELEGIVEL
 - **Por que este plano:** poucos sinais de necessidade além da proteção básica.
 - **Por que não o de baixo:** É o plano de entrada.
-- **Por que não o de cima:** O Prático acrescenta roubo e quebra de vidros, mas os sinais de bens de valor são baixos (bens estimados em R$ 9.500 a R$ 19.000). Como o cliente tem 1 dependente, a RC familiar pode ser incluída como opcional, sem migrar para o Total.
+- **Por que não o de cima:** O Prático acrescenta roubo e quebra de vidros, mas os sinais de bens de valor são baixos (bens estimados em R$ 9.500 a R$ 19.000). Como o cliente tem 1 dependente, o Total vale a pena se ele quiser proteção contra danos a terceiros.
 - **Confiança geral:** MEDIA · **canal:** ATENDIMENTO_ASSISTIDO · **conflitos:** apartamento sem condomínio pago
 
 | Cobertura | Mín (R$) | Máx (R$) | Confiança |
@@ -304,7 +278,7 @@ No total, a faixa contém o valor real em **97,1%** dos casos. As faixas de pré
 - **Elegibilidade:** ELEGIVEL
 - **Por que este plano:** bens estimados em R$ 14.000 a R$ 28.000; eletrônicos e eletrodomésticos de até R$ 17.600.
 - **Por que não o de baixo:** O Essencial não cobre roubo nem quebra de vidros, que protegem os bens e os acessos citados acima.
-- **Por que não o de cima:** O Total acrescenta aluguel, RC familiar e despesas emergenciais, mas o cliente não paga nem recebe aluguel: a cobertura de aluguel só pagaria uma moradia temporária se o imóvel ficasse inabitável, sem perda de renda. São proteções úteis, mas não prioritárias para este perfil. Como o cliente tem 1 dependente, a RC familiar pode ser incluída como opcional, sem migrar para o Total.
+- **Por que não o de cima:** O Total acrescenta aluguel, RC familiar e despesas emergenciais, mas o cliente não paga nem recebe aluguel: a cobertura de aluguel só pagaria uma moradia temporária se o imóvel ficasse inabitável, sem perda de renda. São proteções úteis, mas não prioritárias para este perfil. Como o cliente tem 1 dependente, o Total vale a pena se ele quiser proteção contra danos a terceiros.
 - **Confiança geral:** MEDIA · **canal:** APP_COM_CONFIRMACAO · **conflitos:** área cadastrada diverge do IPTU e da energia
 
 | Cobertura | Mín (R$) | Máx (R$) | Confiança |
@@ -324,7 +298,7 @@ No total, a faixa contém o valor real em **97,1%** dos casos. As faixas de pré
 - **Elegibilidade:** ELEGIVEL
 - **Por que este plano:** bens estimados em R$ 18.600 a R$ 37.100; eletrônicos e eletrodomésticos de até R$ 23.800.
 - **Por que não o de baixo:** O Essencial não cobre roubo nem quebra de vidros, que protegem os bens e os acessos citados acima.
-- **Por que não o de cima:** O Total acrescenta aluguel, RC familiar e despesas emergenciais, mas o cliente não paga nem recebe aluguel: a cobertura de aluguel só pagaria uma moradia temporária se o imóvel ficasse inabitável, sem perda de renda. São proteções úteis, mas não prioritárias para este perfil. Como o cliente tem 3 dependentes, a RC familiar pode ser incluída como opcional, sem migrar para o Total.
+- **Por que não o de cima:** O Total acrescenta aluguel, RC familiar e despesas emergenciais, mas o cliente não paga nem recebe aluguel: a cobertura de aluguel só pagaria uma moradia temporária se o imóvel ficasse inabitável, sem perda de renda. São proteções úteis, mas não prioritárias para este perfil. Como o cliente tem 3 dependentes, o Total vale a pena se ele quiser proteção contra danos a terceiros.
 - **Confiança geral:** MEDIA · **canal:** ATENDIMENTO_ASSISTIDO
 
 | Cobertura | Mín (R$) | Máx (R$) | Confiança |
@@ -454,7 +428,7 @@ No total, a faixa contém o valor real em **97,1%** dos casos. As faixas de pré
 - **Elegibilidade:** ELEGIVEL
 - **Por que este plano:** poucos sinais de necessidade além da proteção básica.
 - **Por que não o de baixo:** É o plano de entrada.
-- **Por que não o de cima:** O Prático acrescenta roubo e quebra de vidros, mas os sinais de bens de valor são baixos (bens estimados em R$ 12.600 a R$ 25.200). Como o cliente tem pet, a RC familiar pode ser incluída como opcional, sem migrar para o Total.
+- **Por que não o de cima:** O Prático acrescenta roubo e quebra de vidros, mas os sinais de bens de valor são baixos (bens estimados em R$ 12.600 a R$ 25.200). Como o cliente tem pet, o Total vale a pena se ele quiser proteção contra danos a terceiros.
 - **Confiança geral:** BAIXA · **canal:** GERENTE · **conflitos:** apartamento sem condomínio pago
 
 | Cobertura | Mín (R$) | Máx (R$) | Confiança |

@@ -1,8 +1,8 @@
-"""Recomendação completa por imóvel: junta regras do seguro, análise de impacto e adicionais."""
+"""Recomendação completa por imóvel: junta regras do seguro e análise de impacto."""
 
 import pandas as pd
 
-from . import adicionais, perguntas, regras
+from . import perguntas, regras
 
 
 def recomendar(casa: pd.DataFrame, ref: regras.Referencias, catalogo: pd.DataFrame):
@@ -22,7 +22,6 @@ def recomendar(casa: pd.DataFrame, ref: regras.Referencias, catalogo: pd.DataFra
 
         faixas = regras.calcular_coberturas(r, ref) if plano else []
         do_plano = [f for f in faixas if f["cobertura"] in coberturas_do_plano.get(plano, [])]
-        opcionais = adicionais.sugerir(r, plano, faixas)
         for f in do_plano:
             coberturas.append({"cliente_id": r["cliente_id"], "imovel_id": r["imovel_id"], **f})
 
@@ -42,8 +41,6 @@ def recomendar(casa: pd.DataFrame, ref: regras.Referencias, catalogo: pd.DataFra
             ),
             "por_que_nao_plano_abaixo": nao_abaixo,
             "por_que_nao_plano_acima": nao_acima,
-            "adicionais_sugeridos": adicionais.texto(opcionais),
-            "qtd_adicionais": len(opcionais),
             "campos_que_mudam_plano": impacto["campos_que_mudam_plano"],
             "qtd_perguntas": impacto["qtd_perguntas"],
             "qtd_perguntas_evitadas": regras.CAMPOS_FORMULARIO_TRADICIONAL - impacto["qtd_perguntas"],

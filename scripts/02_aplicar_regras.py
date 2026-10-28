@@ -20,7 +20,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 
 import pandas as pd  # noqa: E402
 
-from casa_gemea import adicionais, perguntas, regras, validacao  # noqa: E402
+from casa_gemea import perguntas, regras, validacao  # noqa: E402
 from casa_gemea.config import ENCODING, PASTA_DOCS, PASTA_SAIDAS  # noqa: E402
 from casa_gemea.pipeline import executar  # noqa: E402
 
@@ -241,7 +241,7 @@ def escrever_relatorio(res, tempo: float, val: pd.DataFrame) -> Path:
         "## 5. Confiança e canal",
         "",
         "- **Confiança de cada cobertura:** média da confiança dos dados que ela usa (alta = 0, média = 1, baixa = 2). Até 0,5 é alta, até 1,2 é média, acima é baixa.",
-        "- **Confiança geral:** mede a chance de o plano mudar depois das perguntas (ver seção 7). Alta: nenhuma resposta plausível muda o plano. Média: um campo pode mudar o plano. Baixa: dois ou mais campos podem mudar o plano, ou a elegibilidade depende de confirmação.",
+        "- **Confiança geral:** mede a chance de o plano mudar depois das perguntas (ver seção 6). Alta: nenhuma resposta plausível muda o plano. Média: um campo pode mudar o plano. Baixa: dois ou mais campos podem mudar o plano, ou a elegibilidade depende de confirmação.",
         "- **Semáforo:** vermelho se condicionado, vínculo a confirmar ou obra a confirmar (vai ao gerente); verde com confiança alta; amarelo nos demais.",
         "- **Canal:** verde + usuário de app = One Click Buy. Dados de app só escolhem o canal, nunca o plano.",
         "",
@@ -249,26 +249,7 @@ def escrever_relatorio(res, tempo: float, val: pd.DataFrame) -> Path:
         "",
         tabela_md(percentual(rec_t["canal_sugerido"])),
         "",
-        "## 6. Personalização: coberturas adicionais",
-        "",
-        "O produto permite incluir coberturas além do plano, pagas à parte (CG 4.1). O motor sugere só as que têm sinal "
-        "nos dados do cliente (`src/casa_gemea/adicionais.py`); elas não entram no template de coberturas, que segue o catálogo dos planos.",
-        "",
-        "| Adicional | Quando é sugerido | Por quê |",
-        "|---|---|---|",
-        "| Responsabilidade Civil Familiar (CG 4.1 m) | Pet ou dependentes, plano Essencial ou Prático | Quem não precisa do Total inteiro ainda pode cobrir danos a terceiros |",
-        f"| Equipamentos Portáteis (CG 4.1 g) | Eletrônicos do cliente ≥ {br(adicionais.PORTATEIS_RELEVANTE)} reais | Cobre queda e quebra acidental, que nenhum plano cobre |",
-        f"| Bicicleta (CG 4.1 b) | Itens de lazer ≥ {br(adicionais.LAZER_RELEVANTE)} reais | Roubo também fora de casa; sugerida como pergunta (\"se houver bicicleta\") |",
-        "| Desocupação Temporária (CG 4.1 f) | Segunda residência ou imóvel vazio | Mantém a proteção em períodos de 30 a 60 dias sem moradores |",
-        "",
-        "Alagamento, Danos por Chuva e Rompimento de Tubulações não são sugeridos: Danos por Água, presente nos três planos, já os contempla (CG 4.3). "
-        "Os limiares de valor ficam no quinto superior da base de teste, para sugerir só onde há valor em jogo.",
-        "",
-        "Adicionais sugeridos por imóvel (base de teste):",
-        "",
-        tabela_md(percentual(rec_t["qtd_adicionais"])),
-        "",
-        "## 7. Perguntas que mudam o resultado",
+        "## 6. Perguntas que mudam o resultado",
         "",
         "Para cada campo incerto, o motor simula as respostas plausíveis e refaz a recomendação (`src/casa_gemea/perguntas.py`).",
         "",
@@ -292,7 +273,7 @@ def escrever_relatorio(res, tempo: float, val: pd.DataFrame) -> Path:
         "",
         tabela_md(percentual(rec_d["campos_que_mudam_plano"].replace("", pd.NA).dropna().str.split("|").explode())),
         "",
-        "## 8. Validação das faixas escondendo dados reais",
+        "## 7. Validação das faixas escondendo dados reais",
         "",
         f"Nos {val['imovel_id'].nunique()} imóveis da base de desenvolvimento com área cadastrada, o motor foi rodado escondendo a área e o padrão "
         "construtivo, com o modelo de área retreinado em validação cruzada (5 dobras: nenhum imóvel é avaliado por um modelo que o viu). "
@@ -310,7 +291,7 @@ def escrever_relatorio(res, tempo: float, val: pd.DataFrame) -> Path:
         "**Atenção:** aqui o \"valor real\" é o centro da faixa calculada com os dados cadastrados (inclusive o padrão estimado pelo IPTU), então este número é otimista. "
         "Contra o custo de reconstrução verdadeiro (área real × CUB × fator do padrão real), a cobertura medida em `docs/12_avaliacao_modelo.md` (E3) é de cerca de 89%.",
         "",
-        "## 9. Testado e descartado",
+        "## 8. Testado e descartado",
         "",
         "| Ideia | Resultado na base de desenvolvimento | Decisão |",
         "|---|---|---|",
@@ -319,7 +300,7 @@ def escrever_relatorio(res, tempo: float, val: pd.DataFrame) -> Path:
         "| Ajuste de RC familiar para clientes com 2 imóveis | CG, RC Familiar 1.1: a cobertura é ligada ao imóvel segurado | Sem mudança: não há duplicidade |",
         "| Confiança geral por contagem de campos a confirmar | Marcava como média campos que não mudam nada (ex.: área de quem já é Total) | Substituída pela análise de impacto |",
         "",
-        "## 10. Casos contrastantes (base de teste)",
+        "## 9. Casos contrastantes (base de teste)",
         "",
     ]
     for _, r in escolher_casos(casa_t, rec_t).iterrows():

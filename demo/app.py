@@ -350,26 +350,6 @@ def _coberturas(saida: dict) -> None:
                     st.markdown(f"**Atenção:** {c['observacao']}")
 
 
-def card_adicionais(saida: dict, imovel_id: str) -> None:
-    opcionais = saida["recomendacao"]["adicionais_sugeridos"]
-    if not opcionais:
-        return
-    with st.container(border=True):
-        titulo(5, "Personalize: coberturas opcionais")
-        st.caption("Sugeridas pelo seu perfil e pagas à parte. Você inclui só se quiser.")
-        for a in opcionais:
-            faixa = f" · referência {reais(a['faixa_referencia'][0])} a {reais(a['faixa_referencia'][1])}" if a["faixa_referencia"] else ""
-            st.checkbox(f"**{a['nome']}**{faixa}", key=f"adic-{imovel_id}-{a['adicional']}",
-                        help=f"Condições Gerais: {a['referencia_cg']}")
-            st.markdown(f"<div style='font-size:13px;color:#6b6f8a;margin:-10px 0 8px 28px'>{a['motivo'][0].upper() + a['motivo'][1:]}.</div>",
-                        unsafe_allow_html=True)
-
-
-def adicionais_escolhidos(saida: dict) -> list[str]:
-    return [a["nome"] for a in saida["recomendacao"]["adicionais_sugeridos"]
-            if st.session_state.get(f"adic-{saida['imovel_id']}-{a['adicional']}")]
-
-
 def card_resumo(saida: dict, chave: str) -> None:
     rec, canal = saida["recomendacao"], saida["canal"]
     rotulo, cor = SEMAFORO[canal["semaforo"]]
@@ -381,7 +361,6 @@ def card_resumo(saida: dict, chave: str) -> None:
         f'<div class="plano">{regras.NOME_PLANO.get(rec["plano"], "—")}</div>'
         f'<div style="font-size:14px">Confiança da recomendação: <b>{CONFIANCA[rec["confianca_geral"]]}</b></div>'
         + (f'<div style="font-size:14px">Incêndio: <b>{reais(incendio["faixa_valor_min"])} a {reais(incendio["faixa_valor_max"])}</b></div>' if incendio else "")
-        + "".join(f'<div style="font-size:14px">+ {nome}</div>' for nome in adicionais_escolhidos(saida))
         + f'<div class="bb-status" style="background:{cor}">{rotulo}</div></div>',
         unsafe_allow_html=True,
     )
@@ -411,7 +390,6 @@ def visao_cliente(motor: Motor, imovel_id: str) -> None:
         card_pergunta(motor, imovel_id, saida, "cli")
         cards_planos(saida)
         card_coberturas(saida, "cli")
-        card_adicionais(saida, imovel_id)
     with direita:
         card_resumo(saida, "cli")
 
@@ -459,11 +437,6 @@ def visao_gerente(motor: Motor, imovel_id: str) -> None:
         st.markdown(f"**Motivos:** {'; '.join(rec['por_que_este_plano']) or 'proteção básica'}  \n"
                     + (f"**Plano abaixo:** {rec['por_que_nao_plano_abaixo']}  \n" if i > 0 else "")
                     + (f"**Plano acima:** {rec['por_que_nao_plano_acima']}" if i < 2 else ""))
-    if rec["adicionais_sugeridos"]:
-        st.markdown("#### Opcionais sugeridos (pagos à parte, CG 4.1)")
-        for a in rec["adicionais_sugeridos"]:
-            faixa = f" (referência {reais(a['faixa_referencia'][0])} a {reais(a['faixa_referencia'][1])})" if a["faixa_referencia"] else ""
-            st.markdown(f"- **{a['nome']}**{faixa}: {a['motivo']}. _{a['referencia_cg']}_")
     st.markdown("#### Coberturas")
     st.dataframe(
         [{"Cobertura": NOME_COBERTURA[c["cobertura"]], "Mín (R$)": c["faixa_valor_min"], "Máx (R$)": c["faixa_valor_max"],
@@ -488,10 +461,7 @@ def visao_sac(motor: Motor, imovel_id: str) -> None:
         incendio = next((c for c in saida["coberturas"] if c["cobertura"].startswith("INCENDIO")), None)
         texto = (f"Leia: “Com as suas respostas, o plano indicado é o <b>{regras.NOME_PLANO[rec['plano']]}</b>"
                  + (f", com cobertura de incêndio entre {reais(incendio['faixa_valor_min'])} e {reais(incendio['faixa_valor_max'])}" if incendio else "")
-                 + "."
-                 + "".join(f" Pelo seu perfil, também pode fazer sentido incluir {a['nome']}: {a['motivo']}."
-                           for a in rec["adicionais_sugeridos"])
-                 + " Posso seguir com a contratação?”")
+                 + ". Posso seguir com a contratação?”")
         st.markdown(f'<div class="bb-sac">{texto}</div>', unsafe_allow_html=True)
         return
     p = perguntas[0]

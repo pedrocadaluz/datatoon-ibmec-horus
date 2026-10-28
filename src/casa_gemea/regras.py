@@ -405,7 +405,7 @@ def comparar_planos(r: pd.Series, pontuacao: dict) -> tuple[str, str]:
         "tem " + _plural(int(r["quantidade_dependentes"]), "dependente", "dependentes") if r["quantidade_dependentes"] > 0 else "",
     ] if x]
     alternativa_rc = (
-        f" Como o cliente {' e '.join(quem)}, a RC familiar pode ser incluída como opcional, sem migrar para o Total."
+        f" Como o cliente {' e '.join(quem)}, o Total vale a pena se ele quiser proteção contra danos a terceiros."
         if quem else ""
     )
     if plano == "ESSENCIAL":

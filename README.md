@@ -113,16 +113,6 @@ Base oficial: Condições Gerais do Seguro Residencial BB Seguros V1.6 (vigênci
 
   As incertezas são combinadas pela raiz da soma dos quadrados: quanto menos se sabe, mais larga a faixa.
 - **Comparação por lacuna de cobertura, nunca por preço** (a base não tem preços). Exemplo: "O Essencial não cobre roubo nem quebra de vidros, que protegem os bens citados".
-- **Personalização: coberturas opcionais** (pagas à parte, CG 4.1). O motor sugere só as que têm sinal nos dados; nenhuma muda o plano nem entra no template de coberturas:
-
-  | Opcional | Quando é sugerido |
-  |---|---|
-  | Responsabilidade Civil Familiar | Pet ou dependentes em quem fica no Essencial ou no Prático: cobre terceiros sem migrar para o Total |
-  | Equipamentos Portáteis | Eletrônicos ≥ R$ 15 mil: cobre queda e quebra acidental, que nenhum plano cobre |
-  | Bicicleta | Itens de lazer ≥ R$ 5 mil, como pergunta ("se houver bicicleta") |
-  | Desocupação Temporária | Segunda residência ou imóvel vazio: períodos de 30 a 60 dias sem moradores |
-
-  Alagamento e Danos por Chuva não são sugeridos: Danos por Água, presente nos três planos, já os contempla (CG 4.3).
 
 ### 3. Perguntas que mudam o resultado
 Para cada campo incerto, o motor **simula as respostas plausíveis e refaz a recomendação**:
@@ -154,7 +144,6 @@ Campo incerto que não muda nada não baixa a confiança.
 O motor recebe `{ imovel_id, respostas }` e devolve a recomendação atualizada:
 - Casa Gêmea com as respostas marcadas com o selo `CONFIRMADO`;
 - elegibilidade, plano, faixas e confiança recalculados;
-- coberturas opcionais sugeridas, com motivo e item das CG;
 - próximas perguntas com opções (código + rótulo);
 - semáforo e status.
 
@@ -196,7 +185,6 @@ A mesma saída serve a todos os canais:
 | Plano | Total 50,0% · Prático 39,9% · Essencial 10,1% |
 | Confiança geral | Alta 74,6% · Média 16,7% · Baixa 8,7% |
 | Perguntas por imóvel (além da declaração) | 0: 34,1% · 1: 55,1% · 2: 8,7% · 3: 2,2% |
-| Opcionais sugeridos | 59,4% dos imóveis com ao menos um (RC familiar 56 · Portáteis 29 · Bicicleta 24 · Desocupação 4) |
 | Canal | One Click Buy 63,8% · Gerente 16,7% · Atendimento assistido 10,9% · App com confirmação 8,7% |
 | Testes de formato da entrega | 13 de 13 aprovados ([`docs/03_entrega.md`](docs/03_entrega.md)) |
 | Tempo de execução | ~3 s para os 2.716 imóveis das duas bases |

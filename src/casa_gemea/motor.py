@@ -26,11 +26,7 @@ Guardrail: entrada e saída não têm idade nem renda.
 import numpy as np
 import pandas as pd
 
-<<<<<<< Updated upstream
 from . import perguntas, personalizacao, regras
-=======
-from . import adicionais, perguntas, regras
->>>>>>> Stashed changes
 from .config import ALTA, CONFIRMADO
 from .inferencias import _regra_uso
 from .pipeline import executar
@@ -166,14 +162,8 @@ class Motor:
         nao_abaixo, nao_acima = regras.comparar_planos(r, pontuacao) if plano else ("", "")
         impacto = perguntas.analisar(r, self.referencias, elegibilidade, frozenset(respondidas))
         cor, canal = regras.semaforo(r, elegibilidade, impacto["confianca_geral"])
-<<<<<<< Updated upstream
         todas = regras.calcular_coberturas(r, self.referencias)
         faixas = [f for f in todas if f["cobertura"] in self.coberturas_do_plano.get(plano, [])] if plano else []
-=======
-        todas = regras.calcular_coberturas(r, self.referencias) if plano else []
-        faixas = [f for f in todas if f["cobertura"] in self.coberturas_do_plano.get(plano, [])]
-        opcionais = adicionais.sugerir(r, plano, todas)
->>>>>>> Stashed changes
 
         proximas = impacto["perguntas"] if elegibilidade != regras.INELEGIVEL else []
         if "declaracao_unica" not in respondidas and elegibilidade != regras.INELEGIVEL:
@@ -221,11 +211,6 @@ class Motor:
                 "por_que_nao_plano_abaixo": nao_abaixo,
                 "por_que_nao_plano_acima": nao_acima,
                 "campos_que_podem_mudar_o_plano": [c for c in impacto["campos_que_mudam_plano"].split("|") if c],
-                "adicionais_sugeridos": [
-                    {"adicional": a["adicional"], "nome": a["nome"], "motivo": a["motivo"], "referencia_cg": a["cg"],
-                     "faixa_referencia": [_valor_json(v) for v in a["faixa"]] if a["faixa"] else None}
-                    for a in opcionais
-                ],
             },
             "coberturas": [
                 {"cobertura": f["cobertura"], "faixa_valor_min": f["faixa_valor_min"], "faixa_valor_max": f["faixa_valor_max"],
