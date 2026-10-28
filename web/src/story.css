@@ -182,3 +182,16 @@
 .sac-radio input { min-height: auto; }
 .sac-registro textarea { padding: 8px 10px; font-size: .8rem; }
 .sac-registro .button { justify-self: start; }
+
+/* Cliente: faixa da casa e conteúdo com a mesma largura; partes longas abrem com "+". */
+.house-hero { max-width: 1100px; margin-left: auto; margin-right: auto; }
+.workspace.story { max-width: 1100px; }
+.pc-more > summary, details.why-card > summary { list-style: none; cursor: pointer; display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 4px 12px; min-height: 44px; }
+.pc-more > summary::after, details.why-card > summary::after { content: '+'; grid-column: 2; grid-row: 1 / span 2; font-size: 1.2rem; font-weight: 600; color: var(--ink-blue); }
+.pc-more[open] > summary::after, details.why-card[open] > summary::after { content: '−'; }
+.pc-more > summary { color: var(--ink-blue); font-weight: 600; font-size: .8rem; padding: 4px 0; }
+.pc-more[open] > summary { margin-bottom: 8px; }
+details.why-card > summary h4 { grid-column: 1; }
+details.why-card > summary .why-summary { grid-column: 1; margin: 0; }
+details.why-card[open] > summary { margin-bottom: 6px; }
+.pc-more > summary::after { grid-row: 1; }

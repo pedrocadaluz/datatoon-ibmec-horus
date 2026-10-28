@@ -62,7 +62,7 @@ export function ClientReport({ data, initial, pending, history, onBack, onUndo }
       {onBack && pendentes > 0 && <button className="button secondary" onClick={onBack}>Voltar às perguntas <Icon name="arrow" size={16} /></button>}
     </div>
     <Recommendation data={data} initial={initial} pending={pending} full history={history} />
-    <AnswerHistory history={history} busy={pending} onUndo={onUndo} open />
+    <AnswerHistory history={history} busy={pending} onUndo={onUndo} />
   </section>
 }
 

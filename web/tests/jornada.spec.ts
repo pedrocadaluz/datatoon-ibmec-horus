@@ -35,6 +35,7 @@ test('cliente percorre jornada real, muda plano e confirma faixa', async ({ page
   await expect(page.getByTestId('duvidas')).toContainText('nenhuma resposta mudaria o seu plano')
   await page.getByRole('button', { name: /são o preço do seguro/ }).click()
   await expect(page.getByTestId('duvidas')).toContainText('valor máximo que o seguro pagaria')
+  await page.locator('.client-report .answer-history > summary').click()
   await page.getByRole('button', { name: 'Editar resposta 3' }).click()
   await expect(page.locator('#pergunta-atual')).toBeVisible()
   await expect(page.getByTestId('progresso-casa')).toContainText('3 de 9 dados confirmados')

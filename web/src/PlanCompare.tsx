@@ -24,12 +24,12 @@ export function PlanCompare({ data }: { data: Resultado }) {
       <p>{paraVoce(p.resumo)}</p>
     </div>)}</div>
 
-    <div className="matrix-wrap"><table className="coverage-matrix">
+    <details className="pc-more"><summary>Ver as coberturas de cada plano</summary><div className="matrix-wrap"><table className="coverage-matrix">
       <caption className="sr-only">Coberturas incluídas em cada plano</caption>
       <thead><tr><th scope="col">Cobertura</th>{planos.map(p => <th scope="col" key={p.plano} className={p.situacao === 'RECOMENDADO' ? 'chosen' : ''}>{p.nome}</th>)}</tr></thead>
       <tbody>{ordem.map(c => <tr key={c}><th scope="row">{nomesCobertura[c]}{faixa[c] && <small>{reais(faixa[c].faixa_valor_min)} a {reais(faixa[c].faixa_valor_max)}</small>}</th>
         {planos.map(p => <td key={p.plano} className={p.situacao === 'RECOMENDADO' ? 'chosen' : ''}>{p.coberturas.includes(c) ? <><Icon name="check" size={15} /><span className="sr-only">Incluída</span></> : <span aria-label="Não incluída">–</span>}</td>)}</tr>)}</tbody>
-    </table></div>
+    </table></div></details>
 
     <article className="why-card why-chosen">
       <h4><Icon name="check" size={17} />Por que o {recomendado.nome}</h4>
@@ -41,9 +41,8 @@ export function PlanCompare({ data }: { data: Resultado }) {
 
 function WhyNot({ plano }: { plano: ComparacaoPlano }) {
   const abaixo = plano.situacao === 'ABAIXO'
-  return <article className={`why-card why-${abaixo ? 'below' : 'above'}`} data-testid={`por-que-nao-${plano.plano}`}>
-    <h4><Icon name="info" size={17} />Por que não o {plano.nome}</h4>
-    <p className="why-summary">{paraVoce(plano.resumo)}</p>
+  return <details className={`why-card why-${abaixo ? 'below' : 'above'}`} data-testid={`por-que-nao-${plano.plano}`}>
+    <summary><h4><Icon name="info" size={17} />Por que não o {plano.nome}</h4><p className="why-summary">{paraVoce(plano.resumo)}</p></summary>
     {plano.motivos.map((m, i) => <p key={i}>{paraVoce(m)}</p>)}
     {plano.diferenca.length > 0 && <>
       <span className="mini-label">{abaixo ? 'O que ficaria sem proteção' : 'O que ele acrescentaria'}</span>
@@ -53,5 +52,5 @@ function WhyNot({ plano }: { plano: ComparacaoPlano }) {
         {d.sinais.length > 0 && <span className="gap-signal">Na sua casa: {d.sinais.map(paraVoce).join('; ')}</span>}
       </li>)}</ul>
     </>}
-  </article>
+  </details>
 }
