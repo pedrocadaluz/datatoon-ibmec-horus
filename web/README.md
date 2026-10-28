@@ -132,3 +132,13 @@ Azul `#5A6FFF`, amarelo `#FCFC30` pontual, papel `#F9F7FF`, bordas `#DDE4FC`, ca
 - **Bugs conhecidos:** nenhum problema funcional confirmado pendente. A ferramenta de testes Python emite um aviso de depreciação de httpx em Starlette, sem impacto na aplicação. A verificação automatizada de acessibilidade não substitui uma auditoria manual completa com tecnologia assistiva.
 
 Não foram feitos commit ou push. A pasta de referência permanece fora da entrega de código. Frontend, testes e adaptador foram produzidos com assistência de IA; a decisão de seguro continua no motor determinístico do projeto.
+
+## Aba App, Motor e Comparativo (hiperpersonalização)
+
+Três visões no topo da página: **Canais** (as quatro de antes), **App** e **Comparativo**.
+
+- **App**: simulador de um app bancário genérico (sem marca do BB). Escolha Marina, Rafael ou Helena; toque no card "Sugestão para a sua casa" para abrir a jornada. O tom muda conforme o perfil (Express, Guiada, Com especialista). O interruptor "Personalizar para mim" mostra o plano base sem adicionais, destaques nem tom. "Por que estou vendo isto?" lista os dados usados (idade e renda nunca entram). Cada adicional tem a pergunta SIM/NÃO/NÃO SEI, "Adicionar" e "Agora não". Faixas são "limite sugerido de indenização", não preço.
+- **Como o motor pensou** (botão na aba App): elegibilidade, pontos do Prático e do Total, regra, por que não o plano de baixo/de cima, o que ainda pode mudar, necessidade por cobertura (toque para ver fatores) e limites do motor.
+- **Comparativo**: as três personas lado a lado (plano, canal, adicionais, jornada, perguntas evitadas, alertas), para um único quadro no vídeo.
+
+Demonstração: API no ar (`api/rodar.ps1`), abrir a aba App, percorrer as três personas, ligar e desligar a personalização, abrir "Como o motor pensou" e fechar no Comparativo. Evidências em `evidencias/app-*.png`, `motor-*.png` e `comparativo-*.png` (viewport 390 px).
