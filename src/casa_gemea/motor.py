@@ -188,7 +188,7 @@ class Motor:
         evitadas = regras.CAMPOS_FORMULARIO_TRADICIONAL - necessarias
         resumo = "; ".join(motivos[:2]) if motivos else "poucos sinais de necessidade além da proteção básica"
         curta = f"{regras.NOME_PLANO[plano]}: {resumo}." if plano else "Imóvel não elegível sem validação."
-        pers = personalizacao.analisar(r, plano, elegibilidade, self.coberturas_do_plano.get(plano, []), adicionais_resp)
+        pers = personalizacao.analisar(r, plano, elegibilidade, self.coberturas_do_plano.get(plano, []), adicionais_resp, todas)
         explica = personalizacao.explicacao(r, elegibilidade, motivo, pontuacao, impacto, cor, canal, plano, nao_abaixo, nao_acima)
         return {
             "versao_contrato": VERSAO_CONTRATO,

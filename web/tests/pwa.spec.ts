@@ -1,3 +1,4 @@
+import { revelar, abrirValor } from './ajudas'
 import { test, expect, chromium } from '@playwright/test'
 import { writeFile } from 'node:fs/promises'
 
@@ -11,7 +12,7 @@ test('PWA tem manifesto, ícones e critérios de instalação do Chrome', async 
   await page.evaluate(() => navigator.serviceWorker.ready)
   await page.waitForFunction(() => Boolean(navigator.serviceWorker.controller))
   const manifest = await (await page.request.get('/manifest.webmanifest')).json()
-  expect(manifest).toMatchObject({ name: 'Horus · Casa Gêmea', short_name: 'Casa Gêmea', start_url: '/', display: 'standalone', theme_color: '#5A6FFF' })
+  expect(manifest).toMatchObject({ name: 'Horus · Casa Gêmea', short_name: 'Casa Gêmea', start_url: '/', display: 'standalone', theme_color: '#465EFF' })
   expect(manifest.icons.map((icon: { sizes: string }) => icon.sizes)).toEqual(['192x192', '512x512', '512x512'])
   expect(manifest.icons.some((icon: { purpose: string }) => icon.purpose === 'maskable')).toBe(true)
   for (const icon of manifest.icons) expect((await page.request.get(icon.src)).status()).toBe(200)
@@ -27,6 +28,7 @@ test('PWA tem manifesto, ícones e critérios de instalação do Chrome', async 
 
 test('offline armazena somente casco e nunca revive dados de imóvel', async ({ page, context }) => {
   await page.goto('/')
+  await revelar(page)
   await expect(page.getByTestId('plano-atual')).toHaveText('Total')
   await page.evaluate(() => navigator.serviceWorker.ready)
   await page.waitForFunction(() => Boolean(navigator.serviceWorker.controller))
@@ -50,6 +52,7 @@ test('offline armazena somente casco e nunca revive dados de imóvel', async ({ 
   await page.screenshot({ path: 'evidencias/pwa-offline.png', fullPage: true })
   await context.setOffline(false)
   await page.getByRole('button', { name: 'Tentar novamente' }).click()
+  await revelar(page)
   await expect(page.getByTestId('plano-atual')).toHaveText('Total')
 })
 

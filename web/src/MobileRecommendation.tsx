@@ -5,8 +5,8 @@ import { Icon } from './Icons'
 import { Modal } from './Modal'
 import { Recommendation } from './Recommendation'
 
-export function MobileRecommendation({ data, initial, pending, mobile, presentationStep }: {
-  data: Resultado; initial: Resultado | null; pending: boolean; mobile: boolean; presentationStep: number | null;
+export function MobileRecommendation({ data, initial, pending, mobile, presentationStep, show }: {
+  data: Resultado; initial: Resultado | null; pending: boolean; mobile: boolean; presentationStep: number | null; show: boolean;
 }) {
   const [open, setOpen] = useState(false)
   const touchStart = useRef<number | null>(null)
@@ -21,6 +21,7 @@ export function MobileRecommendation({ data, initial, pending, mobile, presentat
     window.addEventListener('horus-show-recommendation', show)
     return () => window.removeEventListener('horus-show-recommendation', show)
   }, [])
+  if (!show) return null
   if (!mobile) return <Recommendation data={data} initial={initial} pending={pending} />
   const color = data.canal.semaforo
   const signal = { VERDE: 'Verde', AMARELO: 'Amarelo', VERMELHO: 'Vermelho' }[color]
