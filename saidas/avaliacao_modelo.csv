@@ -1,0 +1,332 @@
+﻿experimento,variante,metrica,valor
+E1,n_imoveis_com_area,n,1016.0
+E1,"atual (OLS: IPTU, energia, casa, município)",erro_percentual_mediano,0.1326
+E1,"atual (OLS: IPTU, energia, casa, município)",mae_m2,22.8818
+E1,"atual (OLS: IPTU, energia, casa, município)",r2_log,0.8621
+E1,"atual (OLS: IPTU, energia, casa, município)",cobertura_intervalo_80,0.7963
+E1,"atual (OLS: IPTU, energia, casa, município)",largura_log_intervalo_80,0.5386
+E1,+ água (OLS),erro_percentual_mediano,0.1324
+E1,+ água (OLS),mae_m2,22.8978
+E1,+ água (OLS),r2_log,0.8617
+E1,+ água (OLS),delta_erro_pct_mediano,-0.0001
+E1,+ condomínio (OLS),erro_percentual_mediano,0.1321
+E1,+ condomínio (OLS),mae_m2,22.725
+E1,+ condomínio (OLS),r2_log,0.8644
+E1,+ condomínio (OLS),delta_erro_pct_mediano,-0.0005
+E1,+ internet (OLS),erro_percentual_mediano,0.1341
+E1,+ internet (OLS),mae_m2,22.854
+E1,+ internet (OLS),r2_log,0.8621
+E1,+ internet (OLS),delta_erro_pct_mediano,0.0015
+E1,+ compras e bens (OLS),erro_percentual_mediano,0.1296
+E1,+ compras e bens (OLS),mae_m2,22.2319
+E1,+ compras e bens (OLS),r2_log,0.8693
+E1,+ compras e bens (OLS),delta_erro_pct_mediano,-0.003
+E1,+ financiamento e aluguel (OLS),erro_percentual_mediano,0.1345
+E1,+ financiamento e aluguel (OLS),mae_m2,22.8143
+E1,+ financiamento e aluguel (OLS),r2_log,0.862
+E1,+ financiamento e aluguel (OLS),delta_erro_pct_mediano,0.0019
+E1,+ coordenadas (OLS),erro_percentual_mediano,0.1347
+E1,+ coordenadas (OLS),mae_m2,22.8901
+E1,+ coordenadas (OLS),r2_log,0.8613
+E1,+ coordenadas (OLS),delta_erro_pct_mediano,0.0021
+E1,+ UF (CUB) (OLS),erro_percentual_mediano,0.1326
+E1,+ UF (CUB) (OLS),mae_m2,22.8818
+E1,+ UF (CUB) (OLS),r2_log,0.8621
+E1,+ UF (CUB) (OLS),delta_erro_pct_mediano,0.0
+E1,+ renda (OLS),erro_percentual_mediano,0.1328
+E1,+ renda (OLS),mae_m2,22.8819
+E1,+ renda (OLS),r2_log,0.862
+E1,+ renda (OLS),delta_erro_pct_mediano,0.0002
+E1,+ idade (OLS),erro_percentual_mediano,0.1327
+E1,+ idade (OLS),mae_m2,22.9159
+E1,+ idade (OLS),r2_log,0.8618
+E1,+ idade (OLS),delta_erro_pct_mediano,0.0001
+E1,+ dependentes (OLS),erro_percentual_mediano,0.132
+E1,+ dependentes (OLS),mae_m2,22.2308
+E1,+ dependentes (OLS),r2_log,0.8716
+E1,+ dependentes (OLS),delta_erro_pct_mediano,-0.0006
+E1,+ app e maturidade digital (OLS),erro_percentual_mediano,0.1318
+E1,+ app e maturidade digital (OLS),mae_m2,22.9179
+E1,+ app e maturidade digital (OLS),r2_log,0.8621
+E1,+ app e maturidade digital (OLS),delta_erro_pct_mediano,-0.0008
+E1,todas as colunas (OLS),erro_percentual_mediano,0.1208
+E1,todas as colunas (OLS),mae_m2,20.554
+E1,todas as colunas (OLS),r2_log,0.8908
+E1,todas as colunas (OLS),cobertura_intervalo_80,0.7963
+E1,todas as colunas (OLS),largura_log_intervalo_80,0.475
+E1,todas as colunas (Ridge),erro_percentual_mediano,0.1199
+E1,todas as colunas (Ridge),mae_m2,20.538
+E1,todas as colunas (Ridge),r2_log,0.8911
+E1,todas as colunas (Ridge),cobertura_intervalo_80,0.7933
+E1,todas as colunas (Ridge),largura_log_intervalo_80,0.475
+E1,todas as colunas (gradient boosting),erro_percentual_mediano,0.1179
+E1,todas as colunas (gradient boosting),mae_m2,20.3047
+E1,todas as colunas (gradient boosting),r2_log,0.8912
+E1,todas as colunas (gradient boosting),cobertura_intervalo_80,0.7992
+E1,todas as colunas (gradient boosting),largura_log_intervalo_80,0.4745
+E1,"proposto (OLS: atual + água, dependentes, pet, condomínio, financiamento, aluguel, compras, bens)",erro_percentual_mediano,0.1248
+E1,"proposto (OLS: atual + água, dependentes, pet, condomínio, financiamento, aluguel, compras, bens)",mae_m2,20.6633
+E1,"proposto (OLS: atual + água, dependentes, pet, condomínio, financiamento, aluguel, compras, bens)",r2_log,0.8849
+E1,"proposto (OLS: atual + água, dependentes, pet, condomínio, financiamento, aluguel, compras, bens)",cobertura_intervalo_80,0.7982
+E1,"proposto (OLS: atual + água, dependentes, pet, condomínio, financiamento, aluguel, compras, bens)",largura_log_intervalo_80,0.4887
+E1,completo sem água (OLS),erro_percentual_mediano,0.125
+E1,completo sem água (OLS),mae_m2,21.2182
+E1,completo sem água (OLS),r2_log,0.8854
+E1,completo sem água (OLS),delta_erro_pct_mediano,0.0042
+E1,completo sem condomínio (OLS),erro_percentual_mediano,0.1221
+E1,completo sem condomínio (OLS),mae_m2,20.669
+E1,completo sem condomínio (OLS),r2_log,0.8895
+E1,completo sem condomínio (OLS),delta_erro_pct_mediano,0.0014
+E1,completo sem internet (OLS),erro_percentual_mediano,0.1215
+E1,completo sem internet (OLS),mae_m2,20.5703
+E1,completo sem internet (OLS),r2_log,0.8909
+E1,completo sem internet (OLS),delta_erro_pct_mediano,0.0008
+E1,completo sem compras e bens (OLS),erro_percentual_mediano,0.1211
+E1,completo sem compras e bens (OLS),mae_m2,21.2194
+E1,completo sem compras e bens (OLS),r2_log,0.8798
+E1,completo sem compras e bens (OLS),delta_erro_pct_mediano,0.0004
+E1,completo sem financiamento e aluguel (OLS),erro_percentual_mediano,0.124
+E1,completo sem financiamento e aluguel (OLS),mae_m2,20.5095
+E1,completo sem financiamento e aluguel (OLS),r2_log,0.8908
+E1,completo sem financiamento e aluguel (OLS),delta_erro_pct_mediano,0.0032
+E1,completo sem coordenadas (OLS),erro_percentual_mediano,0.1204
+E1,completo sem coordenadas (OLS),mae_m2,20.5431
+E1,completo sem coordenadas (OLS),r2_log,0.8912
+E1,completo sem coordenadas (OLS),delta_erro_pct_mediano,-0.0004
+E1,completo sem UF (CUB) (OLS),erro_percentual_mediano,0.1208
+E1,completo sem UF (CUB) (OLS),mae_m2,20.554
+E1,completo sem UF (CUB) (OLS),r2_log,0.8908
+E1,completo sem UF (CUB) (OLS),delta_erro_pct_mediano,-0.0
+E1,completo sem renda (OLS),erro_percentual_mediano,0.1188
+E1,completo sem renda (OLS),mae_m2,20.5816
+E1,completo sem renda (OLS),r2_log,0.8849
+E1,completo sem renda (OLS),delta_erro_pct_mediano,-0.0019
+E1,completo sem idade (OLS),erro_percentual_mediano,0.1209
+E1,completo sem idade (OLS),mae_m2,20.5438
+E1,completo sem idade (OLS),r2_log,0.8904
+E1,completo sem idade (OLS),delta_erro_pct_mediano,0.0001
+E1,completo sem dependentes (OLS),erro_percentual_mediano,0.1285
+E1,completo sem dependentes (OLS),mae_m2,21.7382
+E1,completo sem dependentes (OLS),r2_log,0.8783
+E1,completo sem dependentes (OLS),delta_erro_pct_mediano,0.0077
+E1,completo sem app e maturidade digital (OLS),erro_percentual_mediano,0.1215
+E1,completo sem app e maturidade digital (OLS),mae_m2,20.5675
+E1,completo sem app e maturidade digital (OLS),r2_log,0.8904
+E1,completo sem app e maturidade digital (OLS),delta_erro_pct_mediano,0.0008
+E1,completo (OLS) menos atual: diferença do erro percentual mediano,diferenca,-0.0111
+E1,completo (OLS) menos atual: diferença do erro percentual mediano,ic95_inferior,-0.0209
+E1,completo (OLS) menos atual: diferença do erro percentual mediano,ic95_superior,-0.0007
+E1,colunas do modelo atual (gradient boosting),erro_percentual_mediano,0.1358
+E1,colunas do modelo atual (gradient boosting),mae_m2,22.1361
+E1,colunas do modelo atual (gradient boosting),r2_log,0.8673
+E1,colunas do modelo atual (gradient boosting),cobertura_intervalo_80,0.7972
+E1,colunas do modelo atual (gradient boosting),largura_log_intervalo_80,0.5181
+E1,"regressão quantílica (boosting, IPTU+energia+casa+condomínio+água+município)",erro_percentual_mediano,0.1365
+E1,"regressão quantílica (boosting, IPTU+energia+casa+condomínio+água+município)",mae_m2,22.2344
+E1,"regressão quantílica (boosting, IPTU+energia+casa+condomínio+água+município)",r2_log,0.8675
+E1,"regressão quantílica (boosting, IPTU+energia+casa+condomínio+água+município)",cobertura_intervalo_80,0.7638
+E1,"regressão quantílica (boosting, IPTU+energia+casa+condomínio+água+município)",largura_log_intervalo_80,0.5158
+E1,correlacao_com_log_area:log_iptu,correlacao,0.8624
+E1,correlacao_com_log_area:log_energia,correlacao,0.8021
+E1,correlacao_com_log_area:log_agua,correlacao,0.498
+E1,correlacao_com_log_area:log_condominio,correlacao,-0.1922
+E1,correlacao_com_log_area:log_renda,correlacao,0.0108
+E2,n_imoveis_com_padrao,n,700.0
+E2,frequencia_classe_NORMAL,frequencia,0.61
+E2,n_com_padrao_e_area,n,273.0
+E2,sempre NORMAL [todos],acuracia,0.61
+E2,sempre NORMAL [todos],acuracia_balanceada,0.3333
+E2,sempre NORMAL [todos],f1_macro,0.2526
+E2,sempre NORMAL [todos],n,700.0
+E2,sempre NORMAL [com área real],acuracia,0.6337
+E2,sempre NORMAL [com área real],acuracia_balanceada,0.3333
+E2,sempre NORMAL [com área real],f1_macro,0.2586
+E2,sempre NORMAL [com área real],n,273.0
+E2,regra atual (IPTU/m² × cidade) [todos],acuracia,0.5914
+E2,regra atual (IPTU/m² × cidade) [todos],acuracia_balanceada,0.4246
+E2,regra atual (IPTU/m² × cidade) [todos],f1_macro,0.4373
+E2,regra atual (IPTU/m² × cidade) [todos],n,700.0
+E2,regra atual (IPTU/m² × cidade) [com área real],acuracia,0.5861
+E2,regra atual (IPTU/m² × cidade) [com área real],acuracia_balanceada,0.5989
+E2,regra atual (IPTU/m² × cidade) [com área real],f1_macro,0.5624
+E2,regra atual (IPTU/m² × cidade) [com área real],n,273.0
+E2,logística: IPTU/m² e energia relativos à cidade [todos],acuracia,0.3829
+E2,logística: IPTU/m² e energia relativos à cidade [todos],acuracia_balanceada,0.4904
+E2,logística: IPTU/m² e energia relativos à cidade [todos],f1_macro,0.3891
+E2,logística: IPTU/m² e energia relativos à cidade [todos],n,700.0
+E2,logística: IPTU/m² e energia relativos à cidade [com área real],acuracia,0.4945
+E2,logística: IPTU/m² e energia relativos à cidade [com área real],acuracia_balanceada,0.5697
+E2,logística: IPTU/m² e energia relativos à cidade [com área real],f1_macro,0.4913
+E2,logística: IPTU/m² e energia relativos à cidade [com área real],n,273.0
+E2,logística: todas as colunas [todos],acuracia,0.4629
+E2,logística: todas as colunas [todos],acuracia_balanceada,0.5409
+E2,logística: todas as colunas [todos],f1_macro,0.4618
+E2,logística: todas as colunas [todos],n,700.0
+E2,logística: todas as colunas [com área real],acuracia,0.5201
+E2,logística: todas as colunas [com área real],acuracia_balanceada,0.5988
+E2,logística: todas as colunas [com área real],f1_macro,0.5185
+E2,logística: todas as colunas [com área real],n,273.0
+E2,boosting: todas as colunas [todos],acuracia,0.6214
+E2,boosting: todas as colunas [todos],acuracia_balanceada,0.415
+E2,boosting: todas as colunas [todos],f1_macro,0.409
+E2,boosting: todas as colunas [todos],n,700.0
+E2,boosting: todas as colunas [com área real],acuracia,0.6557
+E2,boosting: todas as colunas [com área real],acuracia_balanceada,0.4716
+E2,boosting: todas as colunas [com área real],f1_macro,0.4807
+E2,boosting: todas as colunas [com área real],n,273.0
+E3,n_imoveis_validacao,n,273.0
+E3,faixa atual (k = 1),cobertura_empirica,0.8901
+E3,faixa atual (k = 1),razao_max_min_mediana,1.7673
+E3,conformal nominal 50%,cobertura_empirica,0.5055
+E3,conformal nominal 50%,razao_max_min_mediana,1.2935
+E3,conformal nominal 50%,estreitamento_vs_atual,0.548
+E3,conformal nominal 80%,cobertura_empirica,0.7985
+E3,conformal nominal 80%,razao_max_min_mediana,1.6029
+E3,conformal nominal 80%,estreitamento_vs_atual,0.1714
+E3,conformal nominal 90%,cobertura_empirica,0.9048
+E3,conformal nominal 90%,razao_max_min_mediana,1.8006
+E3,conformal nominal 90%,estreitamento_vs_atual,-0.0328
+E3,"área, conformal por tipo, nominal 50%",cobertura_empirica,0.4835
+E3,"área, conformal por tipo, nominal 50%",largura_log,0.2483
+E3,"área, conformal por tipo, nominal 80%",cobertura_empirica,0.7875
+E3,"área, conformal por tipo, nominal 80%",largura_log,0.5185
+E3,"área, conformal por tipo, nominal 90%",cobertura_empirica,0.8828
+E3,"área, conformal por tipo, nominal 90%",largura_log,0.6622
+E4,amostra,imoveis,600.0
+E4,amostra,campos_incertos_media,3.34
+E4,"motor atual, k=0",plano_certo,0.92
+E4,"motor atual, k=0",razao_max_min_mediana,2.4428
+E4,"motor atual, k=0",faixa_contem_verdade,0.8833
+E4,"motor atual, k=0",perguntas_feitas_media,0.0
+E4,"motor atual, k=1",plano_certo,0.9817
+E4,"motor atual, k=1",razao_max_min_mediana,2.0067
+E4,"motor atual, k=1",faixa_contem_verdade,0.86
+E4,"motor atual, k=1",perguntas_feitas_media,0.695
+E4,"motor atual, k=2",plano_certo,0.995
+E4,"motor atual, k=2",razao_max_min_mediana,1.9602
+E4,"motor atual, k=2",faixa_contem_verdade,0.8633
+E4,"motor atual, k=2",perguntas_feitas_media,0.8317
+E4,"motor atual, k=3",plano_certo,0.995
+E4,"motor atual, k=3",razao_max_min_mediana,1.9602
+E4,"motor atual, k=3",faixa_contem_verdade,0.8633
+E4,"motor atual, k=3",perguntas_feitas_media,0.845
+E4,"motor atual, k=4",plano_certo,0.995
+E4,"motor atual, k=4",razao_max_min_mediana,1.9602
+E4,"motor atual, k=4",faixa_contem_verdade,0.8633
+E4,"motor atual, k=4",perguntas_feitas_media,0.8467
+E4,"motor atual, k=5",plano_certo,0.995
+E4,"motor atual, k=5",razao_max_min_mediana,1.9602
+E4,"motor atual, k=5",faixa_contem_verdade,0.8633
+E4,"motor atual, k=5",perguntas_feitas_media,0.8467
+E4,"aleatória, k=0",plano_certo,0.92
+E4,"aleatória, k=0",razao_max_min_mediana,2.4428
+E4,"aleatória, k=0",faixa_contem_verdade,0.8833
+E4,"aleatória, k=0",perguntas_feitas_media,0.0
+E4,"aleatória, k=1",plano_certo,0.9383
+E4,"aleatória, k=1",razao_max_min_mediana,2.2249
+E4,"aleatória, k=1",faixa_contem_verdade,0.8933
+E4,"aleatória, k=1",perguntas_feitas_media,1.0
+E4,"aleatória, k=2",plano_certo,0.96
+E4,"aleatória, k=2",razao_max_min_mediana,1.999
+E4,"aleatória, k=2",faixa_contem_verdade,0.92
+E4,"aleatória, k=2",perguntas_feitas_media,2.0
+E4,"aleatória, k=3",plano_certo,0.98
+E4,"aleatória, k=3",razao_max_min_mediana,1.8071
+E4,"aleatória, k=3",faixa_contem_verdade,0.9683
+E4,"aleatória, k=3",perguntas_feitas_media,3.0
+E4,"aleatória, k=4",plano_certo,0.9967
+E4,"aleatória, k=4",razao_max_min_mediana,1.7785
+E4,"aleatória, k=4",faixa_contem_verdade,0.9967
+E4,"aleatória, k=4",perguntas_feitas_media,3.3217
+E4,"aleatória, k=5",plano_certo,1.0
+E4,"aleatória, k=5",razao_max_min_mediana,1.7785
+E4,"aleatória, k=5",faixa_contem_verdade,1.0
+E4,"aleatória, k=5",perguntas_feitas_media,3.34
+E4,"valor esperado da informação, k=0",plano_certo,0.92
+E4,"valor esperado da informação, k=0",razao_max_min_mediana,2.4428
+E4,"valor esperado da informação, k=0",faixa_contem_verdade,0.8833
+E4,"valor esperado da informação, k=0",perguntas_feitas_media,0.0
+E4,"valor esperado da informação, k=1",plano_certo,0.9617
+E4,"valor esperado da informação, k=1",razao_max_min_mediana,1.9595
+E4,"valor esperado da informação, k=1",faixa_contem_verdade,0.8567
+E4,"valor esperado da informação, k=1",perguntas_feitas_media,1.0
+E4,"valor esperado da informação, k=2",plano_certo,0.9767
+E4,"valor esperado da informação, k=2",razao_max_min_mediana,1.8102
+E4,"valor esperado da informação, k=2",faixa_contem_verdade,0.9233
+E4,"valor esperado da informação, k=2",perguntas_feitas_media,2.0
+E4,"valor esperado da informação, k=3",plano_certo,0.9783
+E4,"valor esperado da informação, k=3",razao_max_min_mediana,1.7625
+E4,"valor esperado da informação, k=3",faixa_contem_verdade,0.945
+E4,"valor esperado da informação, k=3",perguntas_feitas_media,3.0
+E4,"valor esperado da informação, k=4",plano_certo,0.9983
+E4,"valor esperado da informação, k=4",razao_max_min_mediana,1.7554
+E4,"valor esperado da informação, k=4",faixa_contem_verdade,0.9883
+E4,"valor esperado da informação, k=4",perguntas_feitas_media,3.2917
+E4,"valor esperado da informação, k=5",plano_certo,0.9983
+E4,"valor esperado da informação, k=5",razao_max_min_mediana,1.7554
+E4,"valor esperado da informação, k=5",faixa_contem_verdade,0.99
+E4,"valor esperado da informação, k=5",perguntas_feitas_media,3.3083
+E5,desenvolvimento: distribuição,essencial,0.1024
+E5,desenvolvimento: distribuição,pratico,0.4329
+E5,desenvolvimento: distribuição,total,0.4647
+E5,desenvolvimento: conteudo_alto -1,imoveis_que_mudam_de_plano,0.0074
+E5,desenvolvimento: conteudo_alto +1,imoveis_que_mudam_de_plano,0.0
+E5,desenvolvimento: conteudo_medio -1,imoveis_que_mudam_de_plano,0.0974
+E5,desenvolvimento: conteudo_medio +1,imoveis_que_mudam_de_plano,0.0625
+E5,desenvolvimento: eletro -1,imoveis_que_mudam_de_plano,0.0147
+E5,desenvolvimento: eletro +1,imoveis_que_mudam_de_plano,0.0
+E5,desenvolvimento: vidros -1,imoveis_que_mudam_de_plano,0.0105
+E5,desenvolvimento: vidros +1,imoveis_que_mudam_de_plano,0.0016
+E5,desenvolvimento: casa -1,imoveis_que_mudam_de_plano,0.0566
+E5,desenvolvimento: casa +1,imoveis_que_mudam_de_plano,0.0112
+E5,desenvolvimento: inquilino -1,imoveis_que_mudam_de_plano,0.0489
+E5,desenvolvimento: inquilino +1,imoveis_que_mudam_de_plano,0.0016
+E5,desenvolvimento: locador -1,imoveis_que_mudam_de_plano,0.0248
+E5,desenvolvimento: locador +1,imoveis_que_mudam_de_plano,0.0023
+E5,desenvolvimento: pet -1,imoveis_que_mudam_de_plano,0.1699
+E5,desenvolvimento: pet +1,imoveis_que_mudam_de_plano,0.0834
+E5,desenvolvimento: dependentes -1,imoveis_que_mudam_de_plano,0.1742
+E5,desenvolvimento: dependentes +1,imoveis_que_mudam_de_plano,0.2773
+E5,desenvolvimento: limiar_total -1,imoveis_que_mudam_de_plano,0.0089
+E5,desenvolvimento: limiar_total +1,imoveis_que_mudam_de_plano,0.0058
+E5,desenvolvimento: limiar_total_combinado -1,imoveis_que_mudam_de_plano,0.3507
+E5,desenvolvimento: limiar_total_combinado +1,imoveis_que_mudam_de_plano,0.237
+E5,desenvolvimento: limiar_pratico_combinado -1,imoveis_que_mudam_de_plano,0.0089
+E5,desenvolvimento: limiar_pratico_combinado +1,imoveis_que_mudam_de_plano,0.0427
+E5,desenvolvimento: limiar_pratico -1,imoveis_que_mudam_de_plano,0.0753
+E5,desenvolvimento: limiar_pratico +1,imoveis_que_mudam_de_plano,0.0756
+E5,desenvolvimento: pior caso de um ponto,imoveis_que_mudam_de_plano,0.3507
+E5,desenvolvimento: todos os pesos com ruído -1/0/+1 (60 sorteios),mediana,0.3245
+E5,desenvolvimento: todos os pesos com ruído -1/0/+1 (60 sorteios),p95,0.4635
+E5,teste: distribuição,essencial,0.1014
+E5,teste: distribuição,pratico,0.3986
+E5,teste: distribuição,total,0.5
+E5,teste: conteudo_alto -1,imoveis_que_mudam_de_plano,0.0072
+E5,teste: conteudo_alto +1,imoveis_que_mudam_de_plano,0.0
+E5,teste: conteudo_medio -1,imoveis_que_mudam_de_plano,0.0362
+E5,teste: conteudo_medio +1,imoveis_que_mudam_de_plano,0.0797
+E5,teste: eletro -1,imoveis_que_mudam_de_plano,0.0072
+E5,teste: eletro +1,imoveis_que_mudam_de_plano,0.0
+E5,teste: vidros -1,imoveis_que_mudam_de_plano,0.0072
+E5,teste: vidros +1,imoveis_que_mudam_de_plano,0.0
+E5,teste: casa -1,imoveis_que_mudam_de_plano,0.029
+E5,teste: casa +1,imoveis_que_mudam_de_plano,0.0072
+E5,teste: inquilino -1,imoveis_que_mudam_de_plano,0.0652
+E5,teste: inquilino +1,imoveis_que_mudam_de_plano,0.0
+E5,teste: locador -1,imoveis_que_mudam_de_plano,0.0072
+E5,teste: locador +1,imoveis_que_mudam_de_plano,0.0
+E5,teste: pet -1,imoveis_que_mudam_de_plano,0.1232
+E5,teste: pet +1,imoveis_que_mudam_de_plano,0.1014
+E5,teste: dependentes -1,imoveis_que_mudam_de_plano,0.1377
+E5,teste: dependentes +1,imoveis_que_mudam_de_plano,0.2971
+E5,teste: limiar_total -1,imoveis_que_mudam_de_plano,0.0
+E5,teste: limiar_total +1,imoveis_que_mudam_de_plano,0.0145
+E5,teste: limiar_total_combinado -1,imoveis_que_mudam_de_plano,0.3986
+E5,teste: limiar_total_combinado +1,imoveis_que_mudam_de_plano,0.1812
+E5,teste: limiar_pratico_combinado -1,imoveis_que_mudam_de_plano,0.0
+E5,teste: limiar_pratico_combinado +1,imoveis_que_mudam_de_plano,0.0072
+E5,teste: limiar_pratico -1,imoveis_que_mudam_de_plano,0.087
+E5,teste: limiar_pratico +1,imoveis_que_mudam_de_plano,0.0435
+E5,teste: pior caso de um ponto,imoveis_que_mudam_de_plano,0.3986
+E5,teste: todos os pesos com ruído -1/0/+1 (60 sorteios),mediana,0.3116
+E5,teste: todos os pesos com ruído -1/0/+1 (60 sorteios),p95,0.4525

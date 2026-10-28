@@ -26,7 +26,7 @@ Guardrail: entrada e saída não têm idade nem renda.
 import numpy as np
 import pandas as pd
 
-from . import perguntas, regras
+from . import perguntas, personalizacao, regras
 from .config import ALTA, CONFIRMADO
 from .inferencias import _regra_uso
 from .pipeline import executar
@@ -38,6 +38,11 @@ CAMPOS_CASA = [
     "material_parede", "alerta_obra", "conteudo",
 ]
 FATOR_MENOR, FATOR_MAIOR = 0.7, 1.3  # "menor que a faixa" / "maior que a faixa"
+# Perguntas dos adicionais (personalização): SIM confirma o interesse, NAO tira o adicional da lista.
+RESPOSTAS_ADICIONAIS = {
+    "equipamentos": {"SIM", "NAO", "NAO_SEI"}, "bicicleta": {"SIM", "NAO", "NAO_SEI"},
+    "desocupacao": {"SIM", "NAO", "NAO_SEI"}, "mei": {"SIM", "NAO", "NAO_SEI"},
+}
 
 
 class RespostaInvalida(ValueError):
@@ -141,8 +146,13 @@ class Motor:
         imovel_id = entrada.get("imovel_id")
         if imovel_id not in self.casas.index:
             return {"versao_contrato": VERSAO_CONTRATO, "erro": f"imóvel não encontrado: {imovel_id}"}
+        respostas = dict(entrada.get("respostas", {}))
+        adicionais_resp = {c: respostas.pop(c) for c in list(respostas) if c in RESPOSTAS_ADICIONAIS}
         try:
-            r, respondidas = aplicar_respostas(self.casas.loc[imovel_id], entrada.get("respostas", {}))
+            for campo, resposta in adicionais_resp.items():
+                if resposta not in RESPOSTAS_ADICIONAIS[campo]:
+                    raise RespostaInvalida(f"resposta inválida para {campo}: {resposta!r}")
+            r, respondidas = aplicar_respostas(self.casas.loc[imovel_id], respostas)
         except RespostaInvalida as e:
             return {"versao_contrato": VERSAO_CONTRATO, "imovel_id": imovel_id, "erro": str(e)}
 
@@ -152,8 +162,8 @@ class Motor:
         nao_abaixo, nao_acima = regras.comparar_planos(r, pontuacao) if plano else ("", "")
         impacto = perguntas.analisar(r, self.referencias, elegibilidade, frozenset(respondidas))
         cor, canal = regras.semaforo(r, elegibilidade, impacto["confianca_geral"])
-        faixas = [f for f in regras.calcular_coberturas(r, self.referencias)
-                  if f["cobertura"] in self.coberturas_do_plano.get(plano, [])] if plano else []
+        todas = regras.calcular_coberturas(r, self.referencias)
+        faixas = [f for f in todas if f["cobertura"] in self.coberturas_do_plano.get(plano, [])] if plano else []
 
         proximas = impacto["perguntas"] if elegibilidade != regras.INELEGIVEL else []
         if "declaracao_unica" not in respondidas and elegibilidade != regras.INELEGIVEL:
@@ -172,6 +182,14 @@ class Motor:
 
         motivos = {"TOTAL": pontuacao["motivos_total"] + pontuacao["motivos_pratico"],
                    "PRATICO": pontuacao["motivos_pratico"]}.get(plano, [])
+        pendentes = [p for p in proximas if p["campo"] != "declaracao_unica"]
+        feitas = [c for c in respondidas if c != "declaracao_unica"]
+        necessarias = min(len(feitas) + len(pendentes), regras.CAMPOS_FORMULARIO_TRADICIONAL)
+        evitadas = regras.CAMPOS_FORMULARIO_TRADICIONAL - necessarias
+        resumo = "; ".join(motivos[:2]) if motivos else "poucos sinais de necessidade além da proteção básica"
+        curta = f"{regras.NOME_PLANO[plano]}: {resumo}." if plano else "Imóvel não elegível sem validação."
+        pers = personalizacao.analisar(r, plano, elegibilidade, self.coberturas_do_plano.get(plano, []), adicionais_resp)
+        explica = personalizacao.explicacao(r, elegibilidade, motivo, pontuacao, impacto, cor, canal, plano, nao_abaixo, nao_acima)
         return {
             "versao_contrato": VERSAO_CONTRATO,
             "imovel_id": imovel_id,
@@ -187,6 +205,7 @@ class Motor:
                  "conteudo_faixa": [_valor_json(r["conteudo_min"]), _valor_json(r["conteudo_max"])]},
             "recomendacao": {
                 "plano": plano,
+                "justificativa_curta": curta,
                 "confianca_geral": impacto["confianca_geral"],
                 "por_que_este_plano": motivos,
                 "por_que_nao_plano_abaixo": nao_abaixo,
@@ -206,6 +225,14 @@ class Motor:
                  "impacto": p["impacto"], "motivo": p["motivo"]}
                 for p in proximas
             ],
+            "jornada": {
+                "campos_formulario_tradicional": regras.CAMPOS_FORMULARIO_TRADICIONAL,
+                "perguntas_necessarias": necessarias,
+                "perguntas_evitadas": evitadas,
+                "percentual_evitado": round(100 * evitadas / regras.CAMPOS_FORMULARIO_TRADICIONAL),
+            },
             "canal": {"semaforo": cor, "sugerido": canal},
-            "respostas_aplicadas": respondidas,
+            "personalizacao": pers,
+            "explicacao": explica,
+            "respostas_aplicadas": respondidas + list(adicionais_resp),
         }

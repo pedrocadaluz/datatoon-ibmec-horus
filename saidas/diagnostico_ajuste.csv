@@ -1,0 +1,559 @@
+﻿verificacao,variante,metrica,valor
+V4,área real (referência),erro_pct_mediano,0.1326
+V4,área real (referência),r2_log,0.8621
+V4,"área embaralhada no desenvolvimento todo, 30 sorteios",erro_pct_mediano,0.436
+V4,"área embaralhada no desenvolvimento todo, 30 sorteios",erro_pct_p5,0.4263
+V4,"área embaralhada no desenvolvimento todo, 30 sorteios",r2_log_medio,-0.0172
+V4,"área embaralhada no desenvolvimento todo, 30 sorteios",r2_log_p95,-0.0056
+V4,"área embaralhada dentro do município, 30 sorteios",erro_pct_mediano,0.4347
+V4,"área embaralhada dentro do município, 30 sorteios",erro_pct_p5,0.4287
+V4,"área embaralhada dentro do município, 30 sorteios",r2_log_medio,-0.0183
+V4,"área embaralhada dentro do município, 30 sorteios",r2_log_p95,-0.0073
+V4,padrão: regra com rótulo real,n,273.0
+V4,padrão: regra com rótulo real,acuracia,0.5861
+V4,padrão: regra com rótulo real,acuracia_balanceada,0.6078
+V4,padrão: regra com rótulo real,sempre_normal,0.6337
+V4,"padrão: rótulo embaralhado, 2000 sorteios",bal_media,0.3318
+V4,"padrão: rótulo embaralhado, 2000 sorteios",bal_p95,0.3857
+V4,"padrão: rótulo embaralhado, 2000 sorteios",p_valor,0.0
+V4,"padrão: limiares reestimados em metade, rótulo real, 40 divisões",acur_bal_na_metade_de_treino,0.6391
+V4,"padrão: limiares reestimados em metade, rótulo real, 40 divisões",acur_bal_na_outra_metade,0.592
+V4,"padrão: limiares reestimados em metade, rótulo real, 40 divisões",acur_bal_limiares_atuais_na_outra_metade,0.6071
+V4,"padrão: limiares reestimados em metade, rótulo real, 40 divisões",limiar_superior_medio,1.1863
+V4,"padrão: limiares reestimados em metade, rótulo real, 40 divisões",limiar_superior_dp,0.1049
+V4,"padrão: limiares reestimados em metade, rótulo real, 40 divisões",limiar_economico_medio,0.8813
+V4,"padrão: limiares reestimados em metade, rótulo real, 40 divisões",limiar_economico_dp,0.0398
+V4,"padrão: limiares reestimados em metade, rótulo embaralhado, 40 divisões",acur_bal_na_metade_de_treino,0.3923
+V4,"padrão: limiares reestimados em metade, rótulo embaralhado, 40 divisões",acur_bal_na_outra_metade,0.3361
+V4,"padrão: limiares reestimados em metade, rótulo embaralhado, 40 divisões",acur_bal_limiares_atuais_na_outra_metade,0.3283
+V4,"padrão: limiares reestimados em metade, rótulo embaralhado, 40 divisões",limiar_superior_medio,1.3063
+V4,"padrão: limiares reestimados em metade, rótulo embaralhado, 40 divisões",limiar_superior_dp,0.1927
+V4,"padrão: limiares reestimados em metade, rótulo embaralhado, 40 divisões",limiar_economico_medio,0.8163
+V4,"padrão: limiares reestimados em metade, rótulo embaralhado, 40 divisões",limiar_economico_dp,0.1442
+V2,"constante, amostra 10%",erro_treino,0.4472
+V2,"constante, amostra 10%",erro_validacao,0.4327
+V2,"constante, amostra 10%",rmse_log_treino,0.5794
+V2,"constante, amostra 10%",rmse_log_validacao,0.5715
+V2,"constante, amostra 10%",n_treino,81.0
+V2,"OLS só IPTU, amostra 10%",erro_treino,0.1849
+V2,"OLS só IPTU, amostra 10%",erro_validacao,0.2004
+V2,"OLS só IPTU, amostra 10%",rmse_log_treino,0.2752
+V2,"OLS só IPTU, amostra 10%",rmse_log_validacao,0.2906
+V2,"OLS só IPTU, amostra 10%",n_treino,81.0
+V2,"OLS atual, amostra 10%",erro_treino,0.1192
+V2,"OLS atual, amostra 10%",erro_validacao,0.1573
+V2,"OLS atual, amostra 10%",rmse_log_treino,0.185
+V2,"OLS atual, amostra 10%",rmse_log_validacao,0.2326
+V2,"OLS atual, amostra 10%",n_treino,81.0
+V2,"OLS proposto, amostra 10%",erro_treino,0.1025
+V2,"OLS proposto, amostra 10%",erro_validacao,0.1501
+V2,"OLS proposto, amostra 10%",rmse_log_treino,0.1581
+V2,"OLS proposto, amostra 10%",rmse_log_validacao,0.2238
+V2,"OLS proposto, amostra 10%",n_treino,81.0
+V2,"OLS com interações, amostra 10%",erro_treino,0.088
+V2,"OLS com interações, amostra 10%",erro_validacao,0.1667
+V2,"OLS com interações, amostra 10%",rmse_log_treino,0.1341
+V2,"OLS com interações, amostra 10%",rmse_log_validacao,0.31
+V2,"OLS com interações, amostra 10%",n_treino,81.0
+V2,"GBM profundidade 3, amostra 10%",erro_treino,0.0211
+V2,"GBM profundidade 3, amostra 10%",erro_validacao,0.1566
+V2,"GBM profundidade 3, amostra 10%",rmse_log_treino,0.0276
+V2,"GBM profundidade 3, amostra 10%",rmse_log_validacao,0.2414
+V2,"GBM profundidade 3, amostra 10%",n_treino,81.0
+V2,"GBM profundidade 6, amostra 10%",erro_treino,0.0007
+V2,"GBM profundidade 6, amostra 10%",erro_validacao,0.1651
+V2,"GBM profundidade 6, amostra 10%",rmse_log_treino,0.0008
+V2,"GBM profundidade 6, amostra 10%",rmse_log_validacao,0.2527
+V2,"GBM profundidade 6, amostra 10%",n_treino,81.0
+V2,"constante, amostra 25%",erro_treino,0.4298
+V2,"constante, amostra 25%",erro_validacao,0.4359
+V2,"constante, amostra 25%",rmse_log_treino,0.5734
+V2,"constante, amostra 25%",rmse_log_validacao,0.5701
+V2,"constante, amostra 25%",n_treino,203.0
+V2,"OLS só IPTU, amostra 25%",erro_treino,0.1906
+V2,"OLS só IPTU, amostra 25%",erro_validacao,0.1972
+V2,"OLS só IPTU, amostra 25%",rmse_log_treino,0.2824
+V2,"OLS só IPTU, amostra 25%",rmse_log_validacao,0.2881
+V2,"OLS só IPTU, amostra 25%",n_treino,203.0
+V2,"OLS atual, amostra 25%",erro_treino,0.1295
+V2,"OLS atual, amostra 25%",erro_validacao,0.1425
+V2,"OLS atual, amostra 25%",rmse_log_treino,0.1997
+V2,"OLS atual, amostra 25%",rmse_log_validacao,0.2163
+V2,"OLS atual, amostra 25%",n_treino,203.0
+V2,"OLS proposto, amostra 25%",erro_treino,0.1148
+V2,"OLS proposto, amostra 25%",erro_validacao,0.1304
+V2,"OLS proposto, amostra 25%",rmse_log_treino,0.1785
+V2,"OLS proposto, amostra 25%",rmse_log_validacao,0.1998
+V2,"OLS proposto, amostra 25%",n_treino,203.0
+V2,"OLS com interações, amostra 25%",erro_treino,0.1089
+V2,"OLS com interações, amostra 25%",erro_validacao,0.1293
+V2,"OLS com interações, amostra 25%",rmse_log_treino,0.1668
+V2,"OLS com interações, amostra 25%",rmse_log_validacao,0.2021
+V2,"OLS com interações, amostra 25%",n_treino,203.0
+V2,"GBM profundidade 3, amostra 25%",erro_treino,0.0498
+V2,"GBM profundidade 3, amostra 25%",erro_validacao,0.1409
+V2,"GBM profundidade 3, amostra 25%",rmse_log_treino,0.0722
+V2,"GBM profundidade 3, amostra 25%",rmse_log_validacao,0.2143
+V2,"GBM profundidade 3, amostra 25%",n_treino,203.0
+V2,"GBM profundidade 6, amostra 25%",erro_treino,0.0042
+V2,"GBM profundidade 6, amostra 25%",erro_validacao,0.1431
+V2,"GBM profundidade 6, amostra 25%",rmse_log_treino,0.0059
+V2,"GBM profundidade 6, amostra 25%",rmse_log_validacao,0.2217
+V2,"GBM profundidade 6, amostra 25%",n_treino,203.0
+V2,"constante, amostra 50%",erro_treino,0.4296
+V2,"constante, amostra 50%",erro_validacao,0.4387
+V2,"constante, amostra 50%",rmse_log_treino,0.5649
+V2,"constante, amostra 50%",rmse_log_validacao,0.568
+V2,"constante, amostra 50%",n_treino,406.0
+V2,"OLS só IPTU, amostra 50%",erro_treino,0.1947
+V2,"OLS só IPTU, amostra 50%",erro_validacao,0.1979
+V2,"OLS só IPTU, amostra 50%",rmse_log_treino,0.2835
+V2,"OLS só IPTU, amostra 50%",rmse_log_validacao,0.2873
+V2,"OLS só IPTU, amostra 50%",n_treino,406.0
+V2,"OLS atual, amostra 50%",erro_treino,0.1306
+V2,"OLS atual, amostra 50%",erro_validacao,0.1363
+V2,"OLS atual, amostra 50%",rmse_log_treino,0.2014
+V2,"OLS atual, amostra 50%",rmse_log_validacao,0.2113
+V2,"OLS atual, amostra 50%",n_treino,406.0
+V2,"OLS proposto, amostra 50%",erro_treino,0.1172
+V2,"OLS proposto, amostra 50%",erro_validacao,0.1266
+V2,"OLS proposto, amostra 50%",rmse_log_treino,0.1821
+V2,"OLS proposto, amostra 50%",rmse_log_validacao,0.1937
+V2,"OLS proposto, amostra 50%",n_treino,406.0
+V2,"OLS com interações, amostra 50%",erro_treino,0.113
+V2,"OLS com interações, amostra 50%",erro_validacao,0.1235
+V2,"OLS com interações, amostra 50%",rmse_log_treino,0.1745
+V2,"OLS com interações, amostra 50%",rmse_log_validacao,0.1911
+V2,"OLS com interações, amostra 50%",n_treino,406.0
+V2,"GBM profundidade 3, amostra 50%",erro_treino,0.07
+V2,"GBM profundidade 3, amostra 50%",erro_validacao,0.1282
+V2,"GBM profundidade 3, amostra 50%",rmse_log_treino,0.1069
+V2,"GBM profundidade 3, amostra 50%",rmse_log_validacao,0.1966
+V2,"GBM profundidade 3, amostra 50%",n_treino,406.0
+V2,"GBM profundidade 6, amostra 50%",erro_treino,0.0125
+V2,"GBM profundidade 6, amostra 50%",erro_validacao,0.1343
+V2,"GBM profundidade 6, amostra 50%",rmse_log_treino,0.0189
+V2,"GBM profundidade 6, amostra 50%",rmse_log_validacao,0.2065
+V2,"GBM profundidade 6, amostra 50%",n_treino,406.0
+V2,"constante, amostra 75%",erro_treino,0.4316
+V2,"constante, amostra 75%",erro_validacao,0.4362
+V2,"constante, amostra 75%",rmse_log_treino,0.5668
+V2,"constante, amostra 75%",rmse_log_validacao,0.5678
+V2,"constante, amostra 75%",n_treino,610.0
+V2,"OLS só IPTU, amostra 75%",erro_treino,0.1954
+V2,"OLS só IPTU, amostra 75%",erro_validacao,0.1975
+V2,"OLS só IPTU, amostra 75%",rmse_log_treino,0.287
+V2,"OLS só IPTU, amostra 75%",rmse_log_validacao,0.2872
+V2,"OLS só IPTU, amostra 75%",n_treino,610.0
+V2,"OLS atual, amostra 75%",erro_treino,0.1308
+V2,"OLS atual, amostra 75%",erro_validacao,0.1352
+V2,"OLS atual, amostra 75%",rmse_log_treino,0.2046
+V2,"OLS atual, amostra 75%",rmse_log_validacao,0.2102
+V2,"OLS atual, amostra 75%",n_treino,610.0
+V2,"OLS proposto, amostra 75%",erro_treino,0.1194
+V2,"OLS proposto, amostra 75%",erro_validacao,0.1248
+V2,"OLS proposto, amostra 75%",rmse_log_treino,0.185
+V2,"OLS proposto, amostra 75%",rmse_log_validacao,0.192
+V2,"OLS proposto, amostra 75%",n_treino,610.0
+V2,"OLS com interações, amostra 75%",erro_treino,0.115
+V2,"OLS com interações, amostra 75%",erro_validacao,0.1192
+V2,"OLS com interações, amostra 75%",rmse_log_treino,0.1776
+V2,"OLS com interações, amostra 75%",rmse_log_validacao,0.1877
+V2,"OLS com interações, amostra 75%",n_treino,610.0
+V2,"GBM profundidade 3, amostra 75%",erro_treino,0.081
+V2,"GBM profundidade 3, amostra 75%",erro_validacao,0.1241
+V2,"GBM profundidade 3, amostra 75%",rmse_log_treino,0.1246
+V2,"GBM profundidade 3, amostra 75%",rmse_log_validacao,0.192
+V2,"GBM profundidade 3, amostra 75%",n_treino,610.0
+V2,"GBM profundidade 6, amostra 75%",erro_treino,0.0205
+V2,"GBM profundidade 6, amostra 75%",erro_validacao,0.126
+V2,"GBM profundidade 6, amostra 75%",rmse_log_treino,0.0319
+V2,"GBM profundidade 6, amostra 75%",rmse_log_validacao,0.1997
+V2,"GBM profundidade 6, amostra 75%",n_treino,610.0
+V2,"constante, amostra 100%",erro_treino,0.4312
+V2,"constante, amostra 100%",erro_validacao,0.4345
+V2,"constante, amostra 100%",rmse_log_treino,0.5671
+V2,"constante, amostra 100%",rmse_log_validacao,0.5678
+V2,"constante, amostra 100%",n_treino,813.0
+V2,"OLS só IPTU, amostra 100%",erro_treino,0.1969
+V2,"OLS só IPTU, amostra 100%",erro_validacao,0.1972
+V2,"OLS só IPTU, amostra 100%",rmse_log_treino,0.2871
+V2,"OLS só IPTU, amostra 100%",rmse_log_validacao,0.2871
+V2,"OLS só IPTU, amostra 100%",n_treino,813.0
+V2,"OLS atual, amostra 100%",erro_treino,0.1308
+V2,"OLS atual, amostra 100%",erro_validacao,0.1324
+V2,"OLS atual, amostra 100%",rmse_log_treino,0.206
+V2,"OLS atual, amostra 100%",rmse_log_validacao,0.2096
+V2,"OLS atual, amostra 100%",n_treino,813.0
+V2,"OLS proposto, amostra 100%",erro_treino,0.1195
+V2,"OLS proposto, amostra 100%",erro_validacao,0.1239
+V2,"OLS proposto, amostra 100%",rmse_log_treino,0.1862
+V2,"OLS proposto, amostra 100%",rmse_log_validacao,0.1917
+V2,"OLS proposto, amostra 100%",n_treino,813.0
+V2,"OLS com interações, amostra 100%",erro_treino,0.1146
+V2,"OLS com interações, amostra 100%",erro_validacao,0.1194
+V2,"OLS com interações, amostra 100%",rmse_log_treino,0.1792
+V2,"OLS com interações, amostra 100%",rmse_log_validacao,0.1864
+V2,"OLS com interações, amostra 100%",n_treino,813.0
+V2,"GBM profundidade 3, amostra 100%",erro_treino,0.0888
+V2,"GBM profundidade 3, amostra 100%",erro_validacao,0.1238
+V2,"GBM profundidade 3, amostra 100%",rmse_log_treino,0.1353
+V2,"GBM profundidade 3, amostra 100%",rmse_log_validacao,0.1896
+V2,"GBM profundidade 3, amostra 100%",n_treino,813.0
+V2,"GBM profundidade 6, amostra 100%",erro_treino,0.0279
+V2,"GBM profundidade 6, amostra 100%",erro_validacao,0.127
+V2,"GBM profundidade 6, amostra 100%",rmse_log_treino,0.044
+V2,"GBM profundidade 6, amostra 100%",rmse_log_validacao,0.1977
+V2,"GBM profundidade 6, amostra 100%",n_treino,813.0
+V5,municipio_real = Belo Horizonte,n,95.0
+V5,municipio_real = Belo Horizonte,vies_log_medio,-0.0008
+V5,municipio_real = Belo Horizonte,vies_em_erros_padrao,-0.0367
+V5,municipio_real = Belo Horizonte,erro_pct_mediano,0.1407
+V5,municipio_real = Belo Horizonte,cobertura_faixa_80,0.7789
+V5,municipio_real = Brasilia,n,163.0
+V5,municipio_real = Brasilia,vies_log_medio,-0.0016
+V5,municipio_real = Brasilia,vies_em_erros_padrao,-0.0981
+V5,municipio_real = Brasilia,erro_pct_mediano,0.1204
+V5,municipio_real = Brasilia,cobertura_faixa_80,0.816
+V5,municipio_real = Curitiba,n,83.0
+V5,municipio_real = Curitiba,vies_log_medio,0.0022
+V5,municipio_real = Curitiba,vies_em_erros_padrao,0.0945
+V5,municipio_real = Curitiba,erro_pct_mediano,0.1269
+V5,municipio_real = Curitiba,cobertura_faixa_80,0.8193
+V5,municipio_real = Fortaleza,n,56.0
+V5,municipio_real = Fortaleza,vies_log_medio,0.0033
+V5,municipio_real = Fortaleza,vies_em_erros_padrao,0.1011
+V5,municipio_real = Fortaleza,erro_pct_mediano,0.1201
+V5,municipio_real = Fortaleza,cobertura_faixa_80,0.6964
+V5,municipio_real = Goiania,n,91.0
+V5,municipio_real = Goiania,vies_log_medio,-0.0013
+V5,municipio_real = Goiania,vies_em_erros_padrao,-0.0633
+V5,municipio_real = Goiania,erro_pct_mediano,0.0975
+V5,municipio_real = Goiania,cobertura_faixa_80,0.8462
+V5,municipio_real = Porto Alegre,n,62.0
+V5,municipio_real = Porto Alegre,vies_log_medio,0.0015
+V5,municipio_real = Porto Alegre,vies_em_erros_padrao,0.0544
+V5,municipio_real = Porto Alegre,erro_pct_mediano,0.1761
+V5,municipio_real = Porto Alegre,cobertura_faixa_80,0.7903
+V5,municipio_real = Recife,n,70.0
+V5,municipio_real = Recife,vies_log_medio,0.0086
+V5,municipio_real = Recife,vies_em_erros_padrao,0.3181
+V5,municipio_real = Recife,erro_pct_mediano,0.1093
+V5,municipio_real = Recife,cobertura_faixa_80,0.7571
+V5,municipio_real = Rio de Janeiro,n,118.0
+V5,municipio_real = Rio de Janeiro,vies_log_medio,-0.0023
+V5,municipio_real = Rio de Janeiro,vies_em_erros_padrao,-0.1189
+V5,municipio_real = Rio de Janeiro,erro_pct_mediano,0.147
+V5,municipio_real = Rio de Janeiro,cobertura_faixa_80,0.7797
+V5,municipio_real = Salvador,n,80.0
+V5,municipio_real = Salvador,vies_log_medio,0.0005
+V5,municipio_real = Salvador,vies_em_erros_padrao,0.0221
+V5,municipio_real = Salvador,erro_pct_mediano,0.1402
+V5,municipio_real = Salvador,cobertura_faixa_80,0.7875
+V5,municipio_real = Sao Paulo,n,198.0
+V5,municipio_real = Sao Paulo,vies_log_medio,-0.0005
+V5,municipio_real = Sao Paulo,vies_em_erros_padrao,-0.0307
+V5,municipio_real = Sao Paulo,erro_pct_mediano,0.1335
+V5,municipio_real = Sao Paulo,cobertura_faixa_80,0.8283
+V5,tipo_imovel = APARTAMENTO,n,448.0
+V5,tipo_imovel = APARTAMENTO,vies_log_medio,0.0006
+V5,tipo_imovel = APARTAMENTO,vies_em_erros_padrao,0.0629
+V5,tipo_imovel = APARTAMENTO,erro_pct_mediano,0.135
+V5,tipo_imovel = APARTAMENTO,cobertura_faixa_80,0.7879
+V5,tipo_imovel = CASA,n,464.0
+V5,tipo_imovel = CASA,vies_log_medio,0.0012
+V5,tipo_imovel = CASA,vies_em_erros_padrao,0.1206
+V5,tipo_imovel = CASA,erro_pct_mediano,0.1326
+V5,tipo_imovel = CASA,cobertura_faixa_80,0.7996
+V5,tipo_imovel = CASA_EM_CONDOMINIO,n,104.0
+V5,tipo_imovel = CASA_EM_CONDOMINIO,vies_log_medio,-0.0052
+V5,tipo_imovel = CASA_EM_CONDOMINIO,vies_em_erros_padrao,-0.272
+V5,tipo_imovel = CASA_EM_CONDOMINIO,erro_pct_mediano,0.1287
+V5,tipo_imovel = CASA_EM_CONDOMINIO,cobertura_faixa_80,0.8462
+V5,faixa_area = Q1 menor,n,254.0
+V5,faixa_area = Q1 menor,vies_log_medio,-0.0052
+V5,faixa_area = Q1 menor,vies_em_erros_padrao,-0.3672
+V5,faixa_area = Q1 menor,erro_pct_mediano,0.144
+V5,faixa_area = Q1 menor,cobertura_faixa_80,0.7559
+V5,faixa_area = Q2,n,254.0
+V5,faixa_area = Q2,vies_log_medio,-0.01
+V5,faixa_area = Q2,vies_em_erros_padrao,-0.6832
+V5,faixa_area = Q2,erro_pct_mediano,0.1636
+V5,faixa_area = Q2,cobertura_faixa_80,0.748
+V5,faixa_area = Q3,n,254.0
+V5,faixa_area = Q3,vies_log_medio,0.017
+V5,faixa_area = Q3,vies_em_erros_padrao,1.3007
+V5,faixa_area = Q3,erro_pct_mediano,0.1371
+V5,faixa_area = Q3,cobertura_faixa_80,0.815
+V5,faixa_area = Q4 maior,n,254.0
+V5,faixa_area = Q4 maior,vies_log_medio,-0.0006
+V5,faixa_area = Q4 maior,vies_em_erros_padrao,-0.0599
+V5,faixa_area = Q4 maior,erro_pct_mediano,0.0989
+V5,faixa_area = Q4 maior,cobertura_faixa_80,0.878
+V5,faixa_iptu = Q1 menor,n,266.0
+V5,faixa_iptu = Q1 menor,vies_log_medio,-0.017
+V5,faixa_iptu = Q1 menor,vies_em_erros_padrao,-1.1778
+V5,faixa_iptu = Q1 menor,erro_pct_mediano,0.1471
+V5,faixa_iptu = Q1 menor,cobertura_faixa_80,0.7256
+V5,faixa_iptu = Q2,n,243.0
+V5,faixa_iptu = Q2,vies_log_medio,0.0014
+V5,faixa_iptu = Q2,vies_em_erros_padrao,0.0996
+V5,faixa_iptu = Q2,erro_pct_mediano,0.1582
+V5,faixa_iptu = Q2,cobertura_faixa_80,0.7737
+V5,faixa_iptu = Q3,n,256.0
+V5,faixa_iptu = Q3,vies_log_medio,0.027
+V5,faixa_iptu = Q3,vies_em_erros_padrao,2.0824
+V5,faixa_iptu = Q3,erro_pct_mediano,0.1276
+V5,faixa_iptu = Q3,cobertura_faixa_80,0.8164
+V5,faixa_iptu = Q4 maior,n,251.0
+V5,faixa_iptu = Q4 maior,vies_log_medio,-0.0097
+V5,faixa_iptu = Q4 maior,vies_em_erros_padrao,-0.9006
+V5,faixa_iptu = Q4 maior,erro_pct_mediano,0.1071
+V5,faixa_iptu = Q4 maior,cobertura_faixa_80,0.8845
+V5,faixa_area_real = Q1 menor,n,254.0
+V5,faixa_area_real = Q1 menor,vies_log_medio,-0.1174
+V5,faixa_area_real = Q1 menor,vies_em_erros_padrao,-8.7172
+V5,faixa_area_real = Q1 menor,erro_pct_mediano,0.1617
+V5,faixa_area_real = Q1 menor,cobertura_faixa_80,0.7283
+V5,faixa_area_real = Q2,n,254.0
+V5,faixa_area_real = Q2,vies_log_medio,-0.0058
+V5,faixa_area_real = Q2,vies_em_erros_padrao,-0.4475
+V5,faixa_area_real = Q2,erro_pct_mediano,0.1397
+V5,faixa_area_real = Q2,cobertura_faixa_80,0.7992
+V5,faixa_area_real = Q3,n,257.0
+V5,faixa_area_real = Q3,vies_log_medio,0.0454
+V5,faixa_area_real = Q3,vies_em_erros_padrao,3.8756
+V5,faixa_area_real = Q3,erro_pct_mediano,0.1205
+V5,faixa_area_real = Q3,cobertura_faixa_80,0.8327
+V5,faixa_area_real = Q4 maior,n,251.0
+V5,faixa_area_real = Q4 maior,vies_log_medio,0.0794
+V5,faixa_area_real = Q4 maior,vies_em_erros_padrao,7.0698
+V5,faixa_area_real = Q4 maior,erro_pct_mediano,0.1175
+V5,faixa_area_real = Q4 maior,cobertura_faixa_80,0.8367
+V5,heterocedasticidade,spearman_prev_vs_abs_residuo,-0.1251
+V5,heterocedasticidade,p_valor_spearman,0.0001
+V5,heterocedasticidade,estatistica_bp,15.8
+V5,heterocedasticidade,p_valor_bp,0.0001
+V5,10 piores casos,erro_pct_medio,0.7964
+V5,10 piores casos,erro_pct_minimo,0.723
+V5,10 piores casos,fracao_subestimados,0.0
+V5,10 piores casos,fracao_casas,0.3
+V5,10 piores casos,fracao_com_area_acima_p90,0.0
+V5,10 piores casos,fracao_apartamento_sem_condominio,0.4
+V5,"10 piores casos, municípios distintos",n,7.0
+V5,cauda,p95_erro_pct,0.422
+V5,cauda,p99_erro_pct,0.7098
+V5,cauda,max_erro_pct,0.9178
+V6,obra 10 mil (entre quem gastou),percentil_no_desenvolvimento,0.5293
+V6,obra 10 mil (entre quem gastou),percentil_metades_p5,0.4867
+V6,obra 10 mil (entre quem gastou),percentil_metades_p95,0.5634
+V6,obra 10 mil (entre quem gastou),percentil_no_teste,0.5172
+V6,obra 10 mil (entre quem gastou),fracao_acima_dev,0.4707
+V6,obra 10 mil (entre quem gastou),fracao_acima_teste,0.4828
+V6,obra 10 mil (entre quem gastou),p_valor_proporcoes,0.8997
+V6,obra 30 mil (entre quem gastou),percentil_no_desenvolvimento,0.8568
+V6,obra 30 mil (entre quem gastou),percentil_metades_p5,0.8305
+V6,obra 30 mil (entre quem gastou),percentil_metades_p95,0.8784
+V6,obra 30 mil (entre quem gastou),percentil_no_teste,0.8966
+V6,obra 30 mil (entre quem gastou),fracao_acima_dev,0.1432
+V6,obra 30 mil (entre quem gastou),fracao_acima_teste,0.1034
+V6,obra 30 mil (entre quem gastou),p_valor_proporcoes,0.5509
+V6,conteúdo moderado 10 mil,percentil_no_desenvolvimento,0.0954
+V6,conteúdo moderado 10 mil,percentil_metades_p5,0.0861
+V6,conteúdo moderado 10 mil,percentil_metades_p95,0.1043
+V6,conteúdo moderado 10 mil,percentil_no_teste,0.1232
+V6,conteúdo moderado 10 mil,fracao_acima_dev,0.9046
+V6,conteúdo moderado 10 mil,fracao_acima_teste,0.8768
+V6,conteúdo moderado 10 mil,p_valor_proporcoes,0.2826
+V6,conteúdo relevante 20 mil,percentil_no_desenvolvimento,0.3922
+V6,conteúdo relevante 20 mil,percentil_metades_p5,0.3758
+V6,conteúdo relevante 20 mil,percentil_metades_p95,0.4063
+V6,conteúdo relevante 20 mil,percentil_no_teste,0.3841
+V6,conteúdo relevante 20 mil,fracao_acima_dev,0.6078
+V6,conteúdo relevante 20 mil,fracao_acima_teste,0.6159
+V6,conteúdo relevante 20 mil,p_valor_proporcoes,0.8493
+V6,eletrônicos 15 mil,percentil_no_desenvolvimento,0.3588
+V6,eletrônicos 15 mil,percentil_metades_p5,0.3445
+V6,eletrônicos 15 mil,percentil_metades_p95,0.3737
+V6,eletrônicos 15 mil,percentil_no_teste,0.3768
+V6,eletrônicos 15 mil,fracao_acima_dev,0.6412
+V6,eletrônicos 15 mil,fracao_acima_teste,0.6232
+V6,eletrônicos 15 mil,p_valor_proporcoes,0.6676
+V6,"limiares reestimados em metade, aplicados na outra (60 divisões)",planos_que_mudam_medio,0.0023
+V6,"limiares reestimados em metade, aplicados na outra (60 divisões)",planos_que_mudam_p95,0.0055
+V6,"limiares reestimados em metade, aplicados na outra (60 divisões)",obra_a_confirmar_que_muda_medio,0.0025
+V6,"limiares reestimados em metade, aplicados na outra (60 divisões)",obra_a_confirmar_que_muda_p95,0.0094
+V6,limiares reestimados no próprio teste (mesmo percentil),limiar_conteudo_relevante,20872.6532
+V6,limiares reestimados no próprio teste (mesmo percentil),limiar_conteudo_moderado,7206.6718
+V6,limiares reestimados no próprio teste (mesmo percentil),limiar_eletronicos,14431.2645
+V6,limiares reestimados no próprio teste (mesmo percentil),limiar_obra_moderada,10610.9544
+V6,limiares reestimados no próprio teste (mesmo percentil),limiar_obra_relevante,26254.013
+V6,limiares reestimados no próprio teste (mesmo percentil),planos_que_mudam,0.0
+V6,limiares reestimados no próprio teste (mesmo percentil),obra_a_confirmar_que_muda,0.0
+V6,"limiares de conteúdo e eletrônicos x0.8, desenvolvimento",planos_que_mudam,0.038
+V6,"limiares de conteúdo e eletrônicos x1.2, desenvolvimento",planos_que_mudam,0.0365
+V7,plano_recomendado: qui-quadrado,qui2,0.7094
+V7,plano_recomendado: qui-quadrado,p_valor,0.7014
+V7,plano_recomendado: qui-quadrado,graus,2.0
+V7,plano_recomendado: qui-quadrado,celulas_esperadas_menor_5,0.0
+V7,plano_recomendado = TOTAL,dev,0.4647
+V7,plano_recomendado = TOTAL,teste,0.5
+V7,plano_recomendado = TOTAL,diferenca_pp,3.5299
+V7,plano_recomendado = PRATICO,dev,0.4329
+V7,plano_recomendado = PRATICO,teste,0.3986
+V7,plano_recomendado = PRATICO,diferenca_pp,-3.4343
+V7,plano_recomendado = ESSENCIAL,dev,0.1024
+V7,plano_recomendado = ESSENCIAL,teste,0.1014
+V7,plano_recomendado = ESSENCIAL,diferenca_pp,-0.0956
+V7,confianca_geral: qui-quadrado,qui2,2.1766
+V7,confianca_geral: qui-quadrado,p_valor,0.3368
+V7,confianca_geral: qui-quadrado,graus,2.0
+V7,confianca_geral: qui-quadrado,celulas_esperadas_menor_5,0.0
+V7,confianca_geral = ALTA,dev,0.6901
+V7,confianca_geral = ALTA,teste,0.7464
+V7,confianca_geral = ALTA,diferenca_pp,5.6307
+V7,confianca_geral = MEDIA,dev,0.2164
+V7,confianca_geral = MEDIA,teste,0.1667
+V7,confianca_geral = MEDIA,diferenca_pp,-4.978
+V7,confianca_geral = BAIXA,dev,0.0935
+V7,confianca_geral = BAIXA,teste,0.087
+V7,confianca_geral = BAIXA,diferenca_pp,-0.6527
+V7,semaforo: qui-quadrado,qui2,4.1361
+V7,semaforo: qui-quadrado,p_valor,0.1264
+V7,semaforo: qui-quadrado,graus,2.0
+V7,semaforo: qui-quadrado,celulas_esperadas_menor_5,0.0
+V7,semaforo = VERDE,dev,0.6769
+V7,semaforo = VERDE,teste,0.7246
+V7,semaforo = VERDE,diferenca_pp,4.7756
+V7,semaforo = AMARELO,dev,0.1753
+V7,semaforo = AMARELO,teste,0.1087
+V7,semaforo = AMARELO,diferenca_pp,-6.6634
+V7,semaforo = VERMELHO,dev,0.1478
+V7,semaforo = VERMELHO,teste,0.1667
+V7,semaforo = VERMELHO,diferenca_pp,1.8878
+V7,perguntas: qui-quadrado,qui2,3.2184
+V7,perguntas: qui-quadrado,p_valor,0.3592
+V7,perguntas: qui-quadrado,graus,3.0
+V7,perguntas: qui-quadrado,celulas_esperadas_menor_5,1.0
+V7,perguntas = 1,dev,0.545
+V7,perguntas = 1,teste,0.5725
+V7,perguntas = 1,diferenca_pp,2.7468
+V7,perguntas = 0,dev,0.3258
+V7,perguntas = 0,teste,0.3188
+V7,perguntas = 0,diferenca_pp,-0.6993
+V7,perguntas = 2,dev,0.1195
+V7,perguntas = 2,teste,0.087
+V7,perguntas = 2,diferenca_pp,-3.2516
+V7,perguntas = 3+,dev,0.0097
+V7,perguntas = 3+,teste,0.0217
+V7,perguntas = 3+,diferenca_pp,1.2042
+V7,elegivel: qui-quadrado,qui2,0.0
+V7,elegivel: qui-quadrado,p_valor,1.0
+V7,elegivel: qui-quadrado,graus,1.0
+V7,elegivel: qui-quadrado,celulas_esperadas_menor_5,1.0
+V7,elegivel = ELEGIVEL,dev,0.9756
+V7,elegivel = ELEGIVEL,teste,0.9783
+V7,elegivel = ELEGIVEL,diferenca_pp,0.2698
+V7,elegivel = ELEGIVEL_CONDICIONADO,dev,0.0244
+V7,elegivel = ELEGIVEL_CONDICIONADO,teste,0.0217
+V7,elegivel = ELEGIVEL_CONDICIONADO,diferenca_pp,-0.2698
+V7,canal_sugerido: qui-quadrado,qui2,4.9608
+V7,canal_sugerido: qui-quadrado,p_valor,0.1747
+V7,canal_sugerido: qui-quadrado,graus,3.0
+V7,canal_sugerido: qui-quadrado,celulas_esperadas_menor_5,0.0
+V7,canal_sugerido = ONE_CLICK_BUY,dev,0.5939
+V7,canal_sugerido = ONE_CLICK_BUY,teste,0.6377
+V7,canal_sugerido = ONE_CLICK_BUY,diferenca_pp,4.381
+V7,canal_sugerido = APP_COM_CONFIRMACAO,dev,0.1567
+V7,canal_sugerido = APP_COM_CONFIRMACAO,teste,0.087
+V7,canal_sugerido = APP_COM_CONFIRMACAO,diferenca_pp,-6.9754
+V7,canal_sugerido = GERENTE,dev,0.1478
+V7,canal_sugerido = GERENTE,teste,0.1667
+V7,canal_sugerido = GERENTE,diferenca_pp,1.8878
+V7,canal_sugerido = ATENDIMENTO_ASSISTIDO,dev,0.1016
+V7,canal_sugerido = ATENDIMENTO_ASSISTIDO,teste,0.1087
+V7,canal_sugerido = ATENDIMENTO_ASSISTIDO,diferenca_pp,0.7066
+V7,perguntas: média,dev,0.8138
+V7,perguntas: média,teste,0.8116
+V7,perguntas: média,p_valor_mann_whitney,0.8948
+V3,"A original (dobras por imóvel, referência global)",imoveis,1016.0
+V3,"A original (dobras por imóvel, referência global)",faixa_contem,0.9715
+V3,"A original (dobras por imóvel, referência global)",erro_mediano_centro,0.0816
+V3,"A original (dobras por imóvel, referência global)",contem_incendio,0.9724
+V3,B dobras por cliente,imoveis,1016.0
+V3,B dobras por cliente,faixa_contem,0.9705
+V3,B dobras por cliente,erro_mediano_centro,0.0845
+V3,B dobras por cliente,contem_incendio,0.9705
+V3,C dobras por cliente + referência fora da dobra,imoveis,1016.0
+V3,C dobras por cliente + referência fora da dobra,faixa_contem,0.9705
+V3,C dobras por cliente + referência fora da dobra,erro_mediano_centro,0.0845
+V3,C dobras por cliente + referência fora da dobra,contem_incendio,0.9705
+V3,área: dobras por imóvel (area.treinar),erro_pct_mediano,0.1338
+V3,área: dobras por imóvel (area.treinar),r2_log,0.8646
+V3,área: dobras por imóvel (area.treinar),cobertura_faixa_80,0.7992
+V3,área: dobras por cliente,erro_pct_mediano,0.1326
+V3,área: dobras por cliente,r2_log,0.8621
+V3,clientes com 2 imóveis com área real,clientes,72.0
+V3,clientes com 2 imóveis com área real,imoveis_nesses_clientes,144.0
+V1,n,dev_com_area,1016.0
+V1,n,teste_com_area,46.0
+V1,"desenvolvimento, validação cruzada por cliente",erro_pct_mediano,0.1326
+V1,"desenvolvimento, validação cruzada por cliente",r2_log,0.8621
+V1,"desenvolvimento, validação cruzada por cliente",cobertura_faixa_80,0.7992
+V1,"desenvolvimento, validação cruzada por cliente",vies_log_mediano,-0.0
+V1,teste cego (treino só no desenvolvimento),erro_pct_mediano,0.1623
+V1,teste cego (treino só no desenvolvimento),r2_log,0.7968
+V1,teste cego (treino só no desenvolvimento),cobertura_faixa_80,0.7826
+V1,teste cego (treino só no desenvolvimento),vies_log_mediano,-0.1024
+V1,"teste cego, IC 95% bootstrap",erro_inf,0.1279
+V1,"teste cego, IC 95% bootstrap",erro_sup,0.2177
+V1,"teste cego, IC 95% bootstrap",cobertura_inf,0.6522
+V1,"teste cego, IC 95% bootstrap",cobertura_sup,0.8913
+V1,"desenvolvimento, subamostras de mesmo n do teste",erro_p5,0.0975
+V1,"desenvolvimento, subamostras de mesmo n do teste",erro_p95,0.1781
+V1,"desenvolvimento, subamostras de mesmo n do teste",p_valor_teste_cego_maior,0.1475
+V1,"teste cego, viés do resíduo em log (média diferente de zero?)",media,-0.0772
+V1,"teste cego, viés do resíduo em log (média diferente de zero?)",erro_padrao,0.0346
+V1,"teste cego, viés do resíduo em log (média diferente de zero?)",p_valor,0.0309
+V1,"teste cego, viés do resíduo em log (média diferente de zero?)",desvio_residuo_teste,0.2348
+V1,"teste cego, viés do resíduo em log (média diferente de zero?)",desvio_residuo_dev_cv,0.2107
+V1,"padrão pela regra, teste (calibração do desenvolvimento)",n,12.0
+V1,"padrão pela regra, teste (calibração do desenvolvimento)",acuracia,0.6667
+V1,"padrão pela regra, teste (calibração do desenvolvimento)",acuracia_balanceada,0.6278
+V1,"padrão pela regra, teste (calibração do desenvolvimento)",sempre_normal,0.4167
+V1,"aluguel/m² dentro de p25 a p75 de dev, teste",n,12.0
+V1,"aluguel/m² dentro de p25 a p75 de dev, teste",fracao_dentro,0.75
+V1,"padrão pela regra, desenvolvimento (calibração fora da dobra)",n,273.0
+V1,"padrão pela regra, desenvolvimento (calibração fora da dobra)",acuracia,0.5861
+V1,"padrão pela regra, desenvolvimento (calibração fora da dobra)",acuracia_balanceada,0.6078
+V1,"padrão pela regra, desenvolvimento (calibração fora da dobra)",sempre_normal,0.6337
+V1,"aluguel/m² dentro de p25 a p75, desenvolvimento (fora da dobra)",n,208.0
+V1,"aluguel/m² dentro de p25 a p75, desenvolvimento (fora da dobra)",fracao_dentro,0.4519
+V1,deriva log IPTU,ks,0.0765
+V1,deriva log IPTU,p_valor,0.4064
+V1,deriva log IPTU,mediana_dev,7.4955
+V1,deriva log IPTU,mediana_teste,7.5496
+V1,deriva log energia,ks,0.0856
+V1,deriva log energia,p_valor,0.2761
+V1,deriva log energia,mediana_dev,6.1092
+V1,deriva log energia,mediana_teste,6.1092
+V1,deriva log água,ks,0.0321
+V1,deriva log água,p_valor,0.9986
+V1,deriva log água,mediana_dev,5.0106
+V1,deriva log água,mediana_teste,5.0106
+V1,deriva log IPTU por m² (só com área),t,-1.0988
+V1,deriva log IPTU por m² (só com área),p_valor,0.2773
+V1,deriva eh_casa,qui2,0.1931
+V1,deriva eh_casa,p_valor,0.6603
+V1,deriva eh_casa,graus,1.0
+V1,deriva tipo_imovel,qui2,0.4746
+V1,deriva tipo_imovel,p_valor,0.7888
+V1,deriva tipo_imovel,graus,2.0
+V1,deriva municipio_real,qui2,21.517
+V1,deriva municipio_real,p_valor,0.0105
+V1,deriva municipio_real,graus,9.0
+V1,deriva vinculo_proxy,qui2,0.4007
+V1,deriva vinculo_proxy,p_valor,0.8184
+V1,deriva vinculo_proxy,graus,2.0
+V1,fração com área real,dev,0.3941
+V1,fração com área real,teste,0.3333

@@ -23,6 +23,9 @@ from .calibracao import Calibracao
 from .config import A_CONFIRMAR, ALTA, BAIXA, CONFIRMADO, ESTIMADO, MEDIA, OBSERVADO, PASTA_DADOS_EXTERNOS
 
 ORDEM_PLANOS = ["ESSENCIAL", "PRATICO", "TOTAL"]
+# Campos que um formulário tradicional perguntaria e que a Casa Gêmea já preenche com dados do banco:
+# tipo, vínculo, uso, área, padrão, parede, obra e conteúdo (a declaração única fica de fora das duas contas).
+CAMPOS_FORMULARIO_TRADICIONAL = 8
 NOME_PLANO = {"ESSENCIAL": "Essencial", "PRATICO": "Prático", "TOTAL": "Total"}
 
 ELEGIVEL = "ELEGIVEL"
@@ -67,7 +70,7 @@ def avaliar_elegibilidade(r: pd.Series) -> tuple[str, str]:
     if r["material_parede"] in MATERIAIS_COMBUSTIVEIS:
         return INELEGIVEL, f"Paredes externas de {r['material_parede'].lower()}: predominância de material combustível (guia 9.1)."
     if r["alerta_obra"] == "OBRA_ESTRUTURAL":
-        return INELEGIVEL, "Cliente confirmou obra estrutural ou ampliação em andamento: imóveis em reforma ou construção estão fora da cobertura (CG 7.1 x/y). Pode ser contratado ao fim da obra."
+        return INELEGIVEL, "Cliente confirmou obra estrutural ou ampliação em andamento: imóveis em reforma ou construção estão fora da cobertura (CG 7.1 w/x). Pode ser contratado ao fim da obra."
     if r.get("declaracao_negada", False):
         return ELEGIVEL_CONDICIONADO, "Cliente não confirmou a declaração de elegibilidade (área urbana, alvenaria, sem obra estrutural, não tombado): validar com o gerente."
     if r["tipo_imovel"] == "INDEFINIDO":
@@ -76,7 +79,7 @@ def avaliar_elegibilidade(r: pd.Series) -> tuple[str, str]:
         return (
             ELEGIVEL_CONDICIONADO,
             f"Pendente de validação: possível obra relevante ({r['alerta_obra_evidencia']}). "
-            "Imóveis em reforma ou construção estão fora da cobertura (CG 7.1 x/y).",
+            "Imóveis em reforma ou construção estão fora da cobertura (CG 7.1 w/x).",
         )
     return ELEGIVEL, ""
 
@@ -137,6 +140,8 @@ def pontuar_plano(r: pd.Series) -> dict:
         "pontos_total": pontos_t,
         "motivos_pratico": [m for _, m in pratico],
         "motivos_total": [m for _, m in total],
+        "sinais_pratico": pratico,
+        "sinais_total": total,
     }
 
 
@@ -145,12 +150,12 @@ def interesse_seguravel(r: pd.Series) -> tuple[float, float, float, str]:
     """Quanto do prédio e do conteúdo é do cliente: (prédio mín, prédio máx, conteúdo, regra)."""
     vinculo, tipo = r["vinculo"], r["tipo_imovel"]
     if vinculo == "INQUILINO":
-        return 0.0, 0.10, 1.0, "inquilino: prédio é do proprietário (CG 10.1); só benfeitorias até 10%"
+        return 0.03, 0.10, 1.0, "inquilino: prédio é do proprietário (CG 10); só benfeitorias, de 3% a 10%"
     if tipo == "APARTAMENTO":
-        return 0.10, 0.30, 1.0, "apartamento: estrutura coberta pelo seguro do condomínio (CG 5.4 e 15.2); partes privativas de 10% a 30%"
+        return 0.10, 0.30, 1.0, "apartamento: estrutura coberta pelo seguro do condomínio (CG 5.3 e 15.2.1); partes privativas de 10% a 30%"
     conteudo = 0.2 if vinculo == "PROPRIETARIO_LOCADOR" else 1.0
     if vinculo == "PROPRIETARIO_FINANCIADO":
-        return 0.50, 1.0, conteudo, "financiado: se houver seguro habitacional obrigatório, o residencial complementa a estrutura (CG 15.2)"
+        return 0.50, 1.0, conteudo, "financiado: se houver seguro habitacional obrigatório, o residencial atua primeiro no conteúdo e complementa a estrutura (CG 15.2.1)"
     if tipo == "CASA_EM_CONDOMINIO":
         return 0.80, 1.0, conteudo, "casa em condomínio: estrutura própria; áreas comuns no seguro do condomínio"
     regra = "casa própria: estrutura inteira"
@@ -213,7 +218,7 @@ IMPACTO_CASA, IMPACTO_APTO = 0.10, 0.03
 AERONAVE = 0.20
 ELETRICOS = 0.50
 ROUBO = 0.50
-VIDROS_M2 = 50
+VIDROS_M2_MIN, VIDROS_M2_MAX = 40, 60
 
 
 def calcular_coberturas(r: pd.Series, ref: Referencias) -> list[dict]:
@@ -245,6 +250,8 @@ def calcular_coberturas(r: pd.Series, ref: Referencias) -> list[dict]:
 
     def item(cobertura, vmin, vmax, selos, dados, regra, justificativa, confirmar, obs=""):
         vmin, vmax = _arred(vmin), _arred(vmax)
+        if vmin == vmax:  # o arredondamento colapsou a faixa: abre um degrau para continuar sendo faixa
+            vmax = vmin + 500
         return {
             "cobertura": cobertura,
             "faixa_valor_min": min(vmin, vmax),
@@ -319,25 +326,29 @@ def calcular_coberturas(r: pd.Series, ref: Referencias) -> list[dict]:
             f"{ROUBO:.0%} do conteúdo",
             f"Num arrombamento são levados sobretudo bens portáteis; {texto_conteudo}. Celulares, joias e dinheiro não são cobertos (CG 6.1).",
             "; ".join(x for x in [confirmar_bens, "se o imóvel fica desocupado por longos períodos" if r["uso_imovel"] != "MORADIA_HABITUAL" else ""] if x),
-            "Residência desocupada não tem cobertura de roubo (CG, Roubo 2.1 c)." if r["uso_imovel"] != "MORADIA_HABITUAL" else "",
+            "Residência desocupada não tem cobertura de roubo (CG, Roubo 2.1 c) e, após 30 dias, nenhum evento é coberto, salvo imóvel de veraneio declarado (CG 7.1 y)." if r["uso_imovel"] != "MORADIA_HABITUAL" else "",
         ),
     ]
 
-    vidros_max = max(VIDROS_M2 * r["area_max_m2"], 1.5 * r["gastos_vidracaria_24m"])
+    vidros_max = max(VIDROS_M2_MAX * r["area_max_m2"], 1.5 * r["gastos_vidracaria_24m"])
     itens.append(item(
-        "QUEBRA_DE_VIDROS", VIDROS_M2 * r["area_min_m2"], vidros_max,
+        "QUEBRA_DE_VIDROS", VIDROS_M2_MIN * r["area_min_m2"], vidros_max,
         [cf["area_m2"]], "área, gasto com vidraçaria em 24 meses",
-        f"R$ {VIDROS_M2} por m² de área (janelas, box, espelhos, tampos); máximo ≥ 1,5× o gasto recente com vidraçaria",
+        f"R$ {VIDROS_M2_MIN} a R$ {VIDROS_M2_MAX} por m² de área (janelas, box, espelhos, tampos); máximo ≥ 1,5× o gasto recente com vidraçaria",
         "Vidros e espelhos crescem com o tamanho do imóvel." + (f" Houve {_reais(r['gastos_vidracaria_24m'])} de vidraçaria em 24 meses." if r["sinal_vidros"] else ""),
         confirmar_area,
         "Valor por m² é premissa da equipe.",
     ))
 
-    rc_min, rc_max = (30_000, 100_000) if r["sinal_responsabilidade_civil"] else (20_000, 50_000)
+    # Base R$ 20–50 mil; sobe com pet e com cada dependente (até 3). Premissa da equipe.
+    pet = r["possui_pet_informado"] == "SIM"
+    dependentes = min(int(r["quantidade_dependentes"]), 3)
+    rc_min = 20_000 + 10_000 * pet + 5_000 * dependentes
+    rc_max = 50_000 + 30_000 * pet + 10_000 * dependentes
     itens.append(item(
         "RESPONSABILIDADE_CIVIL_FAMILIAR", rc_min, rc_max, BAIXA,
         "dependentes e pet declarados (somente como necessidade, não como risco)",
-        "faixa de referência: R$ 20–50 mil; R$ 30–100 mil quando há dependentes ou pet",
+        "faixa de referência: R$ 20–50 mil, mais R$ 10–30 mil com pet e R$ 5–10 mil por dependente (até 3)",
         "Danos a terceiros não dependem do valor do imóvel; a faixa sobe quando há mais pessoas ou animais que podem causá-los (CG, RC Familiar 1.1 b e c).",
         "se há pets, crianças ou atividades de risco (ex.: piscina)",
         "Faixa de referência da equipe, sem base estatística na base de dados.",
@@ -352,8 +363,11 @@ def calcular_coberturas(r: pd.Series, ref: Referencias) -> list[dict]:
         aluguel_min = aluguel_max = r["valor_medio_credito_recorrente"]
         base_aluguel, sel_aluguel = f"aluguel recebido de cerca de {_reais(aluguel_min)}/mês", [cf["vinculo"], MEDIA]
     else:
-        aluguel_min = r["area_min_m2"] * cal.aluguel_m2_p25[r["municipio_real"]]
-        aluguel_max = r["area_max_m2"] * cal.aluguel_m2_p75[r["municipio_real"]]
+        p25, p75 = cal.aluguel_m2_p25[r["municipio_real"]], cal.aluguel_m2_p75[r["municipio_real"]]
+        central_m2 = r["area_m2"] * np.sqrt(p25 * p75)
+        aluguel_min, aluguel_max = faixa_combinada(
+            central_m2, [np.log(r["area_max_m2"] / r["area_min_m2"]) / 2, np.log(p75 / p25) / 2]
+        )
         base_aluguel = f"moradia temporária estimada em {_reais(aluguel_min)}–{_reais(aluguel_max)}/mês (aluguel por m² de inquilinos de {r['municipio_real']})"
         sel_aluguel = [MEDIA, cf["area_m2"], cf["vinculo"]]
     itens.append(item(
@@ -397,7 +411,7 @@ def comparar_planos(r: pd.Series, pontuacao: dict) -> tuple[str, str]:
     if plano == "ESSENCIAL":
         nao_abaixo = "É o plano de entrada."
         if r.get("imovel_desocupado", False):
-            motivo_baixo = "o imóvel fica desocupado por longos períodos, e nesse caso o roubo não é coberto (CG, Roubo 2.1 c)"
+            motivo_baixo = "o imóvel fica desocupado por longos períodos, e nesse caso o roubo não é coberto (CG, Roubo 2.1 c); após 30 dias nenhum evento é coberto, salvo veraneio declarado (CG 7.1 y)"
         else:
             motivo_baixo = "os sinais de bens de valor são baixos" + (f" ({'; '.join(mp)})" if mp else "")
         nao_acima = f"O Prático acrescenta roubo e quebra de vidros, mas {motivo_baixo}." + alternativa_rc
@@ -420,6 +434,15 @@ def comparar_planos(r: pd.Series, pontuacao: dict) -> tuple[str, str]:
         )
     else:
         nao_abaixo = "O Prático não cobre aluguel, RC familiar nem despesas emergenciais, que respondem aos sinais citados acima."
+        # Em reais: quanto de aluguel o Prático deixaria descoberto (3 a 6 meses, CG Perda de Aluguel 1.2).
+        mensal = {"INQUILINO": r["valor_aluguel_recorrente"],
+                  "PROPRIETARIO_LOCADOR": r["valor_medio_credito_recorrente"]}.get(r["vinculo"], 0)
+        if mensal and mensal > 0:
+            verbo = "paga" if r["vinculo"] == "INQUILINO" else "recebe"
+            nao_abaixo += (
+                f" Em reais: o cliente {verbo} cerca de {_reais(mensal)}/mês de aluguel, então até "
+                f"{_reais(3 * mensal)} a {_reais(6 * mensal)} ficariam sem proteção se o imóvel ficasse inabitável."
+            )
         nao_acima = "É o plano mais completo."
     return nao_abaixo, nao_acima
 

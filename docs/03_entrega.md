@@ -77,8 +77,8 @@ A recomendação é **inicial**: usa só os dados que o banco já tem. As pergun
 
 | valor | imóveis | % |
 |---|---|---|
-| 1 | 76 | 55,1 |
-| 0 | 47 | 34,1 |
+| 1 | 79 | 57,2 |
+| 0 | 44 | 31,9 |
 | 2 | 12 | 8,7 |
 | 3 | 3 | 2,2 |
 
@@ -110,7 +110,7 @@ A recomendação é **inicial**: usa só os dados que o banco já tem. As pergun
 | QUEDA_AERONAVE | 99.600 | 184.800 | MEDIA |
 | DANOS_ELETRICOS | 6.800 | 13.600 | MEDIA |
 | ROUBO_FURTO_ARROMBAMENTO | 11.400 | 22.700 | MEDIA |
-| QUEBRA_DE_VIDROS | 10.100 | 17.200 | MEDIA |
+| QUEBRA_DE_VIDROS | 8.100 | 20.700 | MEDIA |
 
 ### IMO_CASO_00013_01 — PRATICO · confiança MEDIA · elegível: SIM
 
@@ -130,15 +130,15 @@ A recomendação é **inicial**: usa só os dados que o banco já tem. As pergun
 | QUEDA_AERONAVE | 8.900 | 24.300 | MEDIA |
 | DANOS_ELETRICOS | 4.400 | 8.800 | ALTA |
 | ROUBO_FURTO_ARROMBAMENTO | 7.000 | 14.000 | ALTA |
-| QUEBRA_DE_VIDROS | 4.800 | 4.800 | ALTA |
+| QUEBRA_DE_VIDROS | 3.800 | 5.700 | ALTA |
 
 ### IMO_CASO_00003_01 — TOTAL · confiança BAIXA · elegível: SIM
 
-**Justificativa:** Recomendação inicial com os dados do banco: plano Total, confiança baixa. Casa Gêmea: casa (estimado), proprietário que aluga a terceiros [estimado: crédito compatível com aluguel de R$ 8.350 em 11 dos 12 meses e imóvel fora do endereço principal], alugado a terceiros; área 169 m² (estimada pelo IPTU e pela energia: 130–221 m²); padrão normal (a confirmar). Por que o Total: recebe cerca de R$ 8.350/mês de aluguel: renda que pararia após um sinistro; 1 dependente: danos a terceiros e despesas de hospedagem da família; casa: mais portas e janelas expostas a arrombamento. Por que não o Prático: O Prático não cobre aluguel, RC familiar nem despesas emergenciais, que respondem aos sinais citados acima. O plano pode mudar conforme a confirmação do vínculo com o imóvel.
+**Justificativa:** Recomendação inicial com os dados do banco: plano Total, confiança baixa. Casa Gêmea: casa (estimado), proprietário que aluga a terceiros [estimado: crédito compatível com aluguel de R$ 8.350 em 11 dos 12 meses e imóvel fora do endereço principal], alugado a terceiros; área 169 m² (estimada pelo IPTU e pela energia: 130–221 m²); padrão normal (a confirmar). Por que o Total: recebe cerca de R$ 8.350/mês de aluguel: renda que pararia após um sinistro; 1 dependente: danos a terceiros e despesas de hospedagem da família; casa: mais portas e janelas expostas a arrombamento. Por que não o Prático: O Prático não cobre aluguel, RC familiar nem despesas emergenciais, que respondem aos sinais citados acima. Em reais: o cliente recebe cerca de R$ 8.350/mês de aluguel, então até R$ 25.050 a R$ 50.100 ficariam sem proteção se o imóvel ficasse inabitável. O plano pode mudar conforme a confirmação do vínculo com o imóvel.
 
 **Perguntas de confirmação:**
 
--   1) Há obra ou reforma em andamento no imóvel? (Não / Reforma pequena, como pintura ou piso / Obra estrutural ou ampliação) [por quê: define a elegibilidade: imóvel em reforma ou construção fica fora da cobertura (CG 7.1 x/y)]
+-   1) Há obra ou reforma em andamento no imóvel? (Não / Reforma pequena, como pintura ou piso / Obra estrutural ou ampliação) [por quê: define a elegibilidade: imóvel em reforma ou construção fica fora da cobertura (CG 7.1 w/x)]
 -   2) Este imóvel está alugado para outra pessoa? Identificamos um crédito mensal de cerca de R$ 8.350. (Sim, está alugado / Não, eu moro nele / Não, está vazio) [por quê: muda o plano: quem recebe aluguel precisa da cobertura de perda de aluguel]
 -   3) A área construída do imóvel fica entre 130 e 221 m²? (Sim / Menor / Maior / Não sei) [por quê: área define o custo de reconstrução]
 -   4) Confirmo que o imóvel fica em área urbana, tem paredes de alvenaria, não está em obra estrutural e não é tombado. (Sim / Não — o atendimento segue com o gerente)
@@ -152,8 +152,8 @@ A recomendação é **inicial**: usa só os dados que o banco já tem. As pergun
 | QUEDA_AERONAVE | 86.200 | 152.300 | MEDIA |
 | DANOS_ELETRICOS | 1.000 | 2.100 | BAIXA |
 | ROUBO_FURTO_ARROMBAMENTO | 2.000 | 3.900 | BAIXA |
-| QUEBRA_DE_VIDROS | 6.500 | 11.000 | MEDIA |
-| RESPONSABILIDADE_CIVIL_FAMILIAR | 30.000 | 100.000 | BAIXA |
+| QUEBRA_DE_VIDROS | 5.200 | 13.300 | MEDIA |
+| RESPONSABILIDADE_CIVIL_FAMILIAR | 25.000 | 60.000 | BAIXA |
 | PERDA_PAGAMENTO_ALUGUEL | 25.000 | 50.100 | MEDIA |
 | DESPESAS_EMERGENCIAIS | 10.000 | 30.000 | MEDIA |
 

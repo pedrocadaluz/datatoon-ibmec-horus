@@ -1,0 +1,34 @@
+{
+  "name": "horus-casa-gemea",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host 0.0.0.0",
+    "start": "npm ci && npm run dev",
+    "build": "tsc --noEmit && vite build",
+    "preview": "vite preview --host 0.0.0.0",
+    "test": "playwright test",
+    "icons": "node scripts/gerar-icones.mjs",
+    "audit:mobile": "lighthouse http://127.0.0.1:5173 --only-categories=performance,accessibility,best-practices --chrome-flags=\"--headless=new --disable-dev-shm-usage\" --output=json --output=html --output-path=./evidencias/lighthouse-mobile --quiet"
+  },
+  "dependencies": {
+    "@fontsource/inter": "5.3.0",
+    "qrcode": "1.5.4",
+    "react": "19.3.1",
+    "react-dom": "19.3.1"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "4.14.0",
+    "@playwright/test": "1.64.1",
+    "@types/node": "26.6.5",
+    "@types/qrcode": "1.5.6",
+    "@types/react": "19.3.0",
+    "@types/react-dom": "19.3.0",
+    "@vitejs/plugin-react": "6.1.2",
+    "lighthouse": "13.6.0",
+    "sharp": "0.35.5",
+    "typescript": "7.0.2",
+    "vite": "8.3.5"
+  }
+}
