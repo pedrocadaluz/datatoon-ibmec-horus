@@ -160,3 +160,25 @@
   .print-only .print-note { margin-top: 14px; font-size: 9pt; color: #626776; }
   dialog { display: none !important; }
 }
+
+/* SAC: falas para ler, respostas prontas e registro do atendimento. */
+.sac-leia { display: grid; grid-template-columns: auto 1fr; gap: 10px; padding: 12px 14px; border-left: 4px solid #FCFC30; background: #FFFDE6; border-radius: 4px; font-size: .82rem; }
+.sac-leia-tag { display: inline-flex; align-items: center; gap: 5px; height: fit-content; padding: 2px 8px; border-radius: 3px; background: #26387E; color: white; font-size: .64rem; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; }
+.sac-leia > div { display: grid; gap: 6px; }
+.sac-leia p { margin: 0; }
+.sac-kpis { grid-template-columns: repeat(2, minmax(0, 1fr)); margin: 10px 0; }
+.sac-semaforo { display: flex; align-items: center; gap: 8px; padding: 8px 12px; border-radius: 4px; background: #EFF8F3; color: var(--green); font-size: .78rem; }
+.sac-semaforo .traffic-light { margin-top: 0; }
+.sac-semaforo.channel-amarelo { background: #FFF7E6; color: #805300; }
+.sac-semaforo.channel-vermelho { background: #FFF1EF; color: #934342; }
+.sac-faq { display: grid; gap: 8px; }
+.sac-faq details > summary { min-height: 44px; display: flex; align-items: center; padding: 6px 0; border-bottom: 1px solid #EEF0FA; color: var(--ink-blue); font-weight: 600; font-size: .78rem; }
+.sac-faq details[open] > summary { border-bottom: 0; }
+.sac-close { display: grid; gap: 16px; }
+.sac-registro form { display: grid; gap: 10px; }
+.sac-registro fieldset { border: 0; margin: 0; padding: 0; display: grid; gap: 6px; }
+.sac-registro legend { font-weight: 600; font-size: .8rem; margin-bottom: 4px; }
+.sac-radio { display: flex; align-items: center; gap: 8px; min-height: 40px; padding: 4px 10px; border: 1px solid var(--line); border-radius: 4px; font-size: .78rem; }
+.sac-radio input { min-height: auto; }
+.sac-registro textarea { padding: 8px 10px; font-size: .8rem; }
+.sac-registro .button { justify-self: start; }

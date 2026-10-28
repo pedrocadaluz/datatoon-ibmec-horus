@@ -102,6 +102,7 @@ test('valor exato não acompanha a troca de imóveis e SAC identifica a estimati
   await abrirValor(page)
   await expect(page.getByLabel('Valor exato')).toHaveValue('')
   await page.getByRole('button', { name: 'SAC', exact: true }).click()
+  await page.getByRole('button', { name: 'Iniciar roteiro de perguntas' }).click()
   await expect(page.getByTestId('metadados-pergunta')).toContainText('Estimado')
   await expect(page.getByTestId('metadados-pergunta')).toContainText('Confiança média')
   await page.screenshot({ path: 'evidencias/sac-estimativa.png', fullPage: true })

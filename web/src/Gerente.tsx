@@ -52,7 +52,7 @@ function RelatorioImpressao({ data, cidade }: { data: Resultado; cidade: string 
   </article>
 }
 
-function EnviarEmail({ open, onClose, data, cidade }: { open: boolean; onClose: () => void; data: Resultado; cidade: string }) {
+export function EnviarEmail({ open, onClose, data, cidade }: { open: boolean; onClose: () => void; data: Resultado; cidade: string }) {
   const [email, setEmail] = useState('')
   const [enviado, setEnviado] = useState('')
   useEffect(() => { if (open) setEnviado('') }, [open])

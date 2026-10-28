@@ -12,6 +12,7 @@ import { useMobile } from './useMobile'
 import { Agent } from './Channels'
 import { ClientReport, HouseHero } from './Story'
 import { ManagerFlow, type PassoGerente } from './Gerente'
+import { SacFlow, type PassoSac } from './Sac'
 import './story.css'
 import './app.css'
 
@@ -41,6 +42,7 @@ export default function App() {
   const [font, setFont] = useState(100)
   const [reportOpen, setReportOpen] = useState(false)
   const [passos, setPassos] = useState<Record<string, PassoGerente>>({})
+  const [passosSac, setPassosSac] = useState<Record<string, PassoSac>>({})
   const seq = useRef(0)
   const controller = useRef<AbortController | null>(null)
   const data = sessions[selected]?.result
@@ -50,6 +52,8 @@ export default function App() {
   const story = channel === 'Cliente' && !mobile
   const passo = passos[selected] ?? 1
   const irPara = (p: PassoGerente) => setPassos(prev => ({ ...prev, [selected]: p }))
+  const passoSac = passosSac[selected] ?? 1
+  const irParaSac = (p: PassoSac) => setPassosSac(prev => ({ ...prev, [selected]: p }))
   const showReport = story && Boolean(data) && (reportOpen || !data?.proximas_perguntas.length || data?.status === 'INELEGIVEL')
 
   useEffect(() => { document.documentElement.style.fontSize = `${font}%` }, [font])
@@ -121,8 +125,10 @@ export default function App() {
   })
   useEffect(() => { if (presentation && story) setReportOpen(step === 2) }, [presentation, story, step])
   useEffect(() => {
-    if (channel === 'Gerente' && passo === 2 && data && !busy && (!data.proximas_perguntas.length || data.status === 'INELEGIVEL')) irPara(3)
-  }, [channel, passo, data, busy]) // eslint-disable-line react-hooks/exhaustive-deps
+    const acabou = data && !busy && (!data.proximas_perguntas.length || data.status === 'INELEGIVEL')
+    if (channel === 'Gerente' && passo === 2 && acabou) irPara(3)
+    if (channel === 'SAC' && passoSac === 2 && acabou) irParaSac(3)
+  }, [channel, passo, passoSac, data, busy]) // eslint-disable-line react-hooks/exhaustive-deps
   useEffect(() => {
     if (presentation) {
       if (channel !== 'Cliente') { setChannel('Cliente'); return }
@@ -166,7 +172,7 @@ export default function App() {
     <a className="skip-link" href="#conteudo">Pular para o conteúdo</a>
     <header className="topbar"><div className="topbar-inner"><a href="#conteudo" className="brand" aria-label="Horus, Casa Gêmea"><img src="/horus.svg" alt="" width="38" height="38" /><span>horus<span className="brand-divider" /><small>Casa Gêmea</small></span></a><div className="header-actions"><PwaControls /><span className="prototype">Protótipo · Datathon 2026</span><div className="font-controls" role="group" aria-label="Tamanho do texto"><button onClick={() => setFont(f => Math.max(90, f - 10))} aria-label="A− Diminuir texto" disabled={font <= 90}>A−</button><button onClick={() => setFont(f => Math.min(130, f + 10))} aria-label="A+ Aumentar texto" disabled={font >= 130}>A+</button></div><button className={`presentation-toggle ${presentation ? 'active' : ''}`} onClick={() => setPresentation(p => !p)} aria-pressed={presentation} aria-label="Apresentar, Modo apresentação" title="Atalho P"><Icon name="play" size={17} /><span>Apresentar</span><kbd>P</kbd></button></div></div></header>
     <main id="conteudo"><section className="intro"><div><div className="breadcrumb">Proteção inteligente <span>/</span> Seguro residencial</div><h1>Menos perguntas.<br /><span>Mais sentido para sua proteção.</span></h1></div><div className="intro-stamp"><Icon name="shield" size={24} /><span>Cada decisão<br /><b>tem uma explicação.</b></span></div></section>
-<CasePicker list={list} selected={selected} busy={busy} hasData={Boolean(data)} mobile={mobile} open={caseOpen} onClose={() => setCaseOpen(false)} onChoose={choose} onReset={() => { setReportOpen(false); irPara(1); void load(selected, [], 'Reinício') }} />
+<CasePicker list={list} selected={selected} busy={busy} hasData={Boolean(data)} mobile={mobile} open={caseOpen} onClose={() => setCaseOpen(false)} onChoose={choose} onReset={() => { setReportOpen(false); irPara(1); irParaSac(1); void load(selected, [], 'Reinício') }} />
       <nav className="channel-nav" aria-label="Canal de atendimento" data-mobile={String(mobile)}>{canais.map(c => <button key={c.label} aria-label={c.label} aria-pressed={channel === c.label} className={channel === c.label ? 'active' : ''} onClick={() => setChannel(c.label)}><Icon name={c.icon} size={18} /><span>{c.label}<small>{c.note}</small></span>{channel === c.label && <span className="nav-marker" />}</button>)}{mobile && <button className="mobile-case-button" aria-label="Escolher imóvel" aria-expanded={caseOpen} onClick={() => setCaseOpen(true)}><Icon name="pin" size={18} /><span>Imóvel</span></button>}</nav>
       {presentation && <div className="presentation-bar"><span><Icon name="play" size={17} />Apresentação <b>{step + 1} / 3</b></span><strong>{steps[step]}</strong><div><button aria-label="Etapa anterior" disabled={step === 0} onClick={() => setStep(s => s - 1)}>←</button><button aria-label="Próxima etapa" disabled={step === 2} onClick={() => setStep(s => s + 1)}>→</button><button onClick={() => setPresentation(false)}>Sair</button></div>{!mobile && <small>Setas navegam · números respondem · Esc sai</small>}</div>}
       {error && <div className={`error-banner ${!data ? 'offline-card' : ''}`} role="alert"><Icon name="info" /><div><strong>{data ? 'Não foi possível atualizar a Casa Gêmea.' : 'Sua Casa Gêmea espera pela conexão.'}</strong>{!data && <p>O app pode abrir sem internet. Para consultar o imóvel, reconecte à mesma rede do computador da demonstração.</p>}<p>{texto(error)}</p>{data && <span>Os dados abaixo são a última resposta válida. Suas respostas foram preservadas.</span>}</div><button className="button secondary" onClick={() => setRetry(n => n + 1)}>Tentar novamente</button></div>}
@@ -174,14 +180,14 @@ export default function App() {
         <div className="journey-strip"><div><span className="case-id" data-testid="caso-atual">{data.imovel_id}</span><span className="location-text"><Icon name="pin" size={14} />{item?.municipio}/{item?.uf}</span></div><div className="answered-counter" data-testid="respondidas"><b>{history.length}</b> {history.length === 1 ? 'respondida' : 'respondidas'}</div></div>
         <div className="status-announcement" role="status" aria-live="polite">{busy ? 'Atualizando...' : notice}</div>
         {story && <HouseHero data={data} location={`${item?.municipio}/${item?.uf}`} pending={busy} showPlan={!showReport} onOpenReport={() => setReportOpen(true)} imovel={selected} />}
-        <div className={`workspace ${story ? 'story' : channel === 'Gerente' ? 'manager' : ''}`}><div className="workspace-main">{story && (showReport ? <ClientReport data={data} initial={sessions[selected]?.initial ?? null} pending={busy} history={history} onBack={() => setReportOpen(false)} onUndo={undo} /> : question)}
+        <div className={`workspace ${story ? 'story' : channel === 'Gerente' || channel === 'SAC' ? 'manager' : ''}`}><div className="workspace-main">{story && (showReport ? <ClientReport data={data} initial={sessions[selected]?.initial ?? null} pending={busy} history={history} onBack={() => setReportOpen(false)} onUndo={undo} /> : question)}
           {channel === 'Cliente' && mobile && <>{question}<details className="mobile-twin"><summary><Icon name="home" size={19} /><span>Ver sua Casa Gêmea<small>O que já sabemos e de onde veio</small></span><b>+</b></summary>{house}</details></>}
           {channel === 'Gerente' && <ManagerFlow data={data} initial={sessions[selected]?.initial ?? null} history={history} busy={busy} passo={passo} onPasso={irPara} question={question} onUndo={undo} cidade={`${item?.municipio}/${item?.uf}`} />}
-          {channel === 'SAC' && <><section className="card sac-intro"><div className="sac-symbol"><Icon name="headset" size={30} /></div><div><span className="eyebrow">Atendimento por voz</span><h2>Uma conversa, sem formulário longo.</h2><p>Leia: “Já usamos os dados disponíveis para entender sua casa. Vou confirmar só o que pode mudar sua proteção. Se não souber, tudo bem.”</p><span className="small-note">Imóvel {data.imovel_id} · {item?.municipio}/{item?.uf}</span></div></section>{question}</>}
+          {channel === 'SAC' && <SacFlow data={data} history={history} busy={busy} passo={passoSac} onPasso={irParaSac} question={question} onUndo={undo} cidade={`${item?.municipio}/${item?.uf}`} />}
           {channel === 'Agente' && <Agent data={data} answers={answersFrom(history)} busy={busy} onApply={applyJson} />}
-        </div>{!story && channel !== 'Gerente' && <MobileRecommendation key={selected} data={data} initial={sessions[selected]?.initial ?? null} pending={busy} mobile={mobile} client={channel === 'Cliente'} presentationStep={presentation ? step : null} />}</div>
+        </div>{!story && channel !== 'Gerente' && channel !== 'SAC' && <MobileRecommendation key={selected} data={data} initial={sessions[selected]?.initial ?? null} pending={busy} mobile={mobile} client={channel === 'Cliente'} presentationStep={presentation ? step : null} />}</div>
       </>}
-      <section className="privacy-note"><Icon name="lock" size={19} /><div><strong>Sua casa no centro. Seus dados com propósito.</strong><p>Usamos apenas sinais necessários sobre o imóvel e suas necessidades de cobertura. Cada estimativa pode ser conferida. O canal muda, o motor é o mesmo.</p></div><span>Dados sintéticos<br />Motor determinístico</span></section>
+      <details className="privacy-note"><summary><Icon name="lock" size={17} />Como usamos seus dados</summary><p>Usamos só o que ajuda a proteger sua casa. Idade e renda não entram na conta. Cada estimativa mostra de onde veio. Dados de demonstração.</p></details>
     </main><footer><span><b>horus</b> · Casa Gêmea</span><p>Datathon Proteção Inteligente · BBDW + Ibmec · 2026</p><span>Protótipo demonstrativo. Sem contratação real.</span></footer>
   </div>
 }
