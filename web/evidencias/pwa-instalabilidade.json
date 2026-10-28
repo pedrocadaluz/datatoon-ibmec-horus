@@ -1,5 +1,5 @@
 {
-  "data": "2026-10-28T20:11:03.150Z",
+  "data": "2026-10-28T22:19:28.103Z",
   "url": "http://127.0.0.1:4173/",
   "chrome": "156.0.8078.48",
   "contextoSeguro": true,
@@ -12,7 +12,7 @@
     "start_url": "/",
     "scope": "/",
     "display": "standalone",
-    "theme_color": "#5A6FFF",
+    "theme_color": "#465EFF",
     "background_color": "#F9F7FF",
     "icons": [
       {

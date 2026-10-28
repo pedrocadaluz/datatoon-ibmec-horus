@@ -6,7 +6,7 @@ Cada relatório de etapa é gerado pelo script de mesmo número (exceto os de pe
 |---|---|---|
 | `01_casa_gemea.md` | Casa Gêmea: inferências, modelo de área, limitações | `scripts/01_construir_casa_gemea.py` |
 | `02_regras_seguro.md` | Elegibilidade, escolha de plano, faixas por cobertura, canal | `scripts/02_aplicar_regras.py` |
-| `03_entrega.md` | Templates oficiais preenchidos e 13 testes de formato | `scripts/03_gerar_entrega.py` |
+| `03_entrega.md` | Templates oficiais preenchidos e 14 testes de formato | `scripts/03_gerar_entrega.py` |
 | `04_contrato_json.md` | Contrato de entrada e saída do motor e jornada de exemplo | `scripts/04_contrato_json.py` |
 | `05_pesquisa_marca_bb.md` | Marca e primeira tela de cotação do BB Seguros (cores, tipografia, tom) | Pesquisa manual |
 | `06_auditoria_proxy.md` | Idade e renda não vazam para o plano (contrafactual, associação, previsibilidade) | `scripts/06_auditoria_proxy.py` |
