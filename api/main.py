@@ -9,12 +9,14 @@ from typing import Literal
 
 from fastapi import FastAPI, HTTPException, Request
 from fastapi.exceptions import RequestValidationError
-from fastapi.responses import JSONResponse
+from fastapi.responses import FileResponse, JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, ConfigDict, Field, StrictFloat, StrictInt, StrictStr, field_validator
 from .rede import ips_locais, origens_locais
 
 RAIZ = Path(__file__).resolve().parents[1]
+INSTANTANEO = RAIZ / "dados_deploy" / "instantaneo_teste.pkl"
+DIST = RAIZ / "web" / "dist"
 MAX_NUMERO_JSON = 9_007_199_254_740_991  # Precisão inteira segura do navegador (2**53 - 1).
 sys.path.insert(0, str(RAIZ / "src"))
 
@@ -70,8 +72,13 @@ async def lifespan(app: FastAPI):
         app.state.motor = Motor()
         app.state.erro = None
     except FileNotFoundError:
-        app.state.motor = None
-        app.state.erro = "As duas pastas Seguro_Residencial_* não foram encontradas. Inicie api/rodar.ps1 com -Dados apontando para a pasta que contém as duas bases."
+        # Hospedagem pública: sem as bases originais, o motor sobe do instantâneo versionado.
+        if INSTANTANEO.is_file():
+            app.state.motor = Motor.de_instantaneo(INSTANTANEO)
+            app.state.erro = None
+        else:
+            app.state.motor = None
+            app.state.erro = "As duas pastas Seguro_Residencial_* não foram encontradas. Inicie api/rodar.ps1 com -Dados apontando para a pasta que contém as duas bases."
     yield
 
 
@@ -83,7 +90,8 @@ app.add_middleware(CORSMiddleware, allow_origins=origens_locais(), allow_methods
 @app.middleware("http")
 async def nao_armazenar_dados(request: Request, call_next):
     response = await call_next(request)
-    response.headers["Cache-Control"] = "no-store"
+    if request.url.path.startswith("/api"):  # só a API: o app compilado pode usar o cache do navegador
+        response.headers["Cache-Control"] = "no-store"
     return response
 
 
@@ -144,3 +152,15 @@ def recomendar(entrada: Entrada):
     if "erro" in resultado:
         raise HTTPException(422, detail=resultado["erro"])
     return resultado
+
+
+# Serviço único (Render): a mesma origem entrega a API em /api e o app compilado em /.
+if DIST.is_dir():
+    @app.get("/{caminho:path}", include_in_schema=False)
+    def app_compilado(caminho: str):
+        if caminho == "api" or caminho.startswith("api/"):
+            raise HTTPException(404, detail="Rota não encontrada.")
+        arquivo = (DIST / caminho).resolve()
+        if caminho and arquivo.is_file() and DIST.resolve() in arquivo.parents:
+            return FileResponse(arquivo)
+        return FileResponse(DIST / "index.html")  # rotas do app (ex.: /celular) são resolvidas no navegador

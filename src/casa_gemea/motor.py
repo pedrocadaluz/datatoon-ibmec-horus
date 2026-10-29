@@ -23,6 +23,8 @@ Respostas aceitas (códigos de perguntas.OPCOES; área e bens também aceitam n�
 Guardrail: entrada e saída não têm idade nem renda.
 """
 
+import pickle
+
 import numpy as np
 import pandas as pd
 
@@ -141,6 +143,19 @@ class Motor:
         self.casas = res.casas[base].set_index("imovel_id", drop=False)
         self.catalogo = res.bases[base]["catalogo_coberturas_fixas_planos"]
         self.coberturas_do_plano = self.catalogo.groupby("plano")["cobertura_fixa"].apply(list).to_dict()
+
+    @classmethod
+    def de_instantaneo(cls, caminho) -> "Motor":
+        """Sobe o motor sem as bases originais, a partir de scripts/11_gerar_instantaneo_deploy.py."""
+        from .calibracao import Calibracao
+        with open(caminho, "rb") as f:
+            pacote = pickle.load(f)  # arquivo gerado pelo próprio projeto e versionado no repositório
+        motor = cls.__new__(cls)
+        motor.referencias = regras.carregar_referencias(Calibracao(**pacote["calibracao"]))
+        motor.casas = pacote["casas"]
+        motor.catalogo = pacote["catalogo"]
+        motor.coberturas_do_plano = motor.catalogo.groupby("plano")["cobertura_fixa"].apply(list).to_dict()
+        return motor
 
     def recomendar(self, entrada: dict) -> dict:
         imovel_id = entrada.get("imovel_id")

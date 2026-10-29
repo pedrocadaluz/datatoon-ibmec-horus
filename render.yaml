@@ -1,0 +1,18 @@
+# Serviço único no Render: a FastAPI entrega a API em /api e o app compilado (web/dist) em /.
+# Sem as bases originais: o motor sobe do instantâneo dados_deploy/instantaneo_teste.pkl.
+# O app compilado vai versionado em web/dist (o build do Render só instala o Python).
+# Mudou algo em web/src? Rode `npm --prefix web run build` e versione web/dist antes do push.
+services:
+  - type: web
+    name: horus-casa-gemea
+    runtime: python
+    plan: free
+    region: ohio
+    branch: main
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn api.main:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /api/health
+    autoDeploy: true
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.13.5
