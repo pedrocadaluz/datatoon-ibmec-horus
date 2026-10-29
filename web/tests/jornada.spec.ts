@@ -154,7 +154,7 @@ test('apartamento aparece como prédio e casa como casa', async ({ page }) => {
 test('abertura no estilo do produto leva à escolha da casa e do perfil', async ({ page }) => {
   await page.goto('/')
   await expect(page.getByRole('heading', { name: 'Seguro Residencial', level: 1 })).toBeVisible()
-  await expect(page.getByRole('img', { name: 'Banco do Brasil' })).toBeVisible()
+  await expect(page.getByRole('img', { name: 'BB Seguros' }).first()).toBeVisible()
   await page.getByRole('button', { name: /Faça sua cotação/ }).click()
   // A cotação começa pela escolha da casa e do perfil, sem entrar direto em um canal.
   await expect(page.getByLabel('Imóvel do Teste Comum')).toBeFocused()

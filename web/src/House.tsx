@@ -20,9 +20,9 @@ export function progressoCasa(casa: Casa, aplicadas: string[] = []) {
 
 // Três tons: dado do banco ou confirmado ganha a cor da marca; estimativa de confiança alta, azul-claro;
 // estimativa incerta, cinza. Assim a casa nunca mostra uma estimativa como fato.
-const CINZA = { fill: '#EEF0F6', stroke: '#C5CAD9' }
+const CINZA = { fill: '#E9ECFB', stroke: '#A9B4EE' }
 const cor = (c: Campo, fill: string, claro: string, stroke = '#3548CA') =>
-  firme(c) ? { fill, stroke } : c.confianca === 'ALTA' ? { fill: claro, stroke: '#9AA8F5' } : CINZA
+  firme(c) ? { fill, stroke } : c.confianca === 'ALTA' ? { fill: claro, stroke: '#7F90F2' } : CINZA
 
 // Prédio isométrico: a quina da frente fica em (250, 262); cada face tem 100 de largura e 140 de altura.
 // (lado, u, v): lado -1 é a face esquerda e 1 a direita; u vai da quina à ponta e v da base ao topo (0 a 1).
@@ -46,7 +46,7 @@ export function HouseArt({ casa, aplicadas = [], status }: { casa: Casa; aplicad
   const area = firme(casa.area_m2) ? `${numero(Number(casa.area_m2.valor))} m²` : `${numero(casa.area_faixa_m2[0])} a ${numero(casa.area_faixa_m2[1])} m²`
   const paredes = cor(casa.material_parede, '#FFFFFF', '#F4F6FF')
   const telhado = cor(casa.tipo_imovel, '#465EFF', '#C9D1FF')
-  const telhado2 = firme(casa.tipo_imovel) ? '#7D8DFF' : casa.tipo_imovel.confianca === 'ALTA' ? '#DCE1FF' : '#F2F3F8'
+  const telhado2 = firme(casa.tipo_imovel) ? '#7D8DFF' : casa.tipo_imovel.confianca === 'ALTA' ? '#DCE1FF' : '#F1F3FD'
   const porta = cor(casa.vinculo, '#FCFC30', '#FFFBC8')
   const janela = firme(casa.uso_imovel) ? { fill: luz, stroke: '#3548CA' } : cor(casa.uso_imovel, luz, '#F7F8E8')
   const apartamento = casa.tipo_imovel.valor === 'APARTAMENTO'
@@ -80,9 +80,13 @@ export function HouseArt({ casa, aplicadas = [], status }: { casa: Casa; aplicad
       {/* Casa em perspectiva (desenho do projeto), com cada parte ligada a um dado. Coordenadas do desenho original 500 × 290. */}
       <g transform="translate(75 6) scale(.9)">
         <defs><pattern id="wall-lines" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M0 10 10 0" stroke="#DDE4FC" strokeWidth=".8" /></pattern></defs>
-        <path d="m52 222 201-112 194 112-201 112Z" fill={firme(casa.area_m2) ? '#DDE4FC' : '#EEF0F6'} transform="translate(0,-34)" />
+        <path d="m52 222 201-112 194 112-201 112Z" fill={firme(casa.area_m2) ? '#DDE4FC' : '#EEF0F6'} stroke="#C9D1F7" strokeWidth="1.5" transform="translate(0,-34)" />
+        <ellipse cx="250" cy="250" rx="150" ry="34" fill="#2F3FB0" opacity=".08" />
+        <path d="m292 276 26-14 40 22-26 14Z" fill="#EFE6C8" stroke="#D8CC9F" strokeWidth="1.2" />
+        <g aria-hidden="true"><path d="M86 196v-22" stroke="#7A5530" strokeWidth="5" strokeLinecap="round" /><circle cx="86" cy="160" r="20" fill="#3BAA6B" stroke="#17643F" strokeWidth="2" /><circle cx="74" cy="168" r="12" fill="#48B97A" stroke="#17643F" strokeWidth="2" /><circle cx="99" cy="166" r="11" fill="#2F9A5D" stroke="#17643F" strokeWidth="2" /></g>
+        <g aria-hidden="true"><ellipse cx="412" cy="196" rx="20" ry="11" fill="#3BAA6B" stroke="#17643F" strokeWidth="2" /><ellipse cx="428" cy="200" rx="12" ry="8" fill="#48B97A" stroke="#17643F" strokeWidth="2" /></g>
         <g key={`paredes-${paredes.fill}`} className="part">
-          <path d="m104 162 149-83 140 81-149 84Z" {...paredes} strokeWidth="2" />
+          <path d="m104 162 149-83 140 81-149 84Z" {...paredes} strokeWidth="2.4" />
           <path d="M104 162v67l140 81v-66Z" fill={firme(casa.material_parede) ? '#EDF0FF' : paredes.fill} stroke={paredes.stroke} strokeWidth="2" transform="translate(0,-22)" />
           <path d="M244 244v66l149-83v-67Z" {...paredes} strokeWidth="2" transform="translate(0,-22)" />
           <path d="m244 227 63-98 97 15-11 61-149 83Z" fill={firme(casa.material_parede) ? '#F9F7FF' : paredes.fill} stroke={paredes.stroke} strokeWidth="2" />
@@ -91,15 +95,17 @@ export function HouseArt({ casa, aplicadas = [], status }: { casa: Casa; aplicad
         <g key={`telhado-${telhado.fill}`} className="part">
           <path d="m97 144 63-99 147 84-63 98Z" {...telhado} strokeWidth="2" />
           <path d="m160 45 156-27 88 126-97-15Z" fill={telhado2} stroke={telhado.stroke} strokeWidth="2" />
+          <g stroke={telhado.stroke} strokeWidth="1.2" opacity=".35">{[0.25, 0.5, 0.75].map(t => <path key={t} d={`M${160 - 63 * t} ${45 + 99 * t}L${307 - 63 * t} ${129 + 98 * t}`} />)}</g>
+          <path d="m280 50 0-30 18-3 0 30Z" fill={telhado.fill} stroke={telhado.stroke} strokeWidth="2" /><path d="m298 47 0-30 11 6 0 29Z" fill={telhado2} stroke={telhado.stroke} strokeWidth="2" /><path d="m280 20 18-3 11 6-18 3Z" fill="#2F3FB0" />
         </g>
         <g key={`janelas-${janela.fill}`} className="part">
           <path d="m135 179 33 19v35l-33-19Z" {...janela} strokeWidth="2" />
           <path d="m151 188 0 36m-16-27 33 19" stroke={janela.stroke} strokeWidth="1.5" />
           <path d="m345 192 26-15v31l-26 15Z" {...janela} strokeWidth="2" />
-          <path d="m358 184 0 31" stroke={janela.stroke} strokeWidth="1.5" />
+          <path d="m358 184 0 31m-13-8 26-15" stroke={janela.stroke} strokeWidth="1.5" />
         </g>
         {casa.conteudo.selo === 'CONFIRMADO' && <g className="part"><path d="m140 204 20 11v10l-20-11Z" fill="#3548CA" /></g>}
-        <g key={`porta-${porta.fill}`} className="part"><path d="m286 225 32-18v54l-32 18Z" {...porta} strokeWidth="2" /></g>
+        <g key={`porta-${porta.fill}`} className="part"><path d="m286 225 32-18v54l-32 18Z" {...porta} strokeWidth="2" /><circle cx="311" cy="241" r="2.6" fill={porta.stroke} /></g>
         {aplicadas.includes('declaracao_unica') && <g className="part house-seal"><circle cx="440" cy="52" r="22" fill="#FCFC30" stroke="#3548CA" strokeWidth="3" /><path d="m429 52 8 8 14-15" stroke="#3548CA" strokeWidth="3.5" fill="none" strokeLinecap="round" /></g>}
       </g>
     </g>}

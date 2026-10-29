@@ -48,7 +48,7 @@ export function Entrada({ list, selected, busy, onChoose, onEnter }: {
 export function Abertura({ onCotar }: { onCotar: () => void }) {
   return <section className="abertura" aria-labelledby="abertura-titulo">
     <div className="abertura-texto">
-      <div className="abertura-marca"><img className="abertura-logo-bb" src="/marca-bb.svg" alt="Banco do Brasil" width="34" height="34" /><b>BB Seguros</b></div>
+      <div className="abertura-marca"><img className="abertura-logo-bb" src="/marca-bb-seguros.svg" alt="BB Seguros" height="34" /></div>
       <h1 id="abertura-titulo">Seguro Residencial</h1>
       <p>Montamos uma cópia da sua casa com o que o banco já sabe, perguntamos só o que muda o resultado e explicamos cada recomendação, inclusive por que não os outros planos.</p>
       <button className="abertura-cta" onClick={onCotar}>Faça sua cotação <Icon name="arrow" size={18} /></button>
