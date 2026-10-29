@@ -44,7 +44,9 @@
 @media (max-width: 767px) {
   :root { --mobile-header: 64px; --bottom-nav: 64px; --summary-height: 100px; }
   body { background: #F6F7FD; }
-  .app { padding-bottom: calc(var(--bottom-nav) + var(--summary-height) + env(safe-area-inset-bottom, 0px) + 18px); }
+  .app { padding-bottom: env(safe-area-inset-bottom, 0px); }
+  /* O espaço da barra fixa só existe quando o resumo do plano está na tela (não na entrada, no Gerente nem no SAC). */
+  .app:has(.mobile-recommendation-summary) { padding-bottom: calc(var(--bottom-nav) + var(--summary-height) + env(safe-area-inset-bottom, 0px) + 18px); }
   main { padding: 0 max(14px, env(safe-area-inset-left, 0px)) 0 max(14px, env(safe-area-inset-right, 0px)); }
   .topbar { position: sticky; top: 0; z-index: 30; padding-top: env(safe-area-inset-top, 0px); }
   .topbar-inner { height: var(--mobile-header); min-height: var(--mobile-header); padding: 0 14px; gap: 4px; }
