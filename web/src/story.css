@@ -324,3 +324,16 @@ details.why-card[open] > summary { margin-bottom: 6px; }
 .plano-destaque { animation: plano-muda .4s ease-out; border-radius: 4px; }
 @keyframes plano-muda { from { background: var(--yellow); transform: scale(1.08); } to { background: transparent; transform: scale(1); } }
 @media (prefers-reduced-motion: reduce) { .plano-destaque { animation: none; } }
+
+/* Aba Agente: bloco que explica a função da aba */
+.agente-explica { margin: 14px 0 18px; border: 1px solid var(--line); border-radius: 8px; background: var(--tint); }
+.agente-explica > summary { display: flex; align-items: center; gap: 8px; min-height: 48px; padding: 8px 14px; font-weight: 700; color: var(--ink-blue); cursor: pointer; }
+.agente-explica > summary:focus-visible { outline: 3px solid var(--ink-blue); outline-offset: 2px; }
+.agente-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; padding: 0 14px; }
+.agente-grid article { background: #fff; border: 1px solid var(--line); border-radius: 8px; padding: 12px; min-width: 0; }
+.agente-grid h3 { display: flex; align-items: center; gap: 6px; margin: 0 0 6px; font-size: .9rem; color: var(--ink-blue); }
+.agente-grid p, .agente-grid li { font-size: .82rem; line-height: 1.45; margin: 0 0 4px; }
+.agente-grid ul, .agente-grid ol { margin: 0; padding-left: 18px; }
+.agente-garantia { display: flex; align-items: flex-start; gap: 8px; margin: 12px 14px 14px; font-size: .82rem; font-weight: 600; color: var(--ink-blue); }
+.agente-garantia svg { flex: none; margin-top: 2px; }
+@media (max-width: 767px) { .agente-grid { grid-template-columns: 1fr; } }
