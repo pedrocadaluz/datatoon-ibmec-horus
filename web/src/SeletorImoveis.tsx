@@ -6,13 +6,13 @@ import type { Lista } from './types'
  * Luiza, Luigi e Júlia: desenhadas só pelas características (docs/16_personas.md) e ligadas
  * ao imóvel mais parecido, escolhido sem olhar o resultado do motor.
  */
-export const PERSONAS_SELETOR: { id: string; nome: string; resumo: string }[] = [
+export const PERSONAS_SELETOR: { id: string; nome: string; resumo: string; criada?: boolean }[] = [
   { id: 'IMO_CASO_00008_01', nome: 'Marina', resumo: 'inquilina com família' },
   { id: 'IMO_CASO_00016_01', nome: 'Rafael', resumo: 'casa com muitos eletrônicos' },
   { id: 'IMO_CASO_00059_01', nome: 'Helena', resumo: 'apartamento de temporada' },
-  { id: 'IMO_CASO_00036_02', nome: 'Luiza', resumo: 'inquilina que resolve tudo no app' },
-  { id: 'IMO_CASO_00098_01', nome: 'Luigi', resumo: 'casa grande, família e pet' },
-  { id: 'IMO_CASO_00015_02', nome: 'Júlia', resumo: 'imóvel alugado para outra pessoa' },
+  { id: 'IMO_CASO_00036_02', nome: 'Luiza', resumo: 'inquilina que resolve tudo no app', criada: true },
+  { id: 'IMO_CASO_00098_01', nome: 'Luigi', resumo: 'casa grande, família e pet', criada: true },
+  { id: 'IMO_CASO_00015_02', nome: 'Júlia', resumo: 'imóvel alugado para outra pessoa', criada: true },
 ]
 
 const rotulo = (i: Lista['imoveis'][number]) => `${i.imovel_id.replace('IMO_', '')} · ${i.municipio}/${i.uf}`
@@ -24,7 +24,7 @@ export function OpcoesImoveis({ list }: { list: Lista | null }) {
   const personas = PERSONAS_SELETOR.filter(p => porId.has(p.id))
   return <>
     {personas.length > 0 && <optgroup label="Personas">
-      {personas.map(p => <option key={`persona-${p.id}`} value={p.id}>{p.nome}, {p.resumo} ({rotulo(porId.get(p.id)!)})</option>)}
+      {personas.map(p => <option key={`persona-${p.id}`} value={p.id} title={p.resumo}>{p.nome} - {p.criada ? 'Caso_sintético_criado' : p.id.replace('IMO_', '')}</option>)}
     </optgroup>}
     <optgroup label="Todos os imóveis">
       {list.imoveis.filter(i => !personas.some(p => p.id === i.imovel_id)).map(i => <option key={i.imovel_id} value={i.imovel_id}>{rotulo(i)}</option>)}
