@@ -24,7 +24,7 @@ const CINZA = { fill: '#EEF0F6', stroke: '#C5CAD9' }
 const cor = (c: Campo, fill: string, claro: string, stroke = '#3548CA') =>
   firme(c) ? { fill, stroke } : c.confianca === 'ALTA' ? { fill: claro, stroke: '#9AA8F5' } : CINZA
 
-/** Casa vista de frente que cresce com as respostas. Cada parte é ligada a um dado da Casa Gêmea. */
+/** Casa (em perspectiva) ou prédio que cresce com as respostas. Cada parte é ligada a um dado da Casa Gêmea. */
 export function HouseArt({ casa, aplicadas = [], status }: { casa: Casa; aplicadas?: string[]; status?: string }) {
   const { firmes, total } = progressoCasa(casa, aplicadas)
   const escala = 0.82 + 0.18 * firmes / total
@@ -33,13 +33,14 @@ export function HouseArt({ casa, aplicadas = [], status }: { casa: Casa; aplicad
   const obra = (OBRA_PENDENTE.includes(String(casa.alerta_obra.valor)) && casa.alerta_obra.selo !== 'CONFIRMADO') || casa.alerta_obra.valor === 'OBRA_ESTRUTURAL'
   const area = firme(casa.area_m2) ? `${numero(Number(casa.area_m2.valor))} m²` : `${numero(casa.area_faixa_m2[0])} a ${numero(casa.area_faixa_m2[1])} m²`
   const paredes = cor(casa.material_parede, '#FFFFFF', '#F4F6FF')
-  const telhado = cor(casa.tipo_imovel, '#5A6FFF', '#C9D1FF')
+  const telhado = cor(casa.tipo_imovel, '#465EFF', '#C9D1FF')
+  const telhado2 = firme(casa.tipo_imovel) ? '#7D8DFF' : casa.tipo_imovel.confianca === 'ALTA' ? '#DCE1FF' : '#F2F3F8'
   const porta = cor(casa.vinculo, '#FCFC30', '#FFFBC8')
   const janela = firme(casa.uso_imovel) ? { fill: luz, stroke: '#3548CA' } : cor(casa.uso_imovel, luz, '#F7F8E8')
   const apartamento = casa.tipo_imovel.valor === 'APARTAMENTO'
   return <svg className="house-art" viewBox="0 0 600 280" role="img" data-progresso={`${firmes}/${total}`} data-tipo={apartamento ? 'apartamento' : 'casa'}
     aria-label={`Ilustração da sua Casa Gêmea (${apartamento ? 'apartamento' : 'casa'}), com ${firmes} de ${total} dados confirmados. Cores mais claras e cinza indicam estimativas. Não representa a planta real do imóvel.`}>
-    <rect x="40" y="236" width="520" height="14" rx="7" fill="#E6E9F7" />
+    {apartamento && <rect x="40" y="236" width="520" height="14" rx="7" fill="#E6E9F7" />}
     {apartamento ? <g className={`house-grow ${status === 'RECOMENDACAO_CONFIRMADA' ? 'complete' : ''}`} style={{ transform: `scale(${escala})` }}>
       <g key={`predio-${paredes.fill}`} className="part"><rect x="200" y="44" width="200" height="192" rx="4" {...paredes} strokeWidth="3" /></g>
       <g key={`topo-${telhado.fill}`} className="part"><rect x="190" y="32" width="220" height="16" rx="3" {...telhado} strokeWidth="3" /></g>
@@ -51,18 +52,34 @@ export function HouseArt({ casa, aplicadas = [], status }: { casa: Casa; aplicad
       <g key={`porta-${porta.fill}`} className="part"><rect x="280" y="194" width="40" height="42" rx="3" {...porta} strokeWidth="3" /></g>
       {aplicadas.includes('declaracao_unica') && <g className="part house-seal"><circle cx="446" cy="40" r="20" fill="#FCFC30" stroke="#3548CA" strokeWidth="3" /><path d="m436 40 7 7 13-14" stroke="#3548CA" strokeWidth="3.5" fill="none" strokeLinecap="round" /></g>}
     </g> : <g className={`house-grow ${status === 'RECOMENDACAO_CONFIRMADA' ? 'complete' : ''}`} style={{ transform: `scale(${escala})` }}>
-      <g key={`paredes-${paredes.fill}`} className="part"><rect x="190" y="118" width="220" height="118" rx="4" {...paredes} strokeWidth="3" /></g>
-      <g key={`telhado-${telhado.fill}`} className="part"><path d="M168 124 300 42l132 82Z" {...telhado} strokeWidth="3" strokeLinejoin="round" /></g>
-      <g key={`porta-${porta.fill}`} className="part"><rect x="278" y="168" width="44" height="68" rx="3" {...porta} strokeWidth="3" /><circle cx="312" cy="204" r="3" fill={porta.stroke} /></g>
-      <g key={`janelas-${janela.fill}`} className="part">
-        <rect x="212" y="146" width="48" height="42" rx="3" {...janela} strokeWidth="3" /><path d="M236 146v42M212 167h48" stroke={janela.stroke} strokeWidth="2" />
-        <rect x="340" y="146" width="48" height="42" rx="3" {...janela} strokeWidth="3" /><path d="M364 146v42M340 167h48" stroke={janela.stroke} strokeWidth="2" />
+      {/* Casa em perspectiva (desenho do projeto), com cada parte ligada a um dado. Coordenadas do desenho original 500 × 290. */}
+      <g transform="translate(75 6) scale(.9)">
+        <defs><pattern id="wall-lines" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M0 10 10 0" stroke="#DDE4FC" strokeWidth=".8" /></pattern></defs>
+        <path d="m52 222 201-112 194 112-201 112Z" fill={firme(casa.area_m2) ? '#DDE4FC' : '#EEF0F6'} transform="translate(0,-34)" />
+        <g key={`paredes-${paredes.fill}`} className="part">
+          <path d="m104 162 149-83 140 81-149 84Z" {...paredes} strokeWidth="2" />
+          <path d="M104 162v67l140 81v-66Z" fill={firme(casa.material_parede) ? '#EDF0FF' : paredes.fill} stroke={paredes.stroke} strokeWidth="2" transform="translate(0,-22)" />
+          <path d="M244 244v66l149-83v-67Z" {...paredes} strokeWidth="2" transform="translate(0,-22)" />
+          <path d="m244 227 63-98 97 15-11 61-149 83Z" fill={firme(casa.material_parede) ? '#F9F7FF' : paredes.fill} stroke={paredes.stroke} strokeWidth="2" />
+          <path d="m306 132-36 56 73-41Z" fill="url(#wall-lines)" />
+        </g>
+        <g key={`telhado-${telhado.fill}`} className="part">
+          <path d="m97 144 63-99 147 84-63 98Z" {...telhado} strokeWidth="2" />
+          <path d="m160 45 156-27 88 126-97-15Z" fill={telhado2} stroke={telhado.stroke} strokeWidth="2" />
+        </g>
+        <g key={`janelas-${janela.fill}`} className="part">
+          <path d="m135 179 33 19v35l-33-19Z" {...janela} strokeWidth="2" />
+          <path d="m151 188 0 36m-16-27 33 19" stroke={janela.stroke} strokeWidth="1.5" />
+          <path d="m345 192 26-15v31l-26 15Z" {...janela} strokeWidth="2" />
+          <path d="m358 184 0 31" stroke={janela.stroke} strokeWidth="1.5" />
+        </g>
+        {casa.conteudo.selo === 'CONFIRMADO' && <g className="part"><path d="m140 204 20 11v10l-20-11Z" fill="#3548CA" /></g>}
+        <g key={`porta-${porta.fill}`} className="part"><path d="m286 225 32-18v54l-32 18Z" {...porta} strokeWidth="2" /></g>
+        {aplicadas.includes('declaracao_unica') && <g className="part house-seal"><circle cx="440" cy="52" r="22" fill="#FCFC30" stroke="#3548CA" strokeWidth="3" /><path d="m429 52 8 8 14-15" stroke="#3548CA" strokeWidth="3.5" fill="none" strokeLinecap="round" /></g>}
       </g>
-      {casa.conteudo.selo === 'CONFIRMADO' && <g className="part"><rect x="350" y="158" width="28" height="18" rx="2" fill="#3548CA" /><path d="M358 180h12" stroke="#3548CA" strokeWidth="3" /></g>}
-      {aplicadas.includes('declaracao_unica') && <g className="part house-seal"><circle cx="300" cy="96" r="20" fill="#FCFC30" stroke="#3548CA" strokeWidth="3" /><path d="m290 96 7 7 13-14" stroke="#3548CA" strokeWidth="3.5" fill="none" strokeLinecap="round" /></g>}
     </g>}
     {obra && <g className="part scaffold"><path d="m470 236 16-58 16 58Z" fill="#F29D38" stroke="#805300" strokeWidth="2" /><path d="M476 214h20M481 196h10" stroke="#FFFFFF" strokeWidth="4" /></g>}
-    <g className="area-label"><path d="M190 262h220M190 256v12M410 256v12" stroke={firme(casa.area_m2) ? '#3548CA' : '#C5CAD9'} strokeWidth="2" />
+    <g className="area-label">{apartamento && <path d="M190 262h220M190 256v12M410 256v12" stroke={firme(casa.area_m2) ? '#3548CA' : '#C5CAD9'} strokeWidth="2" />}
       <rect x="252" y="252" width="96" height="20" rx="10" fill="#FFFFFF" /><text x="300" y="267" textAnchor="middle" fontSize="14" fontWeight="600" fill={firme(casa.area_m2) ? '#3548CA' : '#5B6175'}>{area}</text></g>
   </svg>
 }

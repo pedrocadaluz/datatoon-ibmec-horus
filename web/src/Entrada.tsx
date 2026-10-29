@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import type { Canal, Lista } from './types'
 import { Icon } from './Icons'
 
@@ -21,7 +20,7 @@ export function Entrada({ list, selected, busy, onChoose, onEnter }: {
     if (opcoes?.length) onChoose(opcoes[Math.floor(Math.random() * opcoes.length)].imovel_id)
   }
   return <section className="entrada" aria-labelledby="entrada-titulo">
-    <h2 id="entrada-titulo">Como você quer entrar?</h2>
+    <h2 id="entrada-titulo" tabIndex={-1}>Como você quer entrar?</h2>
     <div className="card entrada-imovel">
       <span className="entrada-passo">1</span>
       <div className="entrada-campo"><label htmlFor="imovel-entrada"><Icon name="home" size={17} />Escolha uma Casa Gêmea</label>
@@ -45,31 +44,28 @@ export function Entrada({ list, selected, busy, onChoose, onEnter }: {
   </section>
 }
 
-/**
- * Faixa de abertura no estilo da página do Seguro Residencial da BB Seguros (amarelo, título azul).
- * Sem logotipo oficial: "horus para BB Seguros" em texto. Se a organização liberar o arquivo da marca,
- * basta salvá-lo em web/public/marca-bb.svg que ele aparece no lugar do texto.
- */
+/** Faixa de abertura no estilo da página do Seguro Residencial da BB Seguros (amarelo, título azul). */
 export function Abertura({ onCotar }: { onCotar: () => void }) {
-  const [marca, setMarca] = useState(true)
   return <section className="abertura" aria-labelledby="abertura-titulo">
     <div className="abertura-texto">
-      <div className="abertura-marca"><img src="/horus.svg" alt="" width="34" height="34" /><b>horus</b><span>para</span>
-        {marca ? <img className="abertura-logo-bb" src="/marca-bb.svg" alt="BB Seguros" height="28" onError={() => setMarca(false)} /> : <b>BB Seguros</b>}</div>
+      <div className="abertura-marca"><img className="abertura-logo-bb" src="/marca-bb.svg" alt="Banco do Brasil" width="34" height="34" /><b>BB Seguros</b></div>
       <h1 id="abertura-titulo">Seguro Residencial</h1>
-      <p className="abertura-lema">Menos perguntas. Mais sentido para a sua proteção.</p>
       <p>Montamos uma cópia da sua casa com o que o banco já sabe, perguntamos só o que muda o resultado e explicamos cada recomendação, inclusive por que não os outros planos.</p>
       <button className="abertura-cta" onClick={onCotar}>Faça sua cotação <Icon name="arrow" size={18} /></button>
     </div>
-    <svg className="abertura-arte" viewBox="0 0 320 240" aria-hidden="true">
-      <circle cx="160" cy="120" r="108" fill="#FFFFFF" opacity=".55" />
-      <path d="M78 122 160 58l82 64Z" fill="#465EFF" stroke="#2F3FB0" strokeWidth="4" strokeLinejoin="round" />
-      <rect x="96" y="120" width="128" height="80" rx="4" fill="#FFFFFF" stroke="#2F3FB0" strokeWidth="4" />
-      <rect x="146" y="150" width="28" height="50" rx="3" fill="#FCFC30" stroke="#2F3FB0" strokeWidth="4" />
-      <rect x="110" y="136" width="26" height="22" rx="3" fill="#FCFC30" stroke="#2F3FB0" strokeWidth="3" />
-      <rect x="184" y="136" width="26" height="22" rx="3" fill="#FCFC30" stroke="#2F3FB0" strokeWidth="3" />
-      <path d="M232 64c14 4 26 4 38-2v30c0 22-15 36-38 44-23-8-38-22-38-44V62c12 6 24 6 38 2Z" fill="#2F3FB0" />
-      <path d="m220 98 9 9 18-20" stroke="#FCFC30" strokeWidth="5" fill="none" strokeLinecap="round" strokeLinejoin="round" />
+    <svg className="abertura-arte" viewBox="0 0 500 290" aria-hidden="true">
+      <path d="m52 222 201-112 194 112-201 112Z" fill="#FFFFFF" opacity=".6" transform="translate(0,-34)" />
+      <path d="m104 162 149-83 140 81-149 84Z" fill="#FFF" stroke="#465EFF" strokeWidth="2.5" />
+      <path d="M104 162v67l140 81v-66Z" fill="#EDF0FF" stroke="#465EFF" strokeWidth="2.5" transform="translate(0,-22)" />
+      <path d="M244 244v66l149-83v-67Z" fill="#FFF" stroke="#465EFF" strokeWidth="2.5" transform="translate(0,-22)" />
+      <path d="m97 144 63-99 147 84-63 98Z" fill="#465EFF" stroke="#2F3FB0" strokeWidth="2.5" />
+      <path d="m160 45 156-27 88 126-97-15Z" fill="#7D8DFF" stroke="#2F3FB0" strokeWidth="2.5" />
+      <path d="m244 227 63-98 97 15-11 61-149 83Z" fill="#F9F7FF" stroke="#465EFF" strokeWidth="2.5" />
+      <path d="m135 179 33 19v35l-33-19Z" fill="#FCFC30" stroke="#2F3FB0" strokeWidth="2.5" />
+      <path d="m286 225 32-18v54l-32 18Z" fill="#FCFC30" stroke="#2F3FB0" strokeWidth="2.5" />
+      <path d="m345 192 26-15v31l-26 15Z" fill="#FCFC30" stroke="#2F3FB0" strokeWidth="2.5" />
+      <path d="M420 40c14 4 26 4 38-2v30c0 22-15 36-38 44-23-8-38-22-38-44V38c12 6 24 6 38 2Z" fill="#2F3FB0" />
+      <path d="m408 74 9 9 18-20" stroke="#FCFC30" strokeWidth="5" fill="none" strokeLinecap="round" strokeLinejoin="round" />
     </svg>
   </section>
 }

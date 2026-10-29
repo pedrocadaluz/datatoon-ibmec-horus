@@ -151,10 +151,12 @@ test('apartamento aparece como prédio e casa como casa', async ({ page }) => {
   await expect(page.getByRole('dialog', { name: 'Como usar' })).toContainText('Escolha um imóvel')
 })
 
-test('abertura no estilo do produto leva direto à cotação como cliente', async ({ page }) => {
+test('abertura no estilo do produto leva à escolha da casa e do perfil', async ({ page }) => {
   await page.goto('/')
   await expect(page.getByRole('heading', { name: 'Seguro Residencial', level: 1 })).toBeVisible()
+  await expect(page.getByRole('img', { name: 'Banco do Brasil' })).toBeVisible()
   await page.getByRole('button', { name: /Faça sua cotação/ }).click()
-  await expect(page.getByRole('region', { name: 'Sessão' })).toContainText('Cliente')
-  await expect(page.getByTestId('plano-atual')).toHaveText('Total')
+  // A cotação começa pela escolha da casa e do perfil, sem entrar direto em um canal.
+  await expect(page.getByLabel('Imóvel do Teste Comum')).toBeFocused()
+  await expect(page.getByRole('region', { name: 'Sessão' })).toHaveCount(0)
 })
