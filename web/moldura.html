@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Moldura · Horus no celular</title>
+<!-- Só para desenvolvimento: o Vite serve em /moldura.html, mas o build não inclui este arquivo. -->
+<style>
+  :root { --fundo: #E9ECFB; --corpo: #15161A; --borda: #2C2E36; }
+  * { box-sizing: border-box; }
+  body { margin: 0; min-height: 100vh; display: flex; flex-direction: column; align-items: center; gap: 14px; padding: 18px 12px; background: var(--fundo); font-family: Inter, system-ui, sans-serif; }
+  .aparelhos { display: flex; gap: 6px; flex-wrap: wrap; justify-content: center; }
+  .aparelhos button { border: 1px solid #C9D0F5; background: #fff; color: #3548CA; border-radius: 999px; padding: 6px 12px; font: 600 12px/1 inherit; cursor: pointer; }
+  .aparelhos button[aria-pressed="true"] { background: #465EFF; border-color: #465EFF; color: #fff; }
+  .celular { position: relative; padding: 12px; border-radius: 56px; background: var(--corpo); box-shadow: 0 0 0 2px var(--borda), 0 24px 60px rgba(30, 40, 110, .28); transform-origin: top center; }
+  .celular::before, .celular::after { content: ""; position: absolute; left: -4px; width: 4px; border-radius: 4px 0 0 4px; background: var(--borda); }
+  .celular::before { top: 140px; height: 56px; }
+  .celular::after { top: 210px; height: 56px; }
+  .lateral { position: absolute; right: -4px; top: 190px; width: 4px; height: 84px; border-radius: 0 4px 4px 0; background: var(--borda); }
+  .tela { position: relative; overflow: hidden; border-radius: 44px; background: #fff; }
+  .status { position: relative; height: 47px; background: #465EFF; display: flex; align-items: center; justify-content: space-between; padding: 0 30px; font: 600 15px/1 -apple-system, system-ui, sans-serif; color: #fff; z-index: 2; pointer-events: none; }
+  .ilha { position: absolute; top: 11px; left: 50%; width: 120px; height: 34px; margin-left: -60px; border-radius: 20px; background: #000; z-index: 3; }
+  .icones { display: flex; gap: 6px; align-items: center; }
+  .icones i { display: block; width: 24px; height: 11px; border: 1.5px solid #fff; border-radius: 3px; position: relative; }
+  .icones i::after { content: ""; position: absolute; inset: 1.5px 5px 1.5px 1.5px; background: #fff; border-radius: 1px; }
+  iframe { display: block; border: 0; background: #fff; }
+  .barra-home { position: absolute; bottom: 8px; left: 50%; width: 134px; height: 5px; margin-left: -67px; border-radius: 3px; background: rgba(0, 0, 0, .75); z-index: 2; pointer-events: none; }
+  .sem-ilha .ilha, .sem-ilha .barra-home { display: none; }
+  .sem-ilha .tela { border-radius: 30px; }
+  .sem-ilha.celular { border-radius: 42px; padding: 60px 14px; }
+  .legenda { color: #626776; font-size: 12px; }
+</style>
+</head>
+<body>
+  <div class="aparelhos" role="group" aria-label="Aparelho">
+    <button data-w="390" data-h="844" data-ilha="1" aria-pressed="true">iPhone 14</button>
+    <button data-w="375" data-h="667" data-ilha="0">iPhone SE</button>
+    <button data-w="430" data-h="932" data-ilha="1">iPhone 14 Pro Max</button>
+    <button data-w="412" data-h="915" data-ilha="1">Pixel 7</button>
+    <button data-w="360" data-h="780" data-ilha="1">Android pequeno</button>
+  </div>
+  <div class="celular" id="celular">
+    <span class="lateral"></span>
+    <div class="tela" id="tela">
+      <div class="status"><span id="hora">9:41</span><span class="icones">5G <i></i></span></div>
+      <div class="ilha"></div>
+      <iframe id="app" src="/" title="App Horus no celular"></iframe>
+      <div class="barra-home"></div>
+    </div>
+  </div>
+  <p class="legenda" id="legenda"></p>
+<script>
+  const celular = document.getElementById('celular'), app = document.getElementById('app'), legenda = document.getElementById('legenda')
+  function aplicar(botao) {
+    document.querySelectorAll('.aparelhos button').forEach(b => b.setAttribute('aria-pressed', String(b === botao)))
+    const w = +botao.dataset.w, h = +botao.dataset.h
+    app.style.width = w + 'px'; app.style.height = (h - 47) + 'px'  // a barra de status ocupa o topo, como no aparelho
+    celular.classList.toggle('sem-ilha', botao.dataset.ilha === '0')
+    // Diminui a moldura inteira se ela não couber na janela.
+    const escala = Math.min(1, (innerHeight - 90) / (h + (botao.dataset.ilha === '0' ? 120 : 24)))
+    celular.style.transform = `scale(${escala})`
+    celular.style.marginBottom = `${(h + 24) * (escala - 1)}px`
+    legenda.textContent = `${botao.textContent}: tela ${w} × ${h} px, área do app ${w} × ${h - 47} px${escala < 1 ? ` (moldura em ${Math.round(escala * 100)}%)` : ''}`
+  }
+  document.querySelectorAll('.aparelhos button').forEach(b => b.addEventListener('click', () => aplicar(b)))
+  addEventListener('resize', () => aplicar(document.querySelector('[aria-pressed="true"]')))
+  aplicar(document.querySelector('[aria-pressed="true"]'))
+</script>
+</body>
+</html>
