@@ -1,5 +1,6 @@
 import type { Canal, Lista } from './types'
 import { Icon } from './Icons'
+import { OpcoesImoveis } from './SeletorImoveis'
 
 export const CANAIS: { label: Canal; icon: string; note: string; texto: string }[] = [
   { label: 'Cliente', icon: 'home', note: 'Para quem contrata', texto: 'Vê a Casa Gêmea, responde só o que muda a proteção e recebe o relatório.' },
@@ -25,8 +26,7 @@ export function Entrada({ list, selected, busy, onChoose, onEnter }: {
       <span className="entrada-passo">1</span>
       <div className="entrada-campo"><label htmlFor="imovel-entrada"><Icon name="home" size={17} />Escolha uma Casa Gêmea</label>
         <div><select id="imovel-entrada" aria-label="Imóvel do Teste Comum" value={selected} onChange={e => onChoose(e.target.value)} disabled={!list}>
-          {!list && <option>Carregando imóveis...</option>}
-          {list?.imoveis.map(i => <option key={i.imovel_id} value={i.imovel_id}>{i.imovel_id.replace('IMO_', '')} · {i.municipio}/{i.uf}</option>)}
+          <OpcoesImoveis list={list} />
         </select><button className="button secondary" disabled={!list || busy} onClick={sortear}><Icon name="shuffle" size={17} />Sortear uma casa</button></div>
       </div>
     </div>

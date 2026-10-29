@@ -189,7 +189,9 @@ Módulo `personalizacao.py`. Não muda o plano nem as faixas; muda o que se dest
 
 **Adicionais no template de coberturas.** Entram só os que têm faixa em reais: `EQUIPAMENTOS_PORTATEIS` (25% a 60% dos eletrônicos, confiança média) e `BICICLETA` (30% a 60% dos itens de lazer, confiança **baixa**, porque "item de lazer" não é necessariamente bicicleta). Valor de novo, desocupação e MEI não têm limite próprio e ficam só na explicação do motor. No contrato JSON, os adicionais vêm no campo `coberturas_adicionais`.
 
-**Três perfis contrastantes** ([`docs/11_personas.md`](docs/11_personas.md), gerado por `scripts/10_personas.py`):
+**Seis personas, todas no seletor do app (grupo "Personas").** Marina, Rafael e Helena são casos reais com o resultado do motor ([`docs/11_personas.md`](docs/11_personas.md), gerado por `scripts/10_personas.py`). Luiza, Luigi e Júlia foram desenhadas só pelas características, sem olhar o resultado, e ligadas ao imóvel mais parecido ([`docs/16_personas.md`](docs/16_personas.md)).
+
+As três de casos reais:
 
 | Persona (fictícia) | Imóvel | Plano | Por quê |
 |---|---|---|---|
