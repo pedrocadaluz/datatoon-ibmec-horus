@@ -236,3 +236,7 @@
 @media (prefers-reduced-motion: reduce) {
   .recommendation-sheet[open], .mobile-count-progress > i { animation: none; transition: none; }
 }
+
+/* Gesto de voltar (useGestoVoltar): seta que acompanha o arraste da borda esquerda. */
+.gesto-voltar { position: fixed; left: 0; top: 50%; z-index: 80; display: grid; place-items: center; width: 36px; height: 36px; border-radius: 50%; background: #FFFFFF; color: #3548CA; font-size: 1.6rem; line-height: 1; box-shadow: 0 4px 14px rgba(30, 40, 110, .25); opacity: 0; transform: translate(-40px, -50%); pointer-events: none; transition: background .15s, color .15s; }
+.gesto-voltar.pronto { background: #465EFF; color: #FFFFFF; }

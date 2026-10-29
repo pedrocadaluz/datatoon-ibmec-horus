@@ -14,6 +14,7 @@ import { ManagerFlow, type PassoGerente } from './Gerente'
 import { SacFlow, type PassoSac } from './Sac'
 import { ComoUsar } from './Ajuda'
 import { Abertura, CANAIS, Entrada } from './Entrada'
+import { useGestoVoltar } from './useGestoVoltar'
 import './story.css'
 import './app.css'
 
@@ -23,6 +24,7 @@ const answersFrom = (history: Registro[]): Respostas => Object.fromEntries(histo
 
 export default function App() {
   const mobile = useMobile()
+  useGestoVoltar()
   const [entrou, setEntrou] = useState(false)
   const [list, setList] = useState<Lista | null>(null)
   const [selected, setSelected] = useState('')
