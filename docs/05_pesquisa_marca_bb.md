@@ -78,8 +78,6 @@ Descrição: o tom é próximo e coloquial, com expressões do dia a dia ("perre
 
 ## 7. Screenshots
 
-- Hero com banner de cookies (antes de recusar): `C:\Users\pedro\AppData\Local\Temp\claude-chrome-screenshots-e0nrhw\screenshot-1793209687347-0.jpg`
-- Primeira tela da cotação: `C:\Users\pedro\AppData\Local\Temp\claude-chrome-screenshots-e0nrhw\screenshot-1793209702346-1.jpg`
 
 Não capturei screenshots dos cards de plano nem do rodapé; a descrição vem do texto da página e do CSS.
 

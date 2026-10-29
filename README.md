@@ -189,7 +189,7 @@ Módulo `personalizacao.py`. Não muda o plano nem as faixas; muda o que se dest
 
 **Adicionais no template de coberturas.** Entram só os que têm faixa em reais: `EQUIPAMENTOS_PORTATEIS` (25% a 60% dos eletrônicos, confiança média) e `BICICLETA` (30% a 60% dos itens de lazer, confiança **baixa**, porque "item de lazer" não é necessariamente bicicleta). Valor de novo, desocupação e MEI não têm limite próprio e ficam só na explicação do motor. No contrato JSON, os adicionais vêm no campo `coberturas_adicionais`.
 
-**Seis personas, todas no seletor do app (grupo "Personas").** Marina, Rafael e Helena são casos reais com o resultado do motor ([`docs/11_personas.md`](docs/11_personas.md), gerado por `scripts/10_personas.py`). Luiza, Luigi e Júlia foram desenhadas só pelas características, sem olhar o resultado, e ligadas ao imóvel mais parecido ([`docs/16_personas.md`](docs/16_personas.md)).
+**Seis personas, todas no seletor do app (grupo "Personas").** Marina, Rafael e Helena são casos reais com o resultado do motor ([`docs/11_personas.md`](docs/11_personas.md), gerado por `scripts/10_personas.py`). Luiza, Luigi e Júlia foram desenhadas só pelas características, sem olhar o resultado, e ligadas ao imóvel mais parecido ([`docs/16_personas.md`](docs/16_personas.md)); são um roteiro de demonstração, e os traços que o imóvel não tem se testam na aba Agente.
 
 As três de casos reais:
 
@@ -215,7 +215,8 @@ As três de casos reais:
 | Perguntas evitadas | 7,2 de 8 campos de um formulário tradicional, em média |
 | Canal | One Click Buy 63,8% · Gerente 16,7% · Atendimento assistido 10,9% · App com confirmação 8,7% |
 | Testes de formato da entrega | 14 de 14 aprovados ([`docs/03_entrega.md`](docs/03_entrega.md)) |
-| Testes da API | 10 de 10, incluindo paridade dos 138 casos com os CSVs |
+| Testes da API | 12 de 12: 10 do contrato (inclui paridade dos 138 casos com os CSVs) e 2 do instantâneo do deploy |
+| Testes de navegador (Playwright) | 24 de 24: jornadas, celular e acessibilidade (axe AA) |
 | Tempo de execução | ~3 s para os 2.716 imóveis das duas bases |
 
 **Por que metade vai ao Total.** Dos 69 casos Total, 52 (75%) são inquilinos (31) ou locadores (21). As CG (Perda de Aluguel 1.1) cobrem exatamente o que eles pagam ou recebem: o inquilino recebe o reembolso do aluguel de uma moradia temporária, e o locador, o aluguel que deixa de receber. Os outros 17 têm pet **e** dependentes, que pedem RC familiar, além de algum sinal do Prático. O plano mais completo não é o padrão: 69 imóveis ficam no Prático ou no Essencial.
@@ -225,9 +226,8 @@ As três de casos reais:
 | Métrica | Resultado | Como foi medido |
 |---|---|---|
 | **Faixa de reconstrução contém o custo real** | **cerca de 89%** (faixa calibrada em ~90%) | Área e padrão reais escondidos (273 imóveis), custo verdadeiro = área real × CUB × fator do padrão real; ver `docs/12_avaliacao_modelo.md` (E3). O teste de `validacao.py` (97%) compara com o centro da própria faixa e é otimista |
-| Erro do centro da faixa | 6% a 13% (mediana por cobertura) | Mesmo teste |
 | Modelo de área | Erro mediano 13,4% · R² 0,86 (log) · intervalo de 80% contém o real em 79,9% | Validação cruzada de 5 dobras por cliente. **Teste cego** (treino só no desenvolvimento, n = 46 imóveis do teste com área real): erro mediano 16,2% (IC 95%: 12,8% a 21,8%), cobertura 78%; sem overfitting nem vazamento (`docs/13_diagnostico_ajuste.md`) |
-| Estabilidade do plano | Limiares de bens ±20% mudam 3,6% / 1,4% dos planos | [`docs/02_regras_seguro.md`](docs/02_regras_seguro.md) |
+| Estabilidade do plano | Limiares de bens ±20% mudam 3,6% / 1,4% dos planos (base de teste: 5 e 2 de 138) | [`docs/02_regras_seguro.md`](docs/02_regras_seguro.md) |
 | Consistência entre casos semelhantes | 91,2% dos grupos (desenvolvimento) e 93,8% (teste) recebem o mesmo plano; os grupos restantes são todos explicados por eletrônicos, vidraçaria ou desocupação | Imóveis agrupados por tipo, vínculo, nível de bens, pet e dependentes; [`docs/15_consistencia.md`](docs/15_consistencia.md) |
 | Confiança geral | Alta 69% · Média 22% · Baixa 9% | Antes da análise de impacto: alta 37% |
 | Valor das perguntas escolhidas | Com 1 pergunta, o plano fica igual ao plano com tudo confirmado em **98,2%** dos casos (93,8% com uma pergunta aleatória; 92,0% sem perguntar) | 600 imóveis com área e padrão escondidos; [`docs/12_avaliacao_modelo.md`](docs/12_avaliacao_modelo.md) (E4) |
@@ -244,7 +244,7 @@ As três de casos reais:
 | Completude dos templates e das coberturas fixas | 100%: todas as fixas do plano em cada imóvel (teste automático) |
 | Quantidade média de perguntas de confirmação | 0,81 por imóvel, mais a declaração única |
 | Percentual de casos com confiança baixa | 8,7% |
-| Estabilidade das recomendações | Limiares ±20% mudam até 3,6% dos planos |
+| Estabilidade das recomendações | Limiares ±20% mudam até 3,6% dos planos (base de teste) |
 | Consistência entre casos semelhantes | 93,8% dos grupos no teste (91,2% no desenvolvimento) |
 | Sensibilidade das faixas | Responder a área estreita a faixa de incêndio de 1,77× para 1,25× (jornada `IMO_CASO_00003_01`) |
 | Tempo de execução e taxa de falhas | ~4,5 s para os 4 scripts e os 2.716 imóveis; 0 falhas |
@@ -255,7 +255,7 @@ As três de casos reais:
 
 ## Como executar
 
-Requisitos: **Python 3.12.2** (arquivo `.python-version`) e as dependências de `requirements.txt` (pandas, numpy, FastAPI e Uvicorn). O web-app pede também **Node 24 e npm 11**.
+Requisitos: **Python 3.12.2** (arquivo `.python-version`; o deploy no Render roda 3.13.5, testado) e as dependências de `requirements.txt` (pandas, numpy, FastAPI e Uvicorn). O web-app pede também **Node 24 e npm 11**.
 
 ### 1. Bases de dados
 Descompacte as bases recebidas da organização na raiz do projeto, com estes nomes de pasta:
@@ -304,7 +304,7 @@ Detalhes (celular, HTTPS, testes de navegador) em [`web/README.md`](web/README.m
 
 ```bash
 pip install -r api/requirements-test.txt
-python -m unittest api.test_api      # API: 10 testes, inclui paridade dos 138 casos com os CSVs
+python -m unittest api.test_api api.test_instantaneo   # API: 12 testes (paridade dos 138 casos e instantâneo do deploy)
 npm --prefix web run build           # build TypeScript/Vite
 npm --prefix web test                # jornadas e acessibilidade no navegador (Chrome instalado)
 ```
@@ -428,7 +428,7 @@ Detalhes (fonte, data, licença, método e limitações) em [`docs/fontes_extern
 | Padrão pelo condomínio por m² | Acerto de 48% a 54%, contra 58% de chutar "normal" | Descartado |
 | Locador mais preciso (aluguel × aluguel por m² da cidade; regularidade) | Não separa locadores com e sem conflito | Descartado; o vínculo vira pergunta |
 | Confiança por contagem de campos a confirmar | Penalizava campos que não mudam nada | Substituída pela análise de impacto |
-| Condomínio, renda e padrão no modelo de área | Correlação ~0 com a área | Fora do modelo (a renda também é proibida) |
+| Condomínio e padrão no modelo de área (renda só como diagnóstico de vazamento, nunca candidata) | Correlação ~0 com a área | Fora do modelo; a renda é proibida por regra (`CAMPOS_PROIBIDOS` em `src/casa_gemea/config.py`) |
 
 ## Evoluções possíveis
 

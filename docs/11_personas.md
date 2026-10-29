@@ -48,7 +48,7 @@ Inquilina de apartamento em Fortaleza, com 3 dependentes e pet, e usa muito o ap
 - **Equipamentos portáteis** (necessidade 52): Você comprou cerca de R$ 6.225 em eletrônicos. Danos elétricos não cobrem queda nem dano mecânico de notebook, tablet ou câmera; esta cobertura sim, dentro de casa. Faixa sugerida: R$ 1.600 a R$ 3.700. (CG V1.6, item 4.1 g)
 - **Indenização a valor de novo** (necessidade 47): Você renovou cerca de R$ 18.550 em eletrônicos, eletrodomésticos e móveis nos últimos 36 meses. Sem esta opção, a indenização desconta a depreciação (tabela da CG). (CG V1.6, itens 24.2 e 25.1)
 
-## Rafael: Casa em transformação
+## Rafael: Casa conectada
 
 Dono de casa financiada no Rio de Janeiro, com muitos eletrônicos, que acabou de gastar muito em material de construção.
 

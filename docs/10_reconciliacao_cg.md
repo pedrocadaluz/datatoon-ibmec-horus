@@ -1,6 +1,6 @@
 # Reconciliação das Condições Gerais: v1.3 para V1.6
 
-Data: 28/10/2026. O repositório cita as CG BB Seguros **v1.3** (out/2024). O site publica hoje a **V1.6**, vigente desde 11/08/2026, mesmo Processo SUSEP 15414.606453/2020-10. Cópia local da V1.6: `dados_externos/condicoes_gerais_bb/cg_residencial_v1_6_2026-08.pdf` (arquivo copiado sem alteração). Detalhe cláusula a cláusula: `saidas/mapa_clausulas_v13_v16.csv`. Catálogo conferido: `saidas/catalogo_adicionais_v16.csv`.
+Data: 28/10/2026. O repositório cita as CG BB Seguros **v1.3** (out/2024). O site publica hoje a **V1.6**, vigente desde 11/08/2026, mesmo Processo SUSEP 15414.606453/2020-10. Cópia local da V1.6: `dados_externos/condicoes_gerais_bb/cg_residencial_v1_6_2026-08.pdf` (arquivo copiado sem alteração). Detalhe cláusula a cláusula: `saidas/mapa_clausulas_v13_v16.csv`. Catálogo conferido: `saidas/catalogo_adicionais.csv`.
 
 ## Conclusão
 As regras que sustentam os números do time **não mudaram de conteúdo**. Confirmados iguais na V1.6: aluguel (até 6 meses, mensal ≤ 1/6 do LMI), despesas emergenciais (10% nas 48 h e 3% por dia, até 30 dias), Primeiro Risco Absoluto (15.1), bens de terceiros (6.1 r), roubo sem imóvel desocupado (Roubo 2.1 c), RC Familiar (1.1 b, c, e), depreciação (24.2) e valor de novo (25.1). Todas as condições especiais batem com a v1.3 (similaridade de texto de 91% a 99%, só redação). Das 41 citações levantadas, **28 estão iguais, 10 só mudaram de numeração e 3 mudaram de texto**. Nenhuma faixa, plano ou CSV da entrega precisa mudar de valor.
@@ -39,6 +39,6 @@ As regras que sustentam os números do time **não mudaram de conteúdo**. Confi
 ## Arquivos do repositório que precisam trocar citação
 - Código: `src/casa_gemea/regras.py` (cabeçalho, linhas com 7.1 x/y, 5.4, 1.3), `src/casa_gemea/perguntas.py` (7.1 x/y, 11.1.2), `src/casa_gemea/entrega.py` (nome e link da fonte).
 - Scripts: `scripts/02_aplicar_regras.py`, `scripts/04_contrato_json.py`.
-- Documentos: `README.md`, `CLAUDE.md`, `docs/02_regras_seguro.md`, `docs/03_entrega.md`, `docs/04_contrato_json.md`, `docs/08_coberturas_adicionais.md`, `docs/fontes_externas.md`; opcionais: `docs/09_inventario_site_bb.md`, `docs/03_proposta_funcionalidades.md` (fecham a pendência).
+- Documentos: `README.md`, `CLAUDE.md`, `docs/02_regras_seguro.md`, `docs/03_entrega.md`, `docs/04_contrato_json.md`, `docs/08_coberturas_adicionais.md`, `docs/fontes_externas.md`; opcionais: `docs/09_inventario_site_bb.md` (fecha a pendência).
 - Saídas geradas (reproduzir com os scripts, não editar à mão): `entrega/template_resultado_times.csv` (16 linhas com 7.1 x), `entrega/template_coberturas_times.csv` (52 com "5.4 e 15.2", 31 com 10.1), `saidas/recomendacao_*.csv`, `saidas/coberturas_*.csv`, `saidas/contrato/*.json`. Substituir `saidas/catalogo_adicionais.csv` pelo `_v16`.
 - Cuidado ao regenerar a entrega: só os textos mudam. Conferir que valores, faixas e número de linhas (138 e 1.283) ficam idênticos.

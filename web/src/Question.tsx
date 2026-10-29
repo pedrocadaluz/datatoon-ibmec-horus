@@ -51,7 +51,7 @@ export function Question({ data, busy, history, sac, simple, onAnswer, onUndo }:
       <p>{data.status === 'INELEGIVEL' ? texto(data.elegibilidade.motivo) : data.status === 'ENCAMINHAR_GERENTE' ? 'Falta só uma confirmação. O gerente recebe os dados e o motivo para ajudar você.' : 'Não precisamos de mais nada. Confira as faixas e o que ainda pode mudar.'}</p>
       <a className="button secondary" href="#recomendacao" onClick={e => { if (matchMedia('(max-width: 767px)').matches) { e.preventDefault(); window.dispatchEvent(new Event('horus-show-recommendation')) } }}>Ver minha recomendação <Icon name="arrow" size={16} /></a>
     </div>}
-    <AnswerHistory history={history} busy={busy} onUndo={onUndo} />
+    <AnswerHistory history={history} busy={busy} onUndo={onUndo} semContagem={simple} />
   </section>
 }
 

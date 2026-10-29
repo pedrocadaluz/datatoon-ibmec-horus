@@ -225,7 +225,7 @@ Nos 1016 imóveis da base de desenvolvimento com área cadastrada, o motor foi r
 | QUEDA_AERONAVE | 1016 | 97,2 | 8,0 |
 | QUEBRA_DE_VIDROS | 1016 | 97,3 | 13,3 |
 
-No total, a faixa contém o valor real em **97,1%** dos casos. As faixas de prédio são conservadoras porque também carregam a incerteza do interesse segurável (ex.: partes privativas de apartamento de 10% a 30%), que não é testada aqui. Quebra de vidros depende só da área e acompanha o intervalo de 80% do modelo de área. **Atenção:** aqui o "valor real" é o centro da faixa calculada com os dados cadastrados (inclusive o padrão estimado pelo IPTU), então este número é otimista. Contra o custo de reconstrução verdadeiro (área real × CUB × fator do padrão real), a cobertura medida em `docs/12_avaliacao_modelo.md` (E3) é de cerca de 89%.
+No total, a faixa contém o centro da faixa recalculada em 97,1% dos casos (número otimista; contra o custo real, a cobertura é de cerca de 89%, ver `docs/12_avaliacao_modelo.md`, E3). As faixas de prédio são conservadoras porque também carregam a incerteza do interesse segurável (ex.: partes privativas de apartamento de 10% a 30%), que não é testada aqui. Quebra de vidros depende só da área e acompanha o intervalo de 80% do modelo de área. **Atenção:** aqui o "valor real" é o centro da faixa calculada com os dados cadastrados (inclusive o padrão estimado pelo IPTU), então este número é otimista. Contra o custo de reconstrução verdadeiro (área real × CUB × fator do padrão real), a cobertura medida em `docs/12_avaliacao_modelo.md` (E3) é de cerca de 89%.
 
 ## 8. Testado e descartado
 
