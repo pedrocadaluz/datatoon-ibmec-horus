@@ -55,8 +55,9 @@ export function Abertura({ onCotar }: { onCotar: () => void }) {
     </div>
     <svg className="abertura-arte" viewBox="0 0 861 935" aria-hidden="true">
       <image href="/abertura-celular.png" width="861" height="935" />
-      {/* Casa Gêmea na tela do celular, com a mesma inclinação do aparelho. */}
-      <g transform="translate(378 418) rotate(17) scale(.8) translate(-250 -165)">
+      {/* Logo do BB Seguros e Casa Gêmea na tela do celular, com a mesma inclinação do aparelho. */}
+      <g transform="translate(440 262) rotate(17)"><image href="/marca-bb-seguros-branca.svg" x="-140" y="-25" width="280" height="50" /></g>
+      <g transform="translate(386 468) rotate(17) scale(.74) translate(-250 -165)">
         <path d="m52 222 201-112 194 112-201 112Z" fill="#FFFFFF" opacity=".18" transform="translate(0,-34)" />
         <path d="m104 162 149-83 140 81-149 84Z" fill="#FFFFFF" stroke="#0A1FB8" strokeWidth="3" />
         <path d="M104 162v67l140 81v-66Z" fill="#E6EAFF" stroke="#0A1FB8" strokeWidth="3" transform="translate(0,-22)" />
