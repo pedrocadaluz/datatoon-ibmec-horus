@@ -123,6 +123,33 @@ export default function App() {
     window.addEventListener('keydown', keys)
     return () => window.removeEventListener('keydown', keys)
   })
+  // Histórico do navegador: #inicio, #cliente, #cliente-2, #gerente-3... O botão Voltar refaz o caminho.
+  const voltandoPeloHistorico = useRef(false)
+  const primeiraTela = useRef(true)
+  const telaAtual = !entrou ? 'inicio' : `${channel.toLowerCase()}${({ Cliente: passoCli, Gerente: passo, SAC: passoSac, Agente: 1 } as Record<Canal, number>)[channel] > 1 ? `-${({ Cliente: passoCli, Gerente: passo, SAC: passoSac, Agente: 1 } as Record<Canal, number>)[channel]}` : ''}`
+  useEffect(() => {
+    const destino = `#${telaAtual}`
+    if (location.hash === destino) { primeiraTela.current = false; voltandoPeloHistorico.current = false; return }
+    if (primeiraTela.current || voltandoPeloHistorico.current) window.history.replaceState(null, '', destino)
+    else window.history.pushState(null, '', destino)
+    primeiraTela.current = false
+    voltandoPeloHistorico.current = false
+  }, [telaAtual])
+  useEffect(() => {
+    const aplicar = () => {
+      const [nome, etapa] = location.hash.replace('#', '').split('-')
+      const canal = CANAIS.find(c => c.label.toLowerCase() === nome)?.label
+      voltandoPeloHistorico.current = true
+      if (!canal) { setEntrou(false); return }
+      const n = (Number(etapa) || 1) as 1 | 2 | 3
+      setChannel(canal); setEntrou(true)
+      if (canal === 'Cliente') irParaCli(n)
+      if (canal === 'Gerente') irPara(n)
+      if (canal === 'SAC') irParaSac(n)
+    }
+    window.addEventListener('popstate', aplicar)
+    return () => window.removeEventListener('popstate', aplicar)
+  })
   useEffect(() => { if (presentation && story) irParaCli((step + 1) as PassoCliente) }, [presentation, story, step]) // eslint-disable-line react-hooks/exhaustive-deps
   useEffect(() => {
     const acabou = data && !busy && (!data.proximas_perguntas.length || data.status === 'INELEGIVEL')
@@ -175,7 +202,7 @@ export default function App() {
     <header className="topbar"><div className="topbar-inner"><a href="#conteudo" className="brand" aria-label="Horus, Casa Gêmea"><img src="/horus.svg" alt="" width="38" height="38" /><span>horus<span className="brand-divider" /><small>Casa Gêmea</small></span></a><div className="header-actions"><PwaControls /><div className="font-controls" role="group" aria-label="Tamanho do texto"><button onClick={() => setFont(f => Math.max(90, f - 10))} aria-label="A− Diminuir texto" disabled={font <= 90}>A−</button><button onClick={() => setFont(f => Math.min(130, f + 10))} aria-label="A+ Aumentar texto" disabled={font >= 130}>A+</button></div><button className="presentation-toggle" onClick={() => setAjuda(true)} aria-haspopup="dialog" aria-label="Como usar" title="Como usar"><Icon name="info" size={17} /><span>Como usar</span></button></div></div></header>
     <main id="conteudo">{!entrou && <Abertura onCotar={() => { document.getElementById('entrada-titulo')?.scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth', block: 'start' }); document.getElementById('imovel-entrada')?.focus({ preventScroll: true }) }} />}
       {!entrou ? <Entrada list={list} selected={selected} busy={busy} onChoose={choose} onEnter={c => { setChannel(c); setEntrou(true) }} />
-        : <section className="session-bar" aria-label="Sessão"><div><span className="session-icon"><Icon name={CANAIS.find(c => c.label === channel)?.icon ?? 'home'} size={18} /></span><span><b>{channel}</b><small>{CANAIS.find(c => c.label === channel)?.note}</small></span><span className="session-case">{selected.replace('IMO_', '')} · {item?.municipio}/{item?.uf}</span></div><div><button className="text-button reset" disabled={busy || !data} onClick={() => { irParaCli(1); irPara(1); irParaSac(1); void load(selected, [], 'Reinício') }}><Icon name="reset" size={16} />Recomeçar</button><button className="button secondary" onClick={() => { setPresentation(false); setEntrou(false) }}>Trocar de canal</button></div></section>}
+        : <section className="session-bar" aria-label="Sessão"><div><span className="session-icon"><Icon name={CANAIS.find(c => c.label === channel)?.icon ?? 'home'} size={18} /></span><span><b>{channel}</b><small>{CANAIS.find(c => c.label === channel)?.note}</small></span><span className="session-case">{selected.replace('IMO_', '')} · {item?.municipio}/{item?.uf}</span></div><div><button className="text-button reset" disabled={busy || !data} onClick={() => { irParaCli(1); irPara(1); irParaSac(1); void load(selected, [], 'Reinício') }}><Icon name="reset" size={16} />Recomeçar</button><button className="button secondary" onClick={() => { setPresentation(false); setEntrou(false) }}>Voltar para o início</button></div></section>}
       {presentation && <div className="presentation-bar"><span><Icon name="play" size={17} />Apresentação <b>{step + 1} / 3</b></span><strong>{steps[step]}</strong><div><button aria-label="Etapa anterior" disabled={step === 0} onClick={() => setStep(s => s - 1)}>←</button><button aria-label="Próxima etapa" disabled={step === 2} onClick={() => setStep(s => s + 1)}>→</button><button onClick={() => setPresentation(false)}>Sair</button></div>{!mobile && <small>Setas navegam · números respondem · Esc sai</small>}</div>}
       {error && <div className={`error-banner ${!data ? 'offline-card' : ''}`} role="alert"><Icon name="info" /><div><strong>{data ? 'Não foi possível atualizar a Casa Gêmea.' : 'Sua Casa Gêmea espera pela conexão.'}</strong>{!data && <p>O app pode abrir sem internet. Para consultar o imóvel, reconecte à mesma rede do computador da demonstração.</p>}<p>{texto(error)}</p>{data && <span>Os dados abaixo são a última resposta válida. Suas respostas foram preservadas.</span>}</div><button className="button secondary" onClick={() => setRetry(n => n + 1)}>Tentar novamente</button></div>}
       {entrou && (!data ? !error && <div className="loading-state" role="status"><div className="loading-house"><Icon name="home" size={45} /></div><h2>Montando a Casa Gêmea...</h2><p>Estamos juntando o que já sabemos para calcular sua proteção.</p><div className="skeleton" /></div> : <>
