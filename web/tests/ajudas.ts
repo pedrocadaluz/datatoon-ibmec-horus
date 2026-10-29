@@ -2,7 +2,7 @@ import type { Page } from '@playwright/test'
 
 /** Entra pela tela inicial como um perfil (Cliente, Gerente, SAC ou Agente), opcionalmente escolhendo o imóvel. */
 export async function entrar(page: Page, canal = 'Cliente', imovel?: string, etapa: 'casa' | 'perguntas' = 'perguntas') {
-  const trocar = page.getByRole('button', { name: 'Trocar de canal' })
+  const trocar = page.getByRole('button', { name: 'Voltar para o início' })
   if (await trocar.isVisible()) await trocar.click()
   if (imovel) await page.getByLabel('Imóvel do Teste Comum').selectOption(imovel)
   await page.getByRole('button', { name: canal, exact: true }).click()

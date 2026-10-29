@@ -10,7 +10,7 @@ export const CANAIS: { label: Canal; icon: string; note: string; texto: string }
 
 /**
  * Tela de entrada: escolher a Casa Gêmea e o perfil. Não é login de verdade (sem usuário nem senha);
- * cada perfil vê só o seu canal, e "Trocar de canal" volta para cá.
+ * cada perfil vê só o seu canal, e "Voltar para o início" volta para cá.
  */
 export function Entrada({ list, selected, busy, onChoose, onEnter }: {
   list: Lista | null; selected: string; busy: boolean; onChoose: (id: string) => void; onEnter: (canal: Canal) => void;
@@ -40,7 +40,7 @@ export function Entrada({ list, selected, busy, onChoose, onEnter }: {
         </button>)}</div>
       </div>
     </div>
-    <p className="small-note entrada-aviso"><Icon name="lock" size={14} />Ambiente de demonstração, sem senha. Cada perfil vê só o seu canal; para mudar, use “Trocar de canal”.</p>
+    <p className="small-note entrada-aviso"><Icon name="lock" size={14} />Ambiente de demonstração, sem senha. Cada perfil vê só o seu canal; para mudar, use “Voltar para o início”.</p>
   </section>
 }
 
