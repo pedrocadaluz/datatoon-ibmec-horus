@@ -244,8 +244,12 @@ details.why-card[open] > summary { margin-bottom: 6px; }
 @media (max-width: 767px) { .session-case { border-left: 0; padding-left: 0; } }
 /* Celular: perfis em grade 2 × 2 (Cliente e Gerente em cima, SAC e Agente embaixo), cartões compactos. */
 @media (max-width: 767px) {
-  .entrada-perfis { gap: 12px; }
   .entrada-imovel, .entrada-perfis { grid-template-columns: auto minmax(0, 1fr); }
+  /* O número 2 e "Entre como" ficam na mesma linha; a grade ocupa a largura toda, centralizada no cartão. */
+  .entrada-perfis { gap: 10px 12px; align-items: center; }
+  .entrada-perfis > div { display: contents; }
+  .entrada-perfis .entrada-rotulo { margin: 0; }
+  .entrada-perfis .entrada-grid { grid-column: 1 / -1; }
   .entrada-campo select { min-width: 0; width: 100%; }
   .entrada-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
   .entrada-perfil { min-height: 0; padding: 14px 12px; gap: 2px; }
@@ -277,7 +281,7 @@ details.why-card[open] > summary { margin-bottom: 6px; }
 .abertura-cta { display: inline-flex; align-items: center; gap: 10px; margin-top: 18px; min-height: 48px; padding: 10px 22px; border-radius: 4px; background: #FF6F68; color: #212529; font-weight: 800; font-size: .9rem; text-transform: uppercase; letter-spacing: .03em; transition: transform .18s, background .18s; }
 .abertura-cta:hover { background: #FF8A84; transform: translateY(-1px); }
 .abertura-arte { width: 100%; max-height: 330px; margin: -40px 0 -50px; }
-@media (max-width: 767px) { .abertura { grid-template-columns: 1fr; padding: 24px 20px; margin-top: 10px; } .abertura h1 { font-size: 2rem; } .abertura-arte { display: none; } }
+@media (max-width: 767px) { .abertura { grid-template-columns: 1fr; padding: 24px 20px; margin-top: 10px; } .abertura h1 { font-size: 2rem; } .abertura-arte { display: block; width: auto; max-width: 100%; height: 228px; max-height: 228px; margin: 8px auto 0; } }
 .entrada-icone, .session-icon { background: #465EFF; color: #FFFFFF; }
 .entrada-perfil { border-top: 3px solid #465EFF; }
 
