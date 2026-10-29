@@ -1,4 +1,4 @@
-import { type ReactNode, useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import type { Pergunta, Registro, Resultado, ValorResposta } from './types'
 import { campoPergunta, texto } from './format'
 import { Icon } from './Icons'
@@ -7,13 +7,13 @@ import { useMobile } from './useMobile'
 import { paraVoce } from './cliente'
 
 interface Props {
-  data: Resultado; busy: boolean; history: Registro[]; sac?: boolean; simple?: boolean; house?: ReactNode;
+  data: Resultado; busy: boolean; history: Registro[]; sac?: boolean; simple?: boolean;
   onAnswer: (q: Pergunta, value: ValorResposta, label: string) => void;
   onUndo: (index: number) => void;
 }
 
 
-export function Question({ data, busy, history, sac, simple, house, onAnswer, onUndo }: Props) {
+export function Question({ data, busy, history, sac, simple, onAnswer, onUndo }: Props) {
   const mobile = useMobile()
   const q = data.proximas_perguntas[0]
   const [exact, setExact] = useState('')
@@ -30,7 +30,7 @@ export function Question({ data, busy, history, sac, simple, house, onAnswer, on
   return <section className={`card question-card ${sac ? 'sac-question' : ''}`} aria-busy={busy} id="pergunta-atual">
     <div className="section-heading"><span className="eyebrow">{sac ? 'Roteiro de atendimento' : simple ? 'Só o que muda a sua proteção' : '02 / Só o que faz diferença'}</span>{!simple && <span className="question-number">{history.length} respondida{history.length !== 1 ? 's' : ''}</span>}</div>
     {q ? <div className="question-content" key={q.id}>
-      <div className="question-kicker">{house ? <span className="kicker-house">{house}</span> : <Icon name={sac ? 'headset' : 'spark'} size={18} />}<span>{sac ? 'Leia para o cliente' : simple ? `Pergunta ${history.length + 1} de ${history.length + data.proximas_perguntas.length}` : `Pergunta ${history.length + 1}`}</span>{!simple && <span className="impact-label">{q.impacto.includes('elegibilidade') ? 'Elegibilidade' : q.impacto.includes('plano') ? 'Plano' : 'Faixa de cobertura'}</span>}</div>
+      <div className="question-kicker">{!simple && <Icon name={sac ? 'headset' : 'spark'} size={18} />}{!simple && <span>{sac ? 'Leia para o cliente' : `Pergunta ${history.length + 1}`}</span>}{!simple && <span className="impact-label">{q.impacto.includes('elegibilidade') ? 'Elegibilidade' : q.impacto.includes('plano') ? 'Plano' : 'Faixa de cobertura'}</span>}</div>
       <h2 tabIndex={-1} ref={heading}>{texto(q.pergunta)}</h2>
       {campo && !simple && <div className="question-estimate" data-testid="metadados-pergunta"><span>{sac ? 'Leia também a classificação deste dado:' : 'O dado que estamos confirmando:'}</span><Selo campo={campo} /></div>}
       {mobile ? <details className="mobile-question-why"><summary aria-label="Por que perguntamos?">Por que?</summary><p>{simple ? paraVoce(q.motivo) : texto(q.motivo)}</p></details> : <p className="question-why"><b>Por que perguntamos?</b> {simple ? paraVoce(q.motivo) : texto(q.motivo)}</p>}

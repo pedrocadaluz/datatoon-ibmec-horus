@@ -3,7 +3,7 @@ import type { Canal, Lista, Pergunta, Registro, Respostas, Resultado, ValorRespo
 import { buscar, recomendar } from './api'
 import { nomes, planos, texto } from './format'
 import { Icon } from './Icons'
-import { House, HouseArt } from './House'
+import { House, HouseArt, progressoCasa } from './House'
 import { Question } from './Question'
 import { MobileRecommendation } from './MobileRecommendation'
 import { PwaControls } from './PwaControls'
@@ -195,7 +195,7 @@ export default function App() {
   }
 
   const undo = (i: number) => { irParaCli(2); void load(selected, history.slice(0, i), 'Edição') }
-  const question = data && <Question sac={channel === 'SAC'} simple={channel === 'Cliente'} house={channel === 'Cliente' && mobile ? <HouseArt casa={data.casa_gemea} aplicadas={data.respostas_aplicadas} status={data.status} /> : undefined} data={data} busy={busy} history={history} onAnswer={answer} onUndo={undo} />
+  const question = data && <Question sac={channel === 'SAC'} simple={channel === 'Cliente'} data={data} busy={busy} history={history} onAnswer={answer} onUndo={undo} />
   const house = data && <House casa={data.casa_gemea} location={`${item?.municipio} / ${item?.uf}`} imovel={selected} aplicadas={data.respostas_aplicadas} status={data.status} />
   return <div className={`app ${presentation ? `presentation focus-${step}` : ''}`}>
     <a className="skip-link" href="#conteudo">Pular para o conteúdo</a>
@@ -210,7 +210,7 @@ export default function App() {
         <div className="status-announcement" role="status" aria-live="polite">{busy ? 'Atualizando...' : notice}</div>
         {story && <HouseHero data={data} location={`${item?.municipio}/${item?.uf}`} pending={busy} showPlan={!showReport} onOpenReport={() => irParaCli(3)} imovel={selected} />}
         <div className={`workspace ${story ? 'story' : channel === 'Gerente' || channel === 'SAC' ? 'manager' : ''}`}><div className="workspace-main">{story && <ClientFlow data={data} initial={sessions[selected]?.initial ?? null} pending={busy} history={history} passo={passoCli} onPasso={irParaCli} question={question} onUndo={undo} imovel={selected} />}
-          {channel === 'Cliente' && mobile && <>{question}<details className="mobile-twin"><summary><Icon name="home" size={19} /><span>Ver sua Casa Gêmea<small>O que já sabemos e de onde veio</small></span><b>+</b></summary>{house}</details></>}
+          {channel === 'Cliente' && mobile && <><section className="card mobile-hero" aria-labelledby="mobile-hero-titulo" aria-busy={busy}><h2 id="mobile-hero-titulo" className="eyebrow">Sua Casa Gêmea</h2><HouseArt casa={data.casa_gemea} aplicadas={data.respostas_aplicadas} status={data.status} /><p data-testid="progresso-casa-mobile"><b>{progressoCasa(data.casa_gemea, data.respostas_aplicadas).firmes} de {progressoCasa(data.casa_gemea, data.respostas_aplicadas).total}</b> dados confirmados. Cada resposta completa a casa.</p></section>{question}<details className="mobile-twin"><summary><Icon name="home" size={19} /><span>Ver sua Casa Gêmea<small>O que já sabemos e de onde veio</small></span><b>+</b></summary>{house}</details></>}
           {channel === 'Gerente' && <ManagerFlow data={data} initial={sessions[selected]?.initial ?? null} history={history} busy={busy} passo={passo} onPasso={irPara} question={question} onUndo={undo} cidade={`${item?.municipio}/${item?.uf}`} />}
           {channel === 'SAC' && <SacFlow data={data} history={history} busy={busy} passo={passoSac} onPasso={irParaSac} question={question} onUndo={undo} cidade={`${item?.municipio}/${item?.uf}`} />}
           {channel === 'Agente' && <Agent data={data} answers={answersFrom(history)} busy={busy} onApply={applyJson} />}

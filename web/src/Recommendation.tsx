@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import type { Cobertura, Registro, Resultado } from './types'
+import type { Cobertura, Registro, Resultado, ResultadoPersonalizado } from './types'
 import { coberturas, confianca, planos, reais, texto } from './format'
 import { Icon } from './Icons'
 import { PlanCompare } from './PlanCompare'
@@ -57,6 +57,7 @@ function ClientRecommendation({ data, initial, pending, history, duvidas }: { da
   const fire = data.coberturas.find(c => c.cobertura === 'INCENDIO_RAIO_EXPLOSAO_FUMACA')
   const firstFire = initial?.coberturas.find(c => c.cobertura === fire?.cobertura)
   const completed = data.status === 'RECOMENDACAO_CONFIRMADA' && data.canal.semaforo === 'VERDE'
+  const adicionais = (data as Partial<ResultadoPersonalizado>).personalizacao?.adicionais_sugeridos ?? []
   return <aside className={`recommendation client ${pending ? 'updating' : ''}`} id="recomendacao" aria-label="Sua recomendação" aria-busy={pending}>
     <div className="eligibility"><Icon name="shield" size={19} /><strong className={`elig-${data.elegibilidade.status.toLowerCase()}`}>{elegibilidadeCliente[data.elegibilidade.status]}</strong></div>
     {data.elegibilidade.motivo && <p className="eligibility-reason">{paraVoce(data.elegibilidade.motivo)}</p>}
@@ -67,7 +68,10 @@ function ClientRecommendation({ data, initial, pending, history, duvidas }: { da
     {completed && <button className="button primary demo-cta" onClick={() => setDemo(true)}>Simular próximo passo <Icon name="arrow" size={18} /></button>}
     {demo && completed && <p className="demo-message" role="status">Demonstração concluída. Nenhuma contratação foi realizada. Esta interface não envia propostas.</p>}
     {rec.plano && <PlanCompare data={data} />}
-    {data.coberturas.length > 0 && <details className="all-coverages"><summary>O que o seu plano cobre <span>{data.coberturas.length}</span></summary>{data.coberturas.map(c => <details className="coverage-detail" key={c.cobertura} data-cobertura={c.cobertura}><summary><span>{coberturas[c.cobertura] ?? texto(c.cobertura)}</span><strong>{reais(c.faixa_valor_min)} a {reais(c.faixa_valor_max)}</strong></summary><Range coverage={c} initial={initial?.coberturas.find(i => i.cobertura === c.cobertura)} client /><p>{descricaoCobertura[c.cobertura] ?? ''}</p>{ajusteCliente(c.a_confirmar) && <p>{ajusteCliente(c.a_confirmar)}</p>}</details>)}</details>}
+    {data.coberturas.length > 0 && <details className="all-coverages resumo-details" data-testid="resumo-cobertura"><summary className="resumo-card"><span className="resumo-icone" aria-hidden="true"><Icon name="shield" size={24} /></span><span className="resumo-texto"><strong>O que o seu plano cobre</strong><small>{data.coberturas.length} {data.coberturas.length === 1 ? 'cobertura já incluída' : 'coberturas já incluídas'} no plano {planos[rec.plano] ?? 'recomendado'}</small></span><span className="resumo-seta" aria-hidden="true" /><span className="sr-only">Abrir ou fechar a lista de coberturas do plano</span></summary>{data.coberturas.map(c => <details className="coverage-detail" key={c.cobertura} data-cobertura={c.cobertura}><summary><span>{coberturas[c.cobertura] ?? texto(c.cobertura)}</span><strong>{reais(c.faixa_valor_min)} a {reais(c.faixa_valor_max)}</strong></summary><Range coverage={c} initial={initial?.coberturas.find(i => i.cobertura === c.cobertura)} client /><p>{descricaoCobertura[c.cobertura] ?? ''}</p>{ajusteCliente(c.a_confirmar) && <p>{ajusteCliente(c.a_confirmar)}</p>}</details>)}</details>}
+    {adicionais.length > 0 && <details className="resumo-details resumo-adicionais" data-testid="resumo-adicionais"><summary className="resumo-card"><span className="resumo-icone" aria-hidden="true"><Icon name="plus" size={24} /></span><span className="resumo-texto"><strong>Adicionais que valem para você</strong><small>{adicionais.length} {adicionais.length === 1 ? 'opção' : 'opções'}, opcionais e pagas à parte</small></span><span className="resumo-seta" aria-hidden="true" /><span className="sr-only">Abrir ou fechar a lista de adicionais</span></summary>
+      <p className="small-note">Não fazem parte do plano. Você escolhe se quer contratar.</p>
+      {adicionais.map(a => <article className="adicional-item" key={a.id} aria-label={a.nome}><h4>{a.nome}</h4><p>{paraVoce(a.por_que_para_voce)}</p>{a.faixa_valor_min !== undefined && a.faixa_valor_max !== undefined && <p className="adicional-faixa">Limite sugerido: <b>{reais(a.faixa_valor_min)} a {reais(a.faixa_valor_max)}</b><span className="adicional-selo">Estimativa</span><small> Não é preço.</small></p>}</article>)}</details>}
     {duvidas && <Duvidas data={data} history={history} />}
   </aside>
 }

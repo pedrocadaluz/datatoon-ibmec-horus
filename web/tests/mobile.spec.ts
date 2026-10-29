@@ -14,6 +14,8 @@ for (const device of ['Pixel 7', 'iPhone 14'] as const) {
       await expect(page.getByTestId('resumo-movel')).toContainText('Total')
       // A visão Cliente não mostra selos na pergunta; eles ficam no painel da Casa Gêmea, no Gerente e no SAC.
       await expect(page.getByTestId('metadados-pergunta')).toHaveCount(0)
+      // A casa grande fica acima da pergunta: rola até a resposta antes de medir.
+      await page.getByTestId('resposta-NAO_SEI').evaluate(e => e.scrollIntoView({ block: 'center' }))
       const unknown = await page.getByTestId('resposta-NAO_SEI').boundingBox()
       const summary = await page.getByTestId('resumo-movel').boundingBox()
       expect(unknown!.y + unknown!.height).toBeLessThanOrEqual(summary!.y)

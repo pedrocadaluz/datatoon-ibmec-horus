@@ -33,6 +33,7 @@
 .house-art .house-seal { animation: seal-in .6s cubic-bezier(.3, 1.4, .5, 1) both; transform-origin: 50% 50%; }
 @keyframes part-in { from { opacity: .3; transform: translateY(-6px); } to { opacity: 1; transform: translateY(0); } }
 @keyframes seal-in { from { opacity: 0; transform: scale(.4); } to { opacity: 1; transform: scale(1); } }
+.question-kicker:empty { display: none; }
 .kicker-house { display: inline-flex; width: 64px; flex-shrink: 0; }
 .kicker-house .house-art { position: static; width: 64px; height: 30px; overflow: visible; }
 
@@ -291,3 +292,24 @@ details.why-card[open] > summary { margin-bottom: 6px; }
 .client-facts h2 { margin: 2px 0; }
 .client-facts .muted { margin: 0 0 6px; }
 .client-facts > .button { justify-self: start; margin-top: 8px; }
+
+/* Cartões de resumo da recomendação do cliente (cobertura do plano e adicionais) */
+.recommendation .resumo-details { border: 1px solid var(--line); border-radius: 8px; margin-top: 14px; background: #fff; }
+.recommendation .resumo-details[open] { background: var(--tint); }
+.recommendation .resumo-details > summary.resumo-card { display: flex; align-items: center; gap: 12px; min-height: 64px; padding: 12px 14px; cursor: pointer; list-style: none; color: var(--ink-blue); font-size: 1rem; font-weight: 400; border-radius: 8px; }
+.recommendation .resumo-details > summary.resumo-card::-webkit-details-marker { display: none; }
+.recommendation .resumo-details > summary.resumo-card:focus-visible { outline: 3px solid var(--ink-blue); outline-offset: 2px; }
+.recommendation .resumo-details > summary.resumo-card > .resumo-icone { flex: none; display: grid; place-items: center; width: 44px; height: 44px; padding: 0; border-radius: 8px; background: var(--struct); color: #fff; font-size: 1rem; }
+.recommendation .resumo-details > summary.resumo-card > .resumo-texto { flex: 1; min-width: 0; display: grid; gap: 2px; padding: 0; background: none; font-size: 1rem; border-radius: 0; }
+.recommendation .resumo-texto strong { font-size: .95rem; font-weight: 800; color: var(--ink-blue); }
+.recommendation .resumo-texto small { font-size: .78rem; line-height: 1.35; color: var(--muted); }
+.recommendation .resumo-details > summary.resumo-card > .resumo-seta { flex: none; width: 10px; height: 10px; padding: 0; margin: 0 6px; background: none; border-radius: 0; border-right: 3px solid var(--ink-blue); border-bottom: 3px solid var(--ink-blue); transform: rotate(45deg); transition: transform .18s; }
+.recommendation .resumo-details[open] > summary.resumo-card > .resumo-seta { transform: rotate(-135deg); }
+.recommendation .resumo-details > :not(summary) { margin-left: 14px; margin-right: 14px; }
+.recommendation .resumo-details > .coverage-detail:last-child, .recommendation .resumo-details > .adicional-item:last-child { margin-bottom: 14px; }
+.recommendation .resumo-adicionais > .small-note { margin-top: 0; margin-bottom: 8px; }
+.recommendation .adicional-item { padding: 12px 0; border-top: 1px solid var(--line); }
+.recommendation .adicional-item h4 { font-size: .9rem; color: var(--ink-blue); margin: 0 0 4px; }
+.recommendation .adicional-item p { font-size: .82rem; line-height: 1.5; margin: 0; }
+.recommendation .adicional-faixa { margin-top: 6px !important; }
+.recommendation .adicional-selo { margin-left: 6px; padding: 1px 6px; border-radius: 3px; background: #E6EAFD; color: var(--ink-blue); font-size: .7rem; font-weight: 700; }
