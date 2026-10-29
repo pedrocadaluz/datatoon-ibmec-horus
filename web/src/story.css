@@ -268,3 +268,10 @@ details.why-card[open] > summary { margin-bottom: 6px; }
 @media (max-width: 767px) { .abertura { grid-template-columns: 1fr; padding: 24px 20px; margin-top: 10px; } .abertura h1 { font-size: 2rem; } .abertura-arte { display: none; } }
 .entrada-icone, .session-icon { background: #465EFF; color: #FFFFFF; }
 .entrada-perfil { border-top: 3px solid #465EFF; }
+
+/* Cliente em três etapas abaixo da casa. */
+.client-flow { width: 100%; margin-bottom: 4px; }
+.client-facts { display: grid; gap: 10px; border-top: 3px solid var(--blue); }
+.client-facts h2 { margin: 2px 0; }
+.client-facts .muted { margin: 0 0 6px; }
+.client-facts > .button { justify-self: start; margin-top: 8px; }

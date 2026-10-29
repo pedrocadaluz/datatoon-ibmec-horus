@@ -9,7 +9,7 @@ import { MobileRecommendation } from './MobileRecommendation'
 import { PwaControls } from './PwaControls'
 import { useMobile } from './useMobile'
 import { Agent } from './Channels'
-import { ClientReport, HouseHero } from './Story'
+import { ClientFlow, HouseHero, type PassoCliente } from './Story'
 import { ManagerFlow, type PassoGerente } from './Gerente'
 import { SacFlow, type PassoSac } from './Sac'
 import { ComoUsar } from './Ajuda'
@@ -37,7 +37,7 @@ export default function App() {
   const [presentation, setPresentation] = useState(false)
   const [step, setStep] = useState(0)
   const [font, setFont] = useState(100)
-  const [reportOpen, setReportOpen] = useState(false)
+  const [passosCli, setPassosCli] = useState<Record<string, PassoCliente>>({})
   const [ajuda, setAjuda] = useState(false)
   const [passos, setPassos] = useState<Record<string, PassoGerente>>({})
   const [passosSac, setPassosSac] = useState<Record<string, PassoSac>>({})
@@ -52,7 +52,9 @@ export default function App() {
   const irPara = (p: PassoGerente) => setPassos(prev => ({ ...prev, [selected]: p }))
   const passoSac = passosSac[selected] ?? 1
   const irParaSac = (p: PassoSac) => setPassosSac(prev => ({ ...prev, [selected]: p }))
-  const showReport = story && Boolean(data) && (reportOpen || !data?.proximas_perguntas.length || data?.status === 'INELEGIVEL')
+  const passoCli = passosCli[selected] ?? 1
+  const irParaCli = (p: PassoCliente) => setPassosCli(prev => ({ ...prev, [selected]: p }))
+  const showReport = story && passoCli === 3
 
   useEffect(() => { document.documentElement.style.fontSize = `${font}%` }, [font])
   useEffect(() => {
@@ -95,7 +97,7 @@ export default function App() {
 
   function choose(id: string) {
     controller.current?.abort(); seq.current++
-    setNotice(''); setError(''); setStep(0); setBusy(true); setReportOpen(false); setSelected(id)
+    setNotice(''); setError(''); setStep(0); setBusy(true); setSelected(id)
     if (id === selected) setRetry(n => n + 1)
   }
   function answer(q: Pergunta, value: ValorResposta, label: string) {
@@ -121,12 +123,13 @@ export default function App() {
     window.addEventListener('keydown', keys)
     return () => window.removeEventListener('keydown', keys)
   })
-  useEffect(() => { if (presentation && story) setReportOpen(step === 2) }, [presentation, story, step])
+  useEffect(() => { if (presentation && story) irParaCli((step + 1) as PassoCliente) }, [presentation, story, step]) // eslint-disable-line react-hooks/exhaustive-deps
   useEffect(() => {
     const acabou = data && !busy && (!data.proximas_perguntas.length || data.status === 'INELEGIVEL')
     if (channel === 'Gerente' && passo === 2 && acabou) irPara(3)
     if (channel === 'SAC' && passoSac === 2 && acabou) irParaSac(3)
-  }, [channel, passo, passoSac, data, busy]) // eslint-disable-line react-hooks/exhaustive-deps
+    if (story && passoCli === 2 && acabou) irParaCli(3)
+  }, [channel, passo, passoSac, passoCli, story, data, busy]) // eslint-disable-line react-hooks/exhaustive-deps
   useEffect(() => {
     if (presentation) {
       if (!entrou) setEntrou(true)
@@ -164,7 +167,7 @@ export default function App() {
     }
   }
 
-  const undo = (i: number) => { setReportOpen(false); void load(selected, history.slice(0, i), 'Edição') }
+  const undo = (i: number) => { irParaCli(2); void load(selected, history.slice(0, i), 'Edição') }
   const question = data && <Question sac={channel === 'SAC'} simple={channel === 'Cliente'} house={channel === 'Cliente' && mobile ? <HouseArt casa={data.casa_gemea} aplicadas={data.respostas_aplicadas} status={data.status} /> : undefined} data={data} busy={busy} history={history} onAnswer={answer} onUndo={undo} />
   const house = data && <House casa={data.casa_gemea} location={`${item?.municipio} / ${item?.uf}`} imovel={selected} aplicadas={data.respostas_aplicadas} status={data.status} />
   return <div className={`app ${presentation ? `presentation focus-${step}` : ''}`}>
@@ -172,14 +175,14 @@ export default function App() {
     <header className="topbar"><div className="topbar-inner"><a href="#conteudo" className="brand" aria-label="Horus, Casa Gêmea"><img src="/horus.svg" alt="" width="38" height="38" /><span>horus<span className="brand-divider" /><small>Casa Gêmea</small></span></a><div className="header-actions"><PwaControls /><div className="font-controls" role="group" aria-label="Tamanho do texto"><button onClick={() => setFont(f => Math.max(90, f - 10))} aria-label="A− Diminuir texto" disabled={font <= 90}>A−</button><button onClick={() => setFont(f => Math.min(130, f + 10))} aria-label="A+ Aumentar texto" disabled={font >= 130}>A+</button></div><button className="presentation-toggle" onClick={() => setAjuda(true)} aria-haspopup="dialog" aria-label="Como usar" title="Como usar"><Icon name="info" size={17} /><span>Como usar</span></button></div></div></header>
     <main id="conteudo">{!entrou && <Abertura onCotar={() => { document.getElementById('entrada-titulo')?.scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth', block: 'start' }); document.getElementById('imovel-entrada')?.focus({ preventScroll: true }) }} />}
       {!entrou ? <Entrada list={list} selected={selected} busy={busy} onChoose={choose} onEnter={c => { setChannel(c); setEntrou(true) }} />
-        : <section className="session-bar" aria-label="Sessão"><div><span className="session-icon"><Icon name={CANAIS.find(c => c.label === channel)?.icon ?? 'home'} size={18} /></span><span><b>{channel}</b><small>{CANAIS.find(c => c.label === channel)?.note}</small></span><span className="session-case">{selected.replace('IMO_', '')} · {item?.municipio}/{item?.uf}</span></div><div><button className="text-button reset" disabled={busy || !data} onClick={() => { setReportOpen(false); irPara(1); irParaSac(1); void load(selected, [], 'Reinício') }}><Icon name="reset" size={16} />Recomeçar</button><button className="button secondary" onClick={() => { setPresentation(false); setEntrou(false) }}>Trocar de canal</button></div></section>}
+        : <section className="session-bar" aria-label="Sessão"><div><span className="session-icon"><Icon name={CANAIS.find(c => c.label === channel)?.icon ?? 'home'} size={18} /></span><span><b>{channel}</b><small>{CANAIS.find(c => c.label === channel)?.note}</small></span><span className="session-case">{selected.replace('IMO_', '')} · {item?.municipio}/{item?.uf}</span></div><div><button className="text-button reset" disabled={busy || !data} onClick={() => { irParaCli(1); irPara(1); irParaSac(1); void load(selected, [], 'Reinício') }}><Icon name="reset" size={16} />Recomeçar</button><button className="button secondary" onClick={() => { setPresentation(false); setEntrou(false) }}>Trocar de canal</button></div></section>}
       {presentation && <div className="presentation-bar"><span><Icon name="play" size={17} />Apresentação <b>{step + 1} / 3</b></span><strong>{steps[step]}</strong><div><button aria-label="Etapa anterior" disabled={step === 0} onClick={() => setStep(s => s - 1)}>←</button><button aria-label="Próxima etapa" disabled={step === 2} onClick={() => setStep(s => s + 1)}>→</button><button onClick={() => setPresentation(false)}>Sair</button></div>{!mobile && <small>Setas navegam · números respondem · Esc sai</small>}</div>}
       {error && <div className={`error-banner ${!data ? 'offline-card' : ''}`} role="alert"><Icon name="info" /><div><strong>{data ? 'Não foi possível atualizar a Casa Gêmea.' : 'Sua Casa Gêmea espera pela conexão.'}</strong>{!data && <p>O app pode abrir sem internet. Para consultar o imóvel, reconecte à mesma rede do computador da demonstração.</p>}<p>{texto(error)}</p>{data && <span>Os dados abaixo são a última resposta válida. Suas respostas foram preservadas.</span>}</div><button className="button secondary" onClick={() => setRetry(n => n + 1)}>Tentar novamente</button></div>}
       {entrou && (!data ? !error && <div className="loading-state" role="status"><div className="loading-house"><Icon name="home" size={45} /></div><h2>Montando a Casa Gêmea...</h2><p>Estamos juntando o que já sabemos para calcular sua proteção.</p><div className="skeleton" /></div> : <>
         <div className="journey-strip"><div><span className="case-id" data-testid="caso-atual">{data.imovel_id}</span><span className="location-text"><Icon name="pin" size={14} />{item?.municipio}/{item?.uf}</span></div><div className="answered-counter" data-testid="respondidas"><b>{history.length}</b> {history.length === 1 ? 'respondida' : 'respondidas'}</div></div>
         <div className="status-announcement" role="status" aria-live="polite">{busy ? 'Atualizando...' : notice}</div>
-        {story && <HouseHero data={data} location={`${item?.municipio}/${item?.uf}`} pending={busy} showPlan={!showReport} onOpenReport={() => setReportOpen(true)} imovel={selected} />}
-        <div className={`workspace ${story ? 'story' : channel === 'Gerente' || channel === 'SAC' ? 'manager' : ''}`}><div className="workspace-main">{story && (showReport ? <ClientReport data={data} initial={sessions[selected]?.initial ?? null} pending={busy} history={history} onBack={() => setReportOpen(false)} onUndo={undo} /> : question)}
+        {story && <HouseHero data={data} location={`${item?.municipio}/${item?.uf}`} pending={busy} showPlan={!showReport} onOpenReport={() => irParaCli(3)} imovel={selected} />}
+        <div className={`workspace ${story ? 'story' : channel === 'Gerente' || channel === 'SAC' ? 'manager' : ''}`}><div className="workspace-main">{story && <ClientFlow data={data} initial={sessions[selected]?.initial ?? null} pending={busy} history={history} passo={passoCli} onPasso={irParaCli} question={question} onUndo={undo} imovel={selected} />}
           {channel === 'Cliente' && mobile && <>{question}<details className="mobile-twin"><summary><Icon name="home" size={19} /><span>Ver sua Casa Gêmea<small>O que já sabemos e de onde veio</small></span><b>+</b></summary>{house}</details></>}
           {channel === 'Gerente' && <ManagerFlow data={data} initial={sessions[selected]?.initial ?? null} history={history} busy={busy} passo={passo} onPasso={irPara} question={question} onUndo={undo} cidade={`${item?.municipio}/${item?.uf}`} />}
           {channel === 'SAC' && <SacFlow data={data} history={history} busy={busy} passo={passoSac} onPasso={irParaSac} question={question} onUndo={undo} cidade={`${item?.municipio}/${item?.uf}`} />}

@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react'
+import { type ReactNode, useEffect, useRef } from 'react'
 import type { Registro, Resultado } from './types'
 import { planos, reais, texto } from './format'
 import { Icon } from './Icons'
@@ -31,7 +31,6 @@ export function HouseHero({ data, location, pending, showPlan, onOpenReport, imo
         <div className={`hero-step channel-${data.canal.semaforo.toLowerCase()}`} data-testid="semaforo"><span className="traffic-light" />Próximo passo: <b>{passoCliente(data)}</b></div>
         <button className="button secondary" onClick={onOpenReport}>Ver relatório completo <Icon name="arrow" size={16} /></button>
       </div>}
-      <details className="hero-facts"><summary>Ver o que já sabemos da sua casa</summary><HouseFacts casa={data.casa_gemea} imovel={imovel} /></details>
     </div>
   </section>
 }
@@ -66,3 +65,25 @@ export function ClientReport({ data, initial, pending, history, onBack, onUndo }
   </section>
 }
 
+
+export type PassoCliente = 1 | 2 | 3
+const PASSOS_CLIENTE: { n: PassoCliente; nome: string }[] = [{ n: 1, nome: 'Sua Casa Gêmea' }, { n: 2, nome: 'Perguntas' }, { n: 3, nome: 'Sua recomendação' }]
+
+/** Cliente em três etapas, como o gerente: o que já sabemos da casa, as perguntas e a recomendação. */
+export function ClientFlow({ data, initial, pending, history, passo, onPasso, question, onUndo, imovel }: {
+  data: Resultado; initial: Resultado | null; pending: boolean; history: Registro[]; passo: PassoCliente;
+  onPasso: (p: PassoCliente) => void; question: ReactNode; onUndo: (index: number) => void; imovel: string;
+}) {
+  const perguntas = data.status === 'INELEGIVEL' ? 0 : data.proximas_perguntas.length
+  return <section className="manager-flow client-flow" aria-label="Sua cotação">
+    <ol className="manager-steps">{PASSOS_CLIENTE.map(p => <li key={p.n}><button className={passo === p.n ? 'active' : passo > p.n ? 'done' : ''} aria-current={passo === p.n ? 'step' : undefined} onClick={() => onPasso(p.n)}><span>{passo > p.n ? <Icon name="check" size={14} /> : p.n}</span>{p.nome}</button></li>)}</ol>
+    {passo === 1 && <section className="card client-facts" aria-labelledby="facts-titulo">
+      <span className="eyebrow">Sua Casa Gêmea</span><h2 id="facts-titulo">O que já sabemos da sua casa</h2>
+      <p className="muted">Usamos só os dados que o banco já tem. Veja de onde veio cada um; nas perguntas, você confirma o que pode mudar a sua proteção.</p>
+      <HouseFacts casa={data.casa_gemea} imovel={imovel} />
+      <button className="button primary" onClick={() => onPasso(perguntas ? 2 : 3)}>{perguntas ? `Começar as perguntas (${perguntas})` : 'Ver minha recomendação'} <Icon name="arrow" size={16} /></button>
+    </section>}
+    {passo === 2 && question}
+    {passo === 3 && <ClientReport data={data} initial={initial} pending={pending} history={history} onBack={() => onPasso(2)} onUndo={onUndo} />}
+  </section>
+}

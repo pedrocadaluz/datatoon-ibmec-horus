@@ -160,3 +160,17 @@ test('abertura no estilo do produto leva à escolha da casa e do perfil', async 
   await expect(page.getByLabel('Imóvel do Teste Comum')).toBeFocused()
   await expect(page.getByRole('region', { name: 'Sessão' })).toHaveCount(0)
 })
+
+test('cliente em três etapas: casa, perguntas e recomendação', async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: 'reduce' })
+  await page.goto('/')
+  await entrar(page, 'Cliente', undefined, 'casa')
+  await expect(page.getByRole('heading', { name: 'O que já sabemos da sua casa' })).toBeVisible()
+  await expect(page.locator('.house-facts')).toContainText('Estimad')
+  await page.getByRole('button', { name: /^Começar as perguntas \(/ }).click()
+  await expect(page.locator('#pergunta-atual')).toBeVisible()
+  await page.getByRole('button', { name: 'Sua recomendação' }).click()
+  await expect(page.locator('#relatorio-titulo')).toHaveText('Sua recomendação até agora.')
+  await page.getByRole('button', { name: 'Voltar às perguntas' }).click()
+  await expect(page.locator('#pergunta-atual')).toBeVisible()
+})
