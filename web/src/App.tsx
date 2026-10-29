@@ -3,7 +3,7 @@ import type { Canal, Lista, Pergunta, Registro, Respostas, Resultado, ValorRespo
 import { buscar, recomendar } from './api'
 import { nomes, planos, texto } from './format'
 import { Icon } from './Icons'
-import { House, HouseArt, progressoCasa } from './House'
+import { HouseArt } from './House'
 import { Question } from './Question'
 import { MobileRecommendation } from './MobileRecommendation'
 import { PwaControls } from './PwaControls'
@@ -161,8 +161,6 @@ export default function App() {
     if (presentation) {
       if (!entrou) setEntrou(true)
       if (channel !== 'Cliente') { setChannel('Cliente'); return }
-      const twin = document.querySelector<HTMLDetailsElement>('.mobile-twin')
-      if (mobile && twin) twin.open = step === 0
       if (mobile && step === 2) return
       const el = document.getElementById(['twin-heading', 'pergunta-atual', 'recomendacao'][step])
       el?.scrollIntoView({ behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth', block: 'center' })
@@ -196,7 +194,6 @@ export default function App() {
 
   const undo = (i: number) => { irParaCli(2); void load(selected, history.slice(0, i), 'Edição') }
   const question = data && <Question sac={channel === 'SAC'} simple={channel === 'Cliente'} data={data} busy={busy} history={history} onAnswer={answer} onUndo={undo} />
-  const house = data && <House casa={data.casa_gemea} location={`${item?.municipio} / ${item?.uf}`} imovel={selected} aplicadas={data.respostas_aplicadas} status={data.status} />
   return <div className={`app ${presentation ? `presentation focus-${step}` : ''}`}>
     <a className="skip-link" href="#conteudo">Pular para o conteúdo</a>
     <header className="topbar"><div className="topbar-inner"><a href="#conteudo" className="brand" aria-label="Horus, Casa Gêmea"><img src="/horus.svg" alt="" width="38" height="38" /><span>horus<span className="brand-divider" /><small>Casa Gêmea</small></span></a><div className="header-actions"><PwaControls /><div className="font-controls" role="group" aria-label="Tamanho do texto"><button onClick={() => setFont(f => Math.max(90, f - 10))} aria-label="A− Diminuir texto" disabled={font <= 90}>A−</button><button onClick={() => setFont(f => Math.min(130, f + 10))} aria-label="A+ Aumentar texto" disabled={font >= 130}>A+</button></div><button className="presentation-toggle" onClick={() => setAjuda(true)} aria-haspopup="dialog" aria-label="Como usar" title="Como usar"><Icon name="info" size={17} /><span>Como usar</span></button></div></div></header>
@@ -206,17 +203,17 @@ export default function App() {
       {presentation && <div className="presentation-bar"><span><Icon name="play" size={17} />Apresentação <b>{step + 1} / 3</b></span><strong>{steps[step]}</strong><div><button aria-label="Etapa anterior" disabled={step === 0} onClick={() => setStep(s => s - 1)}>←</button><button aria-label="Próxima etapa" disabled={step === 2} onClick={() => setStep(s => s + 1)}>→</button><button onClick={() => setPresentation(false)}>Sair</button></div>{!mobile && <small>Setas navegam · números respondem · Esc sai</small>}</div>}
       {error && <div className={`error-banner ${!data ? 'offline-card' : ''}`} role="alert"><Icon name="info" /><div><strong>{data ? 'Não foi possível atualizar a Casa Gêmea.' : 'Sua Casa Gêmea espera pela conexão.'}</strong>{!data && <p>O app pode abrir sem internet. Para consultar o imóvel, reconecte à mesma rede do computador da demonstração.</p>}<p>{texto(error)}</p>{data && <span>Os dados abaixo são a última resposta válida. Suas respostas foram preservadas.</span>}</div><button className="button secondary" onClick={() => setRetry(n => n + 1)}>Tentar novamente</button></div>}
       {entrou && (!data ? !error && <div className="loading-state" role="status"><div className="loading-house"><Icon name="home" size={45} /></div><h2>Montando a Casa Gêmea...</h2><p>Estamos juntando o que já sabemos para calcular sua proteção.</p><div className="skeleton" /></div> : <>
-        <div className="journey-strip"><div><span className="case-id" data-testid="caso-atual">{data.imovel_id}</span><span className="location-text"><Icon name="pin" size={14} />{item?.municipio}/{item?.uf}</span></div><div className="answered-counter" data-testid="respondidas"><b>{history.length}</b> {history.length === 1 ? 'respondida' : 'respondidas'}</div></div>
+        <div className="journey-strip" data-respondidas={history.length}><div><span className="case-id" data-testid="caso-atual">{data.imovel_id}</span><span className="location-text"><Icon name="pin" size={14} />{item?.municipio}/{item?.uf}</span></div>{channel !== 'Cliente' && <div className="answered-counter" data-testid="respondidas"><b>{history.length}</b> {history.length === 1 ? 'respondida' : 'respondidas'}</div>}</div>
         <div className="status-announcement" role="status" aria-live="polite">{busy ? 'Atualizando...' : notice}</div>
         {story && <HouseHero data={data} location={`${item?.municipio}/${item?.uf}`} pending={busy} showPlan={!showReport} onOpenReport={() => irParaCli(3)} imovel={selected} />}
         <div className={`workspace ${story ? 'story' : channel === 'Gerente' || channel === 'SAC' ? 'manager' : ''}`}><div className="workspace-main">{story && <ClientFlow data={data} initial={sessions[selected]?.initial ?? null} pending={busy} history={history} passo={passoCli} onPasso={irParaCli} question={question} onUndo={undo} imovel={selected} />}
-          {channel === 'Cliente' && mobile && <><section className="card mobile-hero" aria-labelledby="mobile-hero-titulo" aria-busy={busy}><h2 id="mobile-hero-titulo" className="eyebrow">Sua Casa Gêmea</h2><HouseArt casa={data.casa_gemea} aplicadas={data.respostas_aplicadas} status={data.status} /><p data-testid="progresso-casa-mobile"><b>{progressoCasa(data.casa_gemea, data.respostas_aplicadas).firmes} de {progressoCasa(data.casa_gemea, data.respostas_aplicadas).total}</b> dados confirmados. Cada resposta completa a casa.</p></section>{question}<details className="mobile-twin"><summary><Icon name="home" size={19} /><span>Ver sua Casa Gêmea<small>O que já sabemos e de onde veio</small></span><b>+</b></summary>{house}</details></>}
+          {channel === 'Cliente' && mobile && <><section className="card mobile-hero" aria-labelledby="twin-heading" aria-busy={busy}><h2 id="twin-heading" className="eyebrow">Sua Casa Gêmea</h2><HouseArt casa={data.casa_gemea} aplicadas={data.respostas_aplicadas} status={data.status} /><p data-testid="progresso-casa-mobile">Cada resposta deixa a sua casa mais completa.</p></section>{question}</>}
           {channel === 'Gerente' && <ManagerFlow data={data} initial={sessions[selected]?.initial ?? null} history={history} busy={busy} passo={passo} onPasso={irPara} question={question} onUndo={undo} cidade={`${item?.municipio}/${item?.uf}`} />}
           {channel === 'SAC' && <SacFlow data={data} history={history} busy={busy} passo={passoSac} onPasso={irParaSac} question={question} onUndo={undo} cidade={`${item?.municipio}/${item?.uf}`} />}
           {channel === 'Agente' && <Agent data={data} answers={answersFrom(history)} busy={busy} onApply={applyJson} />}
         </div>{!story && channel !== 'Gerente' && channel !== 'SAC' && <MobileRecommendation key={selected} data={data} initial={sessions[selected]?.initial ?? null} pending={busy} mobile={mobile} client={channel === 'Cliente'} presentationStep={presentation ? step : null} />}</div>
       </>)}
-      <details className="privacy-note"><summary><Icon name="lock" size={17} />Como usamos seus dados</summary><p>Usamos só o que ajuda a proteger sua casa. Idade e renda não entram na conta. Cada estimativa mostra de onde veio. Dados de demonstração.</p></details>
+      <details className="privacy-note"><summary><Icon name="lock" size={17} />Como usamos seus dados</summary><p>Usamos só o que ajuda a proteger sua casa. Idade e renda não entram na conta. Quer saber quais dados usamos? Fale com o seu gerente. Dados de demonstração.</p></details>
     </main><footer><span><b>horus</b> · Casa Gêmea</span><p>Datathon Proteção Inteligente · BBDW + Ibmec · 2026</p><span>Dados sintéticos. Sem contratação real.</span></footer><ComoUsar open={ajuda} onClose={() => setAjuda(false)} onApresentar={() => setPresentation(true)} />
   </div>
 }

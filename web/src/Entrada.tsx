@@ -50,7 +50,7 @@ export function Abertura({ onCotar }: { onCotar: () => void }) {
     <div className="abertura-texto">
       <div className="abertura-marca"><img className="abertura-logo-bb" src="/marca-bb-seguros.svg" alt="BB Seguros" height="34" /></div>
       <h1 id="abertura-titulo">Seguro Residencial</h1>
-      <p>Montamos uma cópia da sua casa com o que o banco já sabe, perguntamos só o que muda o resultado e explicamos cada recomendação, inclusive por que não os outros planos.</p>
+      <p>Um seguro feito para a sua casa. Você responde poucas perguntas e entende cada escolha.</p>
       <button className="abertura-cta" onClick={onCotar}>Faça sua cotação <Icon name="arrow" size={18} /></button>
     </div>
     <svg className="abertura-arte" viewBox="0 0 861 935" aria-hidden="true">

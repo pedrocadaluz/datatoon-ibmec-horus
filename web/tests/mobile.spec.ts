@@ -56,9 +56,9 @@ for (const width of [360, 390, 430, 768, 1280]) {
     await expect(page.locator('.presentation-bar')).toBeVisible()
     expect(await page.evaluate(() => document.documentElement.scrollWidth > innerWidth)).toBe(false)
     if (width < 768) {
-      await expect(page.locator('.mobile-twin')).toHaveAttribute('open', '')
+      await expect(page.locator('.mobile-twin')).toHaveCount(0)
+      await expect(page.locator('.mobile-hero .house-art')).toBeVisible()
       await page.getByRole('button', { name: 'Próxima etapa' }).click()
-      await expect(page.locator('.mobile-twin')).not.toHaveAttribute('open', '')
       await page.getByRole('button', { name: 'Próxima etapa' }).click()
       await expect(page.getByRole('dialog', { name: 'Sua recomendação' })).toBeVisible()
       await page.getByRole('button', { name: 'Fechar recomendação' }).click()

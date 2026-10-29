@@ -14,23 +14,6 @@ export const paraVoce = (s: string) => semClausula(texto(s))
   .replace(/\bO cliente\b/g, 'Você').replace(/\bo cliente\b/g, 'você')
   .replace(/\bse ele quiser\b/g, 'se você quiser').replace(/\bpara este perfil\b/g, 'para você')
 
-/** De onde veio cada dado da Casa Gêmea, em palavras comuns (sem "Estimado · Confiança média"). */
-export function origemCliente(chave: string, campo: Campo, casa: Casa): string {
-  if (campo.selo === 'CONFIRMADO') return campo.evidencia.includes('declaração') ? 'Você confirmou na declaração' : 'Você informou'
-  if (campo.selo === 'OBSERVADO') return 'Do seu cadastro no banco'
-  const locador = casa.vinculo.valor === 'PROPRIETARIO_LOCADOR'
-  return ({
-    tipo_imovel: 'Estimado pelo seu endereço',
-    vinculo: 'Estimado pelas movimentações da sua conta',
-    uso_imovel: 'Estimado pelo seu endereço principal',
-    area_m2: 'Estimada pelo IPTU e pela conta de luz',
-    padrao_construtivo: 'Sem essa informação: usamos o padrão médio como referência',
-    material_parede: 'Sem essa informação no cadastro',
-    alerta_obra: 'Estimado pelas suas compras de material de construção',
-    conteudo: locador ? 'Estimado pelas suas compras; parte dos bens pode ser do inquilino' : 'Estimado pelos bens cadastrados e pelas suas compras',
-  } as Record<string, string>)[chave] ?? 'Estimado com os dados do banco'
-}
-
 /** Valor do dado; estimativas de área e bens ganham "cerca de". */
 export function valorCliente(chave: string, campo: Campo, casa: Casa): string {
   const estimado = campo.selo !== 'CONFIRMADO' && campo.selo !== 'OBSERVADO'
@@ -47,11 +30,6 @@ export const passoCliente = (data: Resultado) => data.canal.semaforo === 'VERMEL
 export const elegibilidadeCliente: Record<string, string> = {
   ELEGIVEL: 'Sua casa pode ser segurada', ELEGIVEL_CONDICIONADO: 'Falta uma confirmação para seguir', INELEGIVEL: 'Sua casa não pode ser segurada agora',
 }
-
-/** "Confiança alta/média/baixa" vira o que ela significa para o cliente. */
-export const estabilidadeCliente = (data: Resultado) => data.recomendacao.confianca_geral === 'ALTA'
-  ? 'Seu plano não deve mudar com outras respostas.'
-  : 'Seu plano ainda pode mudar. Responder às perguntas confirma a recomendação.'
 
 /** O que cada cobertura protege, no lugar da fórmula de cálculo. */
 export const descricaoCobertura: Record<string, string> = {

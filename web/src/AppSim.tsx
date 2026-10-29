@@ -3,7 +3,6 @@ import type { Adicional, Respostas, ResultadoPersonalizado } from './types'
 import { buscarPersona, chaveAdicional, jornadaRotulo, personas } from './personas'
 import { planos, reais, texto } from './format'
 import { Icon } from './Icons'
-import { House } from './House'
 import { Modal } from './Modal'
 import { MotorSheet } from './MotorPensou'
 import { paraVoce, passoCliente } from './cliente'
@@ -83,13 +82,12 @@ export function AppSim({ onComparar }: { onComparar: () => void }) {
           <label className="switch"><input type="checkbox" role="switch" checked={personalizar} onChange={e => setPersonalizar(e.target.checked)} /><span>Personalizar para mim</span></label></div>
         {personalizar && perfil && <p className="sim-profile"><span className="sim-badge">{perfil.rotulo}</span> Jornada {jornadaRotulo[perfil.jornada]}. <button className="link" onClick={() => setRecibos(true)}>Por que estou vendo isto?</button></p>}
         {!personalizar && <p className="small-note">Versão padrão, sem tom, destaques nem adicionais. <button className="link" onClick={() => setRecibos(true)}>Por que estou vendo isto?</button></p>}
-        <details className="mobile-twin" open><summary><Icon name="home" size={18} /><span>Sua Casa Gêmea<small>O que já sabemos e de onde veio</small></span></summary><House casa={data.casa_gemea} location={data.imovel_id} imovel={id} /></details>
         {pergunta && <section className="sim-q" aria-live="polite"><h3>{texto(pergunta.pergunta)}</h3>
           {personalizar && perfil?.jornada === 'GUIADA' && <p className="small-note"><b>Por que perguntamos:</b> {paraVoce(pergunta.motivo)}</p>}
           <div className="sim-opts">{[...pergunta.opcoes, ...(pergunta.opcoes.some(o => o.valor === 'NAO_SEI') ? [] : [{ valor: 'NAO_SEI', rotulo: 'Não sei' }])].map(o => <button key={o.valor} className="sim-chip" onClick={() => responder(pergunta.id, o.valor)}>{texto(o.rotulo)}</button>)}</div>
           {personalizar && perfil?.jornada === 'HUMANA' && <button className="button secondary sim-human" onClick={() => setEscolhas(e => ({ ...e, __especialista: 'SIM' }))}>Falar com um especialista</button>}
           {escolhas.__especialista && <p className="sim-done" role="status">Simulação: um especialista entraria em contato.</p>}</section>}
-        <section className="sim-plan"><span className="eyebrow">Seu plano</span><h3>{planos[data.recomendacao.plano] ?? 'Sem plano'}</h3>
+        <section className="sim-plan"><span className="eyebrow">{data.status === 'RECOMENDACAO_CONFIRMADA' ? 'Seu plano' : 'Prévia do plano'}</span><h3 className="plano-destaque" key={data.recomendacao.plano}>{planos[data.recomendacao.plano] ?? 'Sem plano'}</h3>
           {data.recomendacao.por_que_este_plano.length > 0 && <ul className="sim-reasons">{data.recomendacao.por_que_este_plano.slice(0, 3).map((m, i) => <li key={i}>{paraVoce(m)}</li>)}</ul>}
           {fire && <p className="sim-range">Limite sugerido de indenização para incêndio: <b>{reais(fire.faixa_valor_min)} a {reais(fire.faixa_valor_max)}</b><small> Não é preço.</small></p>}
           <p className="small-note">Próximo passo: {passoCliente(data).toLowerCase()} · {data.jornada.perguntas_evitadas} de {data.jornada.campos_formulario_tradicional} perguntas a menos que um formulário comum.</p></section>

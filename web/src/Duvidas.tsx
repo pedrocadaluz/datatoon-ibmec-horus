@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import type { Registro, Resultado } from './types'
 import { coberturas as nomesCobertura, nomes, planos, reais } from './format'
 import { Icon } from './Icons'
-import { origemCliente, passoCliente, paraVoce, valorCliente } from './cliente'
+import { passoCliente, paraVoce, valorCliente } from './cliente'
 
 interface Duvida { id: string; pergunta: string; resposta: string[] }
 
@@ -50,7 +50,7 @@ export function montarDuvidas(data: Resultado, history: Registro[] = []): Duvida
     .filter(c => !['OBSERVADO', 'CONFIRMADO'].includes(casa[c].selo) && !pendentes.has(c) && !respondidos.has(c))
   if (naoPerguntados.length) duvidas.push({ id: 'nao-perguntados', pergunta: `Por que vocês não perguntaram ${lista(naoPerguntados.map(c => nomes[c].toLowerCase()))}?`, resposta: [
     'Porque nenhuma resposta mudaria o seu plano. Preferimos fazer menos perguntas e só as que mudam o resultado.',
-    ...naoPerguntados.map(c => `• ${nomes[c]}: ${valorCliente(c, casa[c], casa).replace(/^Cerca de/, 'cerca de')} (${origemCliente(c, casa[c], casa).toLowerCase()}).`),
+    ...naoPerguntados.map(c => `• ${nomes[c]}: ${valorCliente(c, casa[c], casa).replace(/^Cerca de/, 'cerca de')} (estimativa).`),
     'A faixa de valores já leva em conta essa incerteza. Se quiser deixar o valor mais exato, você pode informar esses dados na contratação.',
   ] })
 

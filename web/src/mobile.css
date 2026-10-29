@@ -122,12 +122,6 @@
   /* O desenho ocupa só 60% do viewBox: alarga e centraliza para a casa preencher o cartão. */
   .mobile-hero .house-art { position: static; display: block; width: 140%; max-width: none; margin: -6px 0 -4px -20%; height: 225px; overflow: visible; }
   .mobile-hero p { margin: 4px 0 0; font-size: .8rem; color: var(--muted); }
-  .mobile-twin { border: 1px solid var(--line); background: white; border-radius: 6px; }
-  .mobile-twin > summary { display: flex; align-items: center; gap: 11px; min-height: 64px; padding: 12px 16px; color: var(--ink-blue); font-size: .9rem; font-weight: 600; }
-  .mobile-twin > summary span { flex: 1; }
-  .mobile-twin > summary small { display: block; font-size: .75rem; font-weight: 400; color: var(--muted); margin-top: 2px; }
-  .mobile-twin > summary b { font-size: 1.2rem; font-weight: 400; }
-  .mobile-twin > .twin { border: 0; border-top: 1px solid var(--line); }
   .twin .field-label { font-size: .75rem; }
   .twin .field strong { font-size: .85rem; }
   .twin .data-status { font-size: .7rem; }

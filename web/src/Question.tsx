@@ -55,7 +55,7 @@ export function Question({ data, busy, history, sac, simple, onAnswer, onUndo }:
   </section>
 }
 
-export function AnswerHistory({ history, busy, onUndo, open }: { history: Registro[]; busy: boolean; onUndo: (index: number) => void; open?: boolean }) {
+export function AnswerHistory({ history, busy, onUndo, open, semContagem }: { semContagem?: boolean; history: Registro[]; busy: boolean; onUndo: (index: number) => void; open?: boolean }) {
   if (!history.length) return null
-  return <details className="answer-history" open={open}><summary>Suas respostas <span>{history.length}</span></summary><ol>{history.map((item, i) => <li key={item.campo}><div><span>{texto(item.pergunta)}</span><strong>{item.rotulo}</strong></div><button disabled={busy} onClick={() => onUndo(i)} aria-label={`Editar resposta ${i + 1}`}>Editar</button></li>)}</ol><p className="small-note">Ao editar, as respostas seguintes serão refeitas na ordem de impacto.</p></details>
+  return <details className="answer-history" open={open}><summary>Suas respostas{!semContagem && <> <span>{history.length}</span></>}</summary><ol>{history.map((item, i) => <li key={item.campo}><div><span>{texto(item.pergunta)}</span><strong>{item.rotulo}</strong></div><button disabled={busy} onClick={() => onUndo(i)} aria-label={`Editar resposta ${i + 1}`}>Editar</button></li>)}</ol><p className="small-note">Ao editar, as respostas seguintes serão refeitas na ordem de impacto.</p></details>
 }

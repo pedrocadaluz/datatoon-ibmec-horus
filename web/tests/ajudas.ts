@@ -8,7 +8,7 @@ export async function entrar(page: Page, canal = 'Cliente', imovel?: string, eta
   await page.getByRole('button', { name: canal, exact: true }).click()
   // No desktop, o cliente começa pela etapa "Sua Casa Gêmea"; os testes seguem direto para as perguntas.
   if (canal === 'Cliente' && etapa === 'perguntas') {
-    const comecar = page.getByRole('button', { name: /^Começar as perguntas \(/ })
+    const comecar = page.getByRole('button', { name: /^Começar as perguntas$/ })
     await comecar.waitFor({ timeout: 2500 }).catch(() => {})
     if (await comecar.isVisible()) await comecar.click()
   }

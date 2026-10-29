@@ -1,6 +1,5 @@
 import type { Casa, Campo } from './types'
-import { confianca, nomes, numero } from './format'
-import { origemCliente, valorCliente } from './cliente'
+import { confianca, numero } from './format'
 import { Icon } from './Icons'
 
 const selos: Record<string, string> = { OBSERVADO: 'Observado', ESTIMADO: 'Estimado', A_CONFIRMAR: 'A confirmar', CONFIRMADO: 'Confirmado' }
@@ -51,7 +50,7 @@ export function HouseArt({ casa, aplicadas = [], status }: { casa: Casa; aplicad
   const janela = firme(casa.uso_imovel) ? { fill: luz, stroke: '#3548CA' } : cor(casa.uso_imovel, luz, '#F7F8E8')
   const apartamento = casa.tipo_imovel.valor === 'APARTAMENTO'
   return <svg className="house-art" viewBox="0 0 600 280" role="img" data-progresso={`${firmes}/${total}`} data-tipo={apartamento ? 'apartamento' : 'casa'}
-    aria-label={`Ilustração da sua Casa Gêmea (${apartamento ? 'apartamento' : 'casa'}), com ${firmes} de ${total} dados confirmados. Cores mais claras e cinza indicam estimativas. Não representa a planta real do imóvel.`}>
+    aria-label={`Ilustração da sua Casa Gêmea (${apartamento ? 'apartamento' : 'casa'}). Cores mais claras e cinza indicam estimativas. Não representa a planta real do imóvel.`}>
     {apartamento ? <g className={`house-grow ${status === 'RECOMENDACAO_CONFIRMADA' ? 'complete' : ''}`} style={{ transform: `scale(${escala})` }}>
       {/* Prédio em perspectiva (desenho do projeto); o andar do cliente fica destacado. Coordenadas do desenho original 500 × 290. */}
       <g transform="translate(75 6) scale(.9)">
@@ -113,22 +112,4 @@ export function HouseArt({ casa, aplicadas = [], status }: { casa: Casa; aplicad
     <g className="area-label">
       <rect x="252" y="252" width="96" height="20" rx="10" fill="#FFFFFF" /><text x="300" y="267" textAnchor="middle" fontSize="14" fontWeight="600" fill={firme(casa.area_m2) ? '#3548CA' : '#5B6175'}>{area}</text></g>
   </svg>
-}
-
-/** Os oito dados da Casa Gêmea em linguagem do cliente: o valor e de onde ele veio. */
-export function HouseFacts({ casa, imovel }: { casa: Casa; imovel: string }) {
-  return <ul className="house-facts" key={imovel}>{CAMPOS.map(chave => {
-    const campo = casa[chave]
-    return <li key={chave} className={firme(campo) ? 'firm' : 'estimated'}>
-      <span className="field-label">{nomes[chave]}</span><strong>{valorCliente(chave, campo, casa)}</strong><span className="fact-origin">{origemCliente(chave, campo, casa)}</span>
-    </li>
-  })}</ul>
-}
-
-/** Cartão da Casa Gêmea usado no celular, dentro do painel recolhível. */
-export function House({ casa, imovel }: { casa: Casa; location?: string; imovel: string; aplicadas?: string[]; status?: string }) {
-  return <section className="card twin" aria-labelledby="twin-heading">
-    <div className="section-heading"><div><span className="eyebrow">A sua Casa Gêmea</span><h2 id="twin-heading">O que já sabemos da sua casa</h2></div></div>
-    <HouseFacts casa={casa} imovel={imovel} />
-      </section>
 }

@@ -4,7 +4,7 @@ import { coberturas, confianca, planos, reais, texto } from './format'
 import { Icon } from './Icons'
 import { PlanCompare } from './PlanCompare'
 import { Duvidas } from './Duvidas'
-import { ajusteCliente, descricaoCobertura, elegibilidadeCliente, estabilidadeCliente, paraVoce, passoCliente } from './cliente'
+import { ajusteCliente, descricaoCobertura, elegibilidadeCliente, paraVoce, passoCliente } from './cliente'
 
 const elegibilidade: Record<string, string> = { ELEGIVEL: 'Elegível', ELEGIVEL_CONDICIONADO: 'Elegível condicionado', INELEGIVEL: 'Inelegível' }
 const lights: Record<string, string> = { VERDE: 'Verde', AMARELO: 'Amarelo', VERMELHO: 'Vermelho' }
@@ -62,7 +62,6 @@ function ClientRecommendation({ data, initial, pending, history, duvidas }: { da
     <div className="eligibility"><Icon name="shield" size={19} /><strong className={`elig-${data.elegibilidade.status.toLowerCase()}`}>{elegibilidadeCliente[data.elegibilidade.status]}</strong></div>
     {data.elegibilidade.motivo && <p className="eligibility-reason">{paraVoce(data.elegibilidade.motivo)}</p>}
     <div className="plan-header"><div><span className="mini-label">Plano recomendado para você</span><h2 data-testid="plano-atual">{planos[rec.plano] ?? 'Sem plano'}</h2></div><span className="plan-icon"><Icon name="shield" size={30} /></span></div>
-    {rec.plano && <p className="small-note">{estabilidadeCliente(data)}</p>}
     {fire && <section className="main-coverage" data-testid="faixa-incendio"><div className="coverage-title"><span><Icon name="home" size={18} />Proteção para incêndio e reconstrução</span></div><Range coverage={fire} initial={firstFire} client /><p className="small-note">É o valor máximo que o seguro pagaria. Não é o preço do seguro.</p><div className="range-legend"><i />Agora<span /><i />Antes das suas respostas</div></section>}
     <div className={`channel channel-${data.canal.semaforo.toLowerCase()}`} data-testid="semaforo"><span className="traffic-light" /><div><span className="mini-label">Próximo passo</span><strong>{passoCliente(data)}</strong></div></div>
     {completed && <button className="button primary demo-cta" onClick={() => setDemo(true)}>Simular próximo passo <Icon name="arrow" size={18} /></button>}
