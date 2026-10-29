@@ -1,0 +1,146 @@
+﻿base,tipo_imovel,vinculo,nivel_bens,tem_pet,tem_dependentes,imoveis,consistente,planos,sinais_que_variam
+desenvolvimento,APARTAMENTO,INQUILINO,ALTO,False,False,30,True,TOTAL 30,eletrônicos acima de R$ 15 mil; gasto com vidraçaria
+desenvolvimento,APARTAMENTO,INQUILINO,ALTO,False,True,44,True,TOTAL 44,eletrônicos acima de R$ 15 mil; gasto com vidraçaria
+desenvolvimento,APARTAMENTO,INQUILINO,ALTO,True,False,10,True,TOTAL 10,gasto com vidraçaria
+desenvolvimento,APARTAMENTO,INQUILINO,ALTO,True,True,36,True,TOTAL 36,eletrônicos acima de R$ 15 mil; gasto com vidraçaria
+desenvolvimento,APARTAMENTO,INQUILINO,BAIXO,False,False,4,True,ESSENCIAL 4,
+desenvolvimento,APARTAMENTO,INQUILINO,BAIXO,False,True,11,True,TOTAL 11,gasto com vidraçaria
+desenvolvimento,APARTAMENTO,INQUILINO,BAIXO,True,True,5,True,TOTAL 5,
+desenvolvimento,APARTAMENTO,INQUILINO,MODERADO,False,False,21,True,TOTAL 21,eletrônicos acima de R$ 15 mil
+desenvolvimento,APARTAMENTO,INQUILINO,MODERADO,False,True,47,True,TOTAL 47,eletrônicos acima de R$ 15 mil; gasto com vidraçaria
+desenvolvimento,APARTAMENTO,INQUILINO,MODERADO,True,False,14,True,TOTAL 14,eletrônicos acima de R$ 15 mil; gasto com vidraçaria
+desenvolvimento,APARTAMENTO,INQUILINO,MODERADO,True,True,21,True,TOTAL 21,eletrônicos acima de R$ 15 mil; gasto com vidraçaria
+desenvolvimento,APARTAMENTO,PROPRIETARIO_FINANCIADO,ALTO,False,False,44,True,PRATICO 44,eletrônicos acima de R$ 15 mil; gasto com vidraçaria
+desenvolvimento,APARTAMENTO,PROPRIETARIO_FINANCIADO,ALTO,False,True,73,True,PRATICO 73,eletrônicos acima de R$ 15 mil; gasto com vidraçaria
+desenvolvimento,APARTAMENTO,PROPRIETARIO_FINANCIADO,ALTO,True,False,23,True,PRATICO 23,eletrônicos acima de R$ 15 mil; gasto com vidraçaria
+desenvolvimento,APARTAMENTO,PROPRIETARIO_FINANCIADO,ALTO,True,True,39,True,TOTAL 39,eletrônicos acima de R$ 15 mil; gasto com vidraçaria
+desenvolvimento,APARTAMENTO,PROPRIETARIO_FINANCIADO,BAIXO,False,False,5,True,ESSENCIAL 5,
+desenvolvimento,APARTAMENTO,PROPRIETARIO_FINANCIADO,BAIXO,False,True,14,True,ESSENCIAL 14,
+desenvolvimento,APARTAMENTO,PROPRIETARIO_FINANCIADO,BAIXO,True,False,2,True,ESSENCIAL 2,
+desenvolvimento,APARTAMENTO,PROPRIETARIO_FINANCIADO,BAIXO,True,True,9,False,ESSENCIAL 7; TOTAL 2,gasto com vidraçaria
+desenvolvimento,APARTAMENTO,PROPRIETARIO_FINANCIADO,MODERADO,False,False,26,False,ESSENCIAL 14; PRATICO 12,eletrônicos acima de R$ 15 mil; gasto com vidraçaria
+desenvolvimento,APARTAMENTO,PROPRIETARIO_FINANCIADO,MODERADO,False,True,56,False,ESSENCIAL 43; PRATICO 13,eletrônicos acima de R$ 15 mil; gasto com vidraçaria
+desenvolvimento,APARTAMENTO,PROPRIETARIO_FINANCIADO,MODERADO,True,False,14,False,ESSENCIAL 11; PRATICO 3,eletrônicos acima de R$ 15 mil
+desenvolvimento,APARTAMENTO,PROPRIETARIO_FINANCIADO,MODERADO,True,True,29,True,TOTAL 29,eletrônicos acima de R$ 15 mil; gasto com vidraçaria
+desenvolvimento,APARTAMENTO,PROPRIETARIO_LOCADOR,ALTO,False,False,15,True,TOTAL 15,eletrônicos acima de R$ 15 mil; gasto com vidraçaria
+desenvolvimento,APARTAMENTO,PROPRIETARIO_LOCADOR,ALTO,False,True,25,True,TOTAL 25,gasto com vidraçaria
+desenvolvimento,APARTAMENTO,PROPRIETARIO_LOCADOR,ALTO,True,False,4,True,TOTAL 4,eletrônicos acima de R$ 15 mil; gasto com vidraçaria
+desenvolvimento,APARTAMENTO,PROPRIETARIO_LOCADOR,ALTO,True,True,9,True,TOTAL 9,
+desenvolvimento,APARTAMENTO,PROPRIETARIO_LOCADOR,BAIXO,False,False,7,False,ESSENCIAL 6; TOTAL 1,gasto com vidraçaria
+desenvolvimento,APARTAMENTO,PROPRIETARIO_LOCADOR,BAIXO,False,True,4,True,TOTAL 4,gasto com vidraçaria
+desenvolvimento,APARTAMENTO,PROPRIETARIO_LOCADOR,BAIXO,True,False,2,True,TOTAL 2,
+desenvolvimento,APARTAMENTO,PROPRIETARIO_LOCADOR,BAIXO,True,True,2,True,TOTAL 2,
+desenvolvimento,APARTAMENTO,PROPRIETARIO_LOCADOR,MODERADO,False,False,9,True,TOTAL 9,eletrônicos acima de R$ 15 mil; gasto com vidraçaria
+desenvolvimento,APARTAMENTO,PROPRIETARIO_LOCADOR,MODERADO,False,True,18,True,TOTAL 18,eletrônicos acima de R$ 15 mil; gasto com vidraçaria
+desenvolvimento,APARTAMENTO,PROPRIETARIO_LOCADOR,MODERADO,True,False,8,True,TOTAL 8,eletrônicos acima de R$ 15 mil
+desenvolvimento,APARTAMENTO,PROPRIETARIO_LOCADOR,MODERADO,True,True,6,True,TOTAL 6,
+desenvolvimento,APARTAMENTO,PROPRIETARIO_QUITADO,ALTO,False,False,50,True,PRATICO 50,eletrônicos acima de R$ 15 mil; gasto com vidraçaria
+desenvolvimento,APARTAMENTO,PROPRIETARIO_QUITADO,ALTO,False,True,96,True,PRATICO 96,eletrônicos acima de R$ 15 mil; gasto com vidraçaria
+desenvolvimento,APARTAMENTO,PROPRIETARIO_QUITADO,ALTO,True,False,15,True,PRATICO 15,eletrônicos acima de R$ 15 mil; gasto com vidraçaria
+desenvolvimento,APARTAMENTO,PROPRIETARIO_QUITADO,ALTO,True,True,68,True,TOTAL 68,eletrônicos acima de R$ 15 mil; gasto com vidraçaria
+desenvolvimento,APARTAMENTO,PROPRIETARIO_QUITADO,BAIXO,False,False,11,True,ESSENCIAL 11,gasto com vidraçaria
+desenvolvimento,APARTAMENTO,PROPRIETARIO_QUITADO,BAIXO,False,True,13,True,ESSENCIAL 13,gasto com vidraçaria
+desenvolvimento,APARTAMENTO,PROPRIETARIO_QUITADO,BAIXO,True,False,6,True,ESSENCIAL 6,gasto com vidraçaria
+desenvolvimento,APARTAMENTO,PROPRIETARIO_QUITADO,BAIXO,True,True,7,False,ESSENCIAL 6; TOTAL 1,gasto com vidraçaria
+desenvolvimento,APARTAMENTO,PROPRIETARIO_QUITADO,MODERADO,False,False,39,False,ESSENCIAL 28; PRATICO 11,eletrônicos acima de R$ 15 mil; gasto com vidraçaria
+desenvolvimento,APARTAMENTO,PROPRIETARIO_QUITADO,MODERADO,False,True,64,False,ESSENCIAL 47; PRATICO 17,eletrônicos acima de R$ 15 mil; gasto com vidraçaria
+desenvolvimento,APARTAMENTO,PROPRIETARIO_QUITADO,MODERADO,True,False,25,False,ESSENCIAL 18; PRATICO 7,eletrônicos acima de R$ 15 mil; gasto com vidraçaria
+desenvolvimento,APARTAMENTO,PROPRIETARIO_QUITADO,MODERADO,True,True,38,True,TOTAL 38,eletrônicos acima de R$ 15 mil
+desenvolvimento,CASA,INQUILINO,ALTO,False,False,39,True,TOTAL 39,eletrônicos acima de R$ 15 mil; gasto com vidraçaria
+desenvolvimento,CASA,INQUILINO,ALTO,False,True,69,True,TOTAL 69,eletrônicos acima de R$ 15 mil; gasto com vidraçaria
+desenvolvimento,CASA,INQUILINO,ALTO,True,False,23,True,TOTAL 23,eletrônicos acima de R$ 15 mil
+desenvolvimento,CASA,INQUILINO,ALTO,True,True,33,True,TOTAL 33,eletrônicos acima de R$ 15 mil; gasto com vidraçaria
+desenvolvimento,CASA,INQUILINO,BAIXO,False,False,3,True,TOTAL 3,
+desenvolvimento,CASA,INQUILINO,BAIXO,False,True,4,True,TOTAL 4,
+desenvolvimento,CASA,INQUILINO,BAIXO,True,True,2,True,TOTAL 2,
+desenvolvimento,CASA,INQUILINO,MODERADO,False,False,12,True,TOTAL 12,eletrônicos acima de R$ 15 mil
+desenvolvimento,CASA,INQUILINO,MODERADO,False,True,36,True,TOTAL 36,eletrônicos acima de R$ 15 mil; gasto com vidraçaria
+desenvolvimento,CASA,INQUILINO,MODERADO,True,False,7,True,TOTAL 7,eletrônicos acima de R$ 15 mil; gasto com vidraçaria
+desenvolvimento,CASA,INQUILINO,MODERADO,True,True,13,True,TOTAL 13,eletrônicos acima de R$ 15 mil
+desenvolvimento,CASA,PROPRIETARIO_FINANCIADO,ALTO,False,False,70,True,PRATICO 70,eletrônicos acima de R$ 15 mil; gasto com vidraçaria
+desenvolvimento,CASA,PROPRIETARIO_FINANCIADO,ALTO,False,True,112,True,PRATICO 112,eletrônicos acima de R$ 15 mil; gasto com vidraçaria
+desenvolvimento,CASA,PROPRIETARIO_FINANCIADO,ALTO,True,False,22,True,PRATICO 22,eletrônicos acima de R$ 15 mil; gasto com vidraçaria
+desenvolvimento,CASA,PROPRIETARIO_FINANCIADO,ALTO,True,True,76,True,TOTAL 76,eletrônicos acima de R$ 15 mil; gasto com vidraçaria
+desenvolvimento,CASA,PROPRIETARIO_FINANCIADO,BAIXO,False,True,8,False,ESSENCIAL 7; PRATICO 1,gasto com vidraçaria
+desenvolvimento,CASA,PROPRIETARIO_FINANCIADO,BAIXO,True,False,4,True,ESSENCIAL 4,
+desenvolvimento,CASA,PROPRIETARIO_FINANCIADO,MODERADO,False,False,16,True,PRATICO 16,eletrônicos acima de R$ 15 mil; gasto com vidraçaria
+desenvolvimento,CASA,PROPRIETARIO_FINANCIADO,MODERADO,False,True,30,True,PRATICO 30,eletrônicos acima de R$ 15 mil
+desenvolvimento,CASA,PROPRIETARIO_FINANCIADO,MODERADO,True,False,10,True,PRATICO 10,eletrônicos acima de R$ 15 mil; gasto com vidraçaria
+desenvolvimento,CASA,PROPRIETARIO_FINANCIADO,MODERADO,True,True,19,True,TOTAL 19,eletrônicos acima de R$ 15 mil; gasto com vidraçaria
+desenvolvimento,CASA,PROPRIETARIO_LOCADOR,BAIXO,False,False,21,True,TOTAL 21,gasto com vidraçaria
+desenvolvimento,CASA,PROPRIETARIO_LOCADOR,BAIXO,False,True,24,True,TOTAL 24,gasto com vidraçaria
+desenvolvimento,CASA,PROPRIETARIO_LOCADOR,BAIXO,True,False,11,True,TOTAL 11,
+desenvolvimento,CASA,PROPRIETARIO_LOCADOR,BAIXO,True,True,23,True,TOTAL 23,gasto com vidraçaria
+desenvolvimento,CASA,PROPRIETARIO_LOCADOR,MODERADO,False,False,6,True,TOTAL 6,gasto com vidraçaria
+desenvolvimento,CASA,PROPRIETARIO_LOCADOR,MODERADO,False,True,12,True,TOTAL 12,eletrônicos acima de R$ 15 mil; gasto com vidraçaria
+desenvolvimento,CASA,PROPRIETARIO_LOCADOR,MODERADO,True,False,4,True,TOTAL 4,
+desenvolvimento,CASA,PROPRIETARIO_LOCADOR,MODERADO,True,True,5,True,TOTAL 5,gasto com vidraçaria
+desenvolvimento,CASA,PROPRIETARIO_QUITADO,ALTO,False,False,89,True,PRATICO 89,eletrônicos acima de R$ 15 mil; gasto com vidraçaria
+desenvolvimento,CASA,PROPRIETARIO_QUITADO,ALTO,False,True,129,True,PRATICO 129,eletrônicos acima de R$ 15 mil; gasto com vidraçaria
+desenvolvimento,CASA,PROPRIETARIO_QUITADO,ALTO,True,False,47,True,PRATICO 47,eletrônicos acima de R$ 15 mil; gasto com vidraçaria
+desenvolvimento,CASA,PROPRIETARIO_QUITADO,ALTO,True,True,96,True,TOTAL 96,eletrônicos acima de R$ 15 mil; gasto com vidraçaria
+desenvolvimento,CASA,PROPRIETARIO_QUITADO,BAIXO,False,False,6,True,ESSENCIAL 6,
+desenvolvimento,CASA,PROPRIETARIO_QUITADO,BAIXO,False,True,7,True,ESSENCIAL 7,
+desenvolvimento,CASA,PROPRIETARIO_QUITADO,BAIXO,True,False,3,True,ESSENCIAL 3,
+desenvolvimento,CASA,PROPRIETARIO_QUITADO,MODERADO,False,False,21,True,PRATICO 21,eletrônicos acima de R$ 15 mil; gasto com vidraçaria
+desenvolvimento,CASA,PROPRIETARIO_QUITADO,MODERADO,False,True,42,True,PRATICO 42,eletrônicos acima de R$ 15 mil; gasto com vidraçaria
+desenvolvimento,CASA,PROPRIETARIO_QUITADO,MODERADO,True,False,15,True,PRATICO 15,eletrônicos acima de R$ 15 mil; gasto com vidraçaria
+desenvolvimento,CASA,PROPRIETARIO_QUITADO,MODERADO,True,True,27,True,TOTAL 27,eletrônicos acima de R$ 15 mil; gasto com vidraçaria
+desenvolvimento,CASA_EM_CONDOMINIO,INQUILINO,ALTO,False,False,7,True,TOTAL 7,
+desenvolvimento,CASA_EM_CONDOMINIO,INQUILINO,ALTO,False,True,19,True,TOTAL 19,eletrônicos acima de R$ 15 mil; gasto com vidraçaria
+desenvolvimento,CASA_EM_CONDOMINIO,INQUILINO,ALTO,True,False,3,True,TOTAL 3,gasto com vidraçaria
+desenvolvimento,CASA_EM_CONDOMINIO,INQUILINO,ALTO,True,True,7,True,TOTAL 7,gasto com vidraçaria
+desenvolvimento,CASA_EM_CONDOMINIO,INQUILINO,BAIXO,False,True,2,True,TOTAL 2,
+desenvolvimento,CASA_EM_CONDOMINIO,INQUILINO,MODERADO,False,False,4,True,TOTAL 4,eletrônicos acima de R$ 15 mil
+desenvolvimento,CASA_EM_CONDOMINIO,INQUILINO,MODERADO,False,True,3,True,TOTAL 3,gasto com vidraçaria
+desenvolvimento,CASA_EM_CONDOMINIO,PROPRIETARIO_FINANCIADO,ALTO,False,False,17,True,PRATICO 17,gasto com vidraçaria
+desenvolvimento,CASA_EM_CONDOMINIO,PROPRIETARIO_FINANCIADO,ALTO,False,True,22,True,PRATICO 22,eletrônicos acima de R$ 15 mil; gasto com vidraçaria
+desenvolvimento,CASA_EM_CONDOMINIO,PROPRIETARIO_FINANCIADO,ALTO,True,False,8,True,PRATICO 8,
+desenvolvimento,CASA_EM_CONDOMINIO,PROPRIETARIO_FINANCIADO,ALTO,True,True,13,True,TOTAL 13,gasto com vidraçaria
+desenvolvimento,CASA_EM_CONDOMINIO,PROPRIETARIO_FINANCIADO,MODERADO,False,False,3,True,PRATICO 3,gasto com vidraçaria
+desenvolvimento,CASA_EM_CONDOMINIO,PROPRIETARIO_FINANCIADO,MODERADO,False,True,8,True,PRATICO 8,eletrônicos acima de R$ 15 mil
+desenvolvimento,CASA_EM_CONDOMINIO,PROPRIETARIO_FINANCIADO,MODERADO,True,True,5,True,TOTAL 5,eletrônicos acima de R$ 15 mil
+desenvolvimento,CASA_EM_CONDOMINIO,PROPRIETARIO_LOCADOR,BAIXO,False,False,6,True,TOTAL 6,gasto com vidraçaria
+desenvolvimento,CASA_EM_CONDOMINIO,PROPRIETARIO_LOCADOR,BAIXO,False,True,11,True,TOTAL 11,gasto com vidraçaria
+desenvolvimento,CASA_EM_CONDOMINIO,PROPRIETARIO_LOCADOR,BAIXO,True,True,3,True,TOTAL 3,
+desenvolvimento,CASA_EM_CONDOMINIO,PROPRIETARIO_LOCADOR,MODERADO,False,True,4,True,TOTAL 4,gasto com vidraçaria
+desenvolvimento,CASA_EM_CONDOMINIO,PROPRIETARIO_QUITADO,ALTO,False,False,17,True,PRATICO 17,eletrônicos acima de R$ 15 mil; gasto com vidraçaria
+desenvolvimento,CASA_EM_CONDOMINIO,PROPRIETARIO_QUITADO,ALTO,False,True,41,True,PRATICO 41,eletrônicos acima de R$ 15 mil; gasto com vidraçaria
+desenvolvimento,CASA_EM_CONDOMINIO,PROPRIETARIO_QUITADO,ALTO,True,False,10,True,PRATICO 10,gasto com vidraçaria
+desenvolvimento,CASA_EM_CONDOMINIO,PROPRIETARIO_QUITADO,ALTO,True,True,16,True,TOTAL 16,eletrônicos acima de R$ 15 mil; gasto com vidraçaria
+desenvolvimento,CASA_EM_CONDOMINIO,PROPRIETARIO_QUITADO,MODERADO,False,False,5,True,PRATICO 5,eletrônicos acima de R$ 15 mil
+desenvolvimento,CASA_EM_CONDOMINIO,PROPRIETARIO_QUITADO,MODERADO,False,True,12,True,PRATICO 12,eletrônicos acima de R$ 15 mil; gasto com vidraçaria
+desenvolvimento,CASA_EM_CONDOMINIO,PROPRIETARIO_QUITADO,MODERADO,True,False,4,True,PRATICO 4,eletrônicos acima de R$ 15 mil; gasto com vidraçaria
+desenvolvimento,CASA_EM_CONDOMINIO,PROPRIETARIO_QUITADO,MODERADO,True,True,4,True,TOTAL 4,eletrônicos acima de R$ 15 mil; gasto com vidraçaria
+teste,APARTAMENTO,INQUILINO,ALTO,True,True,2,True,TOTAL 2,
+teste,APARTAMENTO,INQUILINO,BAIXO,False,True,2,True,TOTAL 2,
+teste,APARTAMENTO,INQUILINO,MODERADO,False,True,2,True,TOTAL 2,
+teste,APARTAMENTO,INQUILINO,MODERADO,True,True,2,True,TOTAL 2,
+teste,APARTAMENTO,PROPRIETARIO_FINANCIADO,ALTO,False,True,5,True,PRATICO 5,
+teste,APARTAMENTO,PROPRIETARIO_FINANCIADO,ALTO,True,True,2,True,TOTAL 2,gasto com vidraçaria
+teste,APARTAMENTO,PROPRIETARIO_FINANCIADO,MODERADO,False,False,2,True,ESSENCIAL 2,
+teste,APARTAMENTO,PROPRIETARIO_FINANCIADO,MODERADO,False,True,2,False,PRATICO 1; ESSENCIAL 1,gasto com vidraçaria
+teste,APARTAMENTO,PROPRIETARIO_LOCADOR,ALTO,False,True,3,True,TOTAL 3,
+teste,APARTAMENTO,PROPRIETARIO_LOCADOR,MODERADO,False,True,2,True,TOTAL 2,
+teste,APARTAMENTO,PROPRIETARIO_QUITADO,ALTO,False,False,2,True,PRATICO 2,eletrônicos acima de R$ 15 mil
+teste,APARTAMENTO,PROPRIETARIO_QUITADO,ALTO,False,True,6,True,PRATICO 6,gasto com vidraçaria
+teste,APARTAMENTO,PROPRIETARIO_QUITADO,ALTO,True,False,4,True,PRATICO 4,
+teste,APARTAMENTO,PROPRIETARIO_QUITADO,ALTO,True,True,5,True,TOTAL 5,gasto com vidraçaria
+teste,APARTAMENTO,PROPRIETARIO_QUITADO,MODERADO,False,True,7,False,ESSENCIAL 6; PRATICO 1,eletrônicos acima de R$ 15 mil; gasto com vidraçaria
+teste,CASA,INQUILINO,ALTO,False,False,4,True,TOTAL 4,eletrônicos acima de R$ 15 mil
+teste,CASA,INQUILINO,ALTO,False,True,3,True,TOTAL 3,
+teste,CASA,INQUILINO,ALTO,True,False,2,True,TOTAL 2,
+teste,CASA,INQUILINO,MODERADO,False,True,2,True,TOTAL 2,
+teste,CASA,INQUILINO,MODERADO,True,True,2,True,TOTAL 2,gasto com vidraçaria
+teste,CASA,PROPRIETARIO_FINANCIADO,ALTO,False,False,5,True,PRATICO 5,
+teste,CASA,PROPRIETARIO_FINANCIADO,ALTO,False,True,8,True,PRATICO 8,
+teste,CASA,PROPRIETARIO_FINANCIADO,ALTO,True,False,3,True,PRATICO 3,
+teste,CASA,PROPRIETARIO_FINANCIADO,ALTO,True,True,3,True,TOTAL 3,
+teste,CASA,PROPRIETARIO_LOCADOR,BAIXO,False,True,6,True,TOTAL 6,gasto com vidraçaria
+teste,CASA,PROPRIETARIO_LOCADOR,BAIXO,True,True,2,True,TOTAL 2,
+teste,CASA,PROPRIETARIO_LOCADOR,MODERADO,True,True,2,True,TOTAL 2,gasto com vidraçaria
+teste,CASA,PROPRIETARIO_QUITADO,ALTO,False,True,4,True,PRATICO 4,
+teste,CASA,PROPRIETARIO_QUITADO,ALTO,True,True,4,True,TOTAL 4,
+teste,CASA,PROPRIETARIO_QUITADO,MODERADO,False,True,2,True,PRATICO 2,
+teste,CASA_EM_CONDOMINIO,INQUILINO,ALTO,False,True,2,True,TOTAL 2,eletrônicos acima de R$ 15 mil
+teste,CASA_EM_CONDOMINIO,PROPRIETARIO_QUITADO,ALTO,False,True,3,True,PRATICO 3,

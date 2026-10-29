@@ -1,5 +1,5 @@
 # Etapa 02 — Regras do seguro
-_Gerado por `scripts/02_aplicar_regras.py` em 28/10/2026. Tempo de execução: 3,2 s para 2716 imóveis._
+_Gerado por `scripts/02_aplicar_regras.py` em 28/10/2026. Tempo de execução: 1,3 s para 2716 imóveis._
 
 Na base de teste, **138 de 138 imóveis** receberam elegibilidade, plano, 1393 linhas de cobertura com faixa em reais, confiança, justificativa e comparação com os planos vizinhos.
 
@@ -23,7 +23,7 @@ Aplicada antes de recomendar (guia, seção 2).
 |---|---|---|
 | INELEGIVEL | Situação cadastral diferente de REGULAR; parede de material combustível | Guia 9.1 |
 | ELEGIVEL_CONDICIONADO | Possível obra relevante (material de construção ≥ R$ 30 mil, ou ≥ R$ 10 mil + vidraçaria); tipo não identificado | Guia 9.1; CG 7.1 w/x excluem imóveis em reforma ou construção |
-| ELEGIVEL | Demais casos, sujeitos à declaração do cliente (área urbana, alvenaria, sem obra estrutural, não tombado) | CG 11, alínea a, e 12.2: declaração inexata faz perder o direito |
+| ELEGIVEL | Demais casos, sujeitos à declaração do cliente (área urbana, fora de comunidade carente, sem vínculo rural, alvenaria, sem obra estrutural, não tombado, desapropriado nem condenado, sem outro seguro residencial BB no endereço) | CG 11, alínea a, e 12.2: declaração inexata faz perder o direito |
 
 | valor | imóveis | % |
 |---|---|---|
@@ -192,7 +192,7 @@ Para cada campo incerto, o motor simula as respostas plausíveis e refaz a recom
 | Área | área confirmada no valor estimado | faixa |
 | Padrão | padrão confirmado | faixa |
 
-**Regra de parada:** pergunta-se só o que muda o plano, define a elegibilidade ou estreita a faixa de incêndio em pelo menos 25%, enquanto a faixa tiver máximo mais de 30% acima do mínimo. Ordem: elegibilidade → plano → faixa. No fim, uma **declaração única** (área urbana, alvenaria, sem obra estrutural, não tombado) substitui várias perguntas de elegibilidade.
+**Regra de parada:** pergunta-se só o que muda o plano, define a elegibilidade ou estreita a faixa de incêndio em pelo menos 25%, enquanto a faixa tiver máximo mais de 30% acima do mínimo. Ordem: elegibilidade → plano → faixa. No fim, uma **declaração única** (área urbana, fora de comunidade carente, sem vínculo rural, alvenaria, sem obra estrutural, não tombado, desapropriado nem condenado, sem outro seguro residencial BB no endereço) substitui várias perguntas de elegibilidade.
 
 Perguntas por imóvel (base de teste, sem contar a declaração):
 

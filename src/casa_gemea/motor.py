@@ -232,6 +232,7 @@ class Motor:
                 "percentual_evitado": round(100 * evitadas / regras.CAMPOS_FORMULARIO_TRADICIONAL),
             },
             "canal": {"semaforo": cor, "sugerido": canal},
+            "comparacao_planos": personalizacao.comparacao_planos(r, pontuacao, plano, todas, self.coberturas_do_plano, pers["necessidades"]),
             "personalizacao": pers,
             "explicacao": explica,
             "respostas_aplicadas": respondidas + list(adicionais_resp),

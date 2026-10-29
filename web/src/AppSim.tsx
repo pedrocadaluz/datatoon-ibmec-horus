@@ -6,19 +6,19 @@ import { Icon } from './Icons'
 import { House } from './House'
 import { Modal } from './Modal'
 import { MotorSheet } from './MotorPensou'
+import { paraVoce, passoCliente } from './cliente'
 
 const tons = { EXPRESS: 'tom-express', GUIADA: 'tom-guiada', HUMANA: 'tom-humana' } as const
-const nivelTexto = (n: string) => (n === 'ALTA' ? 'alta' : n === 'MEDIA' ? 'média' : 'baixa')
 
 function CartaoAdicional({ a, resposta, dispensado, onResponder, onAdicionar, onDispensar }: {
   a: Adicional; resposta?: string; dispensado: boolean; onResponder: (v: string) => void; onAdicionar: () => void; onDispensar: () => void;
 }) {
   const adicionado = resposta === 'SIM' || resposta === 'ADD'
   return <article className={`sim-add ${adicionado ? 'added' : ''}`} aria-label={a.nome}>
-    <header><h4>{a.nome}</h4><span className={`sim-badge n-${a.nivel.toLowerCase()}`}>Necessidade {nivelTexto(a.nivel)} · {a.necessidade}</span></header>
-    <p className="sim-why"><b>Por que é para você:</b> {texto(a.por_que_para_voce)}</p>
-    {a.faixa_valor_min !== undefined && a.faixa_valor_max !== undefined && <p className="sim-range">Limite sugerido de indenização: <b>{reais(a.faixa_valor_min)} a {reais(a.faixa_valor_max)}</b><small> Estimativa, confiança média. Não é preço.</small></p>}
-    <details><summary>Cuidados e base</summary><p>{texto(a.cuidado)} ({a.clausula})</p></details>
+    <header><h4>{a.nome}</h4><span className={`sim-badge n-${a.nivel.toLowerCase()}`}>{a.nivel === 'ALTA' ? 'Recomendado para você' : 'Pode interessar'}</span></header>
+    <p className="sim-why"><b>Por que é para você:</b> {paraVoce(a.por_que_para_voce)}</p>
+    {a.faixa_valor_min !== undefined && a.faixa_valor_max !== undefined && <p className="sim-range">Limite sugerido de indenização: <b>{reais(a.faixa_valor_min)} a {reais(a.faixa_valor_max)}</b><small> Não é preço.</small></p>}
+    {a.cuidado && <details><summary>O que não entra</summary><p>{paraVoce(a.cuidado)}</p></details>}
     {a.pergunta && !adicionado && !dispensado && <div className="sim-ask" role="group" aria-label={a.pergunta}><p>{texto(a.pergunta)}</p>
       <div>{[['SIM', 'Sim'], ['NAO', 'Não'], ['NAO_SEI', 'Não sei']].map(([v, r]) => <button key={v} className="sim-chip" onClick={() => onResponder(v)}>{r}</button>)}</div></div>}
     {adicionado ? <p className="sim-done" role="status"><Icon name="check" size={16} />Adicionado ao seu plano</p>
@@ -83,18 +83,18 @@ export function AppSim({ onComparar }: { onComparar: () => void }) {
           <label className="switch"><input type="checkbox" role="switch" checked={personalizar} onChange={e => setPersonalizar(e.target.checked)} /><span>Personalizar para mim</span></label></div>
         {personalizar && perfil && <p className="sim-profile"><span className="sim-badge">{perfil.rotulo}</span> Jornada {jornadaRotulo[perfil.jornada]}. <button className="link" onClick={() => setRecibos(true)}>Por que estou vendo isto?</button></p>}
         {!personalizar && <p className="small-note">Versão padrão, sem tom, destaques nem adicionais. <button className="link" onClick={() => setRecibos(true)}>Por que estou vendo isto?</button></p>}
-        <details className="mobile-twin" open><summary><Icon name="home" size={18} /><span>Sua Casa Gêmea<small>Cada dado com selo e confiança</small></span></summary><House casa={data.casa_gemea} location={data.imovel_id} imovel={id} /></details>
+        <details className="mobile-twin" open><summary><Icon name="home" size={18} /><span>Sua Casa Gêmea<small>O que já sabemos e de onde veio</small></span></summary><House casa={data.casa_gemea} location={data.imovel_id} imovel={id} /></details>
         {pergunta && <section className="sim-q" aria-live="polite"><h3>{texto(pergunta.pergunta)}</h3>
-          {personalizar && perfil?.jornada === 'GUIADA' && <p className="small-note"><b>Por que perguntamos:</b> {texto(pergunta.motivo)}</p>}
+          {personalizar && perfil?.jornada === 'GUIADA' && <p className="small-note"><b>Por que perguntamos:</b> {paraVoce(pergunta.motivo)}</p>}
           <div className="sim-opts">{[...pergunta.opcoes, ...(pergunta.opcoes.some(o => o.valor === 'NAO_SEI') ? [] : [{ valor: 'NAO_SEI', rotulo: 'Não sei' }])].map(o => <button key={o.valor} className="sim-chip" onClick={() => responder(pergunta.id, o.valor)}>{texto(o.rotulo)}</button>)}</div>
           {personalizar && perfil?.jornada === 'HUMANA' && <button className="button secondary sim-human" onClick={() => setEscolhas(e => ({ ...e, __especialista: 'SIM' }))}>Falar com um especialista</button>}
           {escolhas.__especialista && <p className="sim-done" role="status">Simulação: um especialista entraria em contato.</p>}</section>}
         <section className="sim-plan"><span className="eyebrow">Seu plano</span><h3>{planos[data.recomendacao.plano] ?? 'Sem plano'}</h3>
-          <p>{texto(data.recomendacao.justificativa_curta)}</p>
-          {fire && <p className="sim-range">Limite sugerido de indenização para incêndio: <b>{reais(fire.faixa_valor_min)} a {reais(fire.faixa_valor_max)}</b><small> Confiança {nivelTexto(fire.confianca)}. Não é preço.</small></p>}
-          <p className="small-note">Canal: {data.canal.semaforo.toLowerCase()} · {data.jornada.perguntas_evitadas} de {data.jornada.campos_formulario_tradicional} perguntas evitadas.</p></section>
+          {data.recomendacao.por_que_este_plano.length > 0 && <ul className="sim-reasons">{data.recomendacao.por_que_este_plano.slice(0, 3).map((m, i) => <li key={i}>{paraVoce(m)}</li>)}</ul>}
+          {fire && <p className="sim-range">Limite sugerido de indenização para incêndio: <b>{reais(fire.faixa_valor_min)} a {reais(fire.faixa_valor_max)}</b><small> Não é preço.</small></p>}
+          <p className="small-note">Próximo passo: {passoCliente(data).toLowerCase()} · {data.jornada.perguntas_evitadas} de {data.jornada.campos_formulario_tradicional} perguntas a menos que um formulário comum.</p></section>
         {personalizar && pers && <>
-          {pers.alertas.map(al => <p key={al.tipo} className="sim-alert" role="note"><Icon name="info" size={16} />{texto(al.texto)}</p>)}
+          {pers.alertas.map(al => <p key={al.tipo} className="sim-alert" role="note"><Icon name="info" size={16} />{paraVoce(al.texto)}</p>)}
           {visiveis.length > 0 && <section><h3>Adicionais para a sua casa</h3>{visiveis.map(a => <CartaoAdicional key={a.id} a={a} resposta={escolhas[a.id] ?? resp[chaveAdicional(a.id)]} dispensado={dispensados.includes(a.id)}
             onResponder={v => adicional(a, v)} onAdicionar={() => adicional(a, a.pergunta ? 'SIM' : 'ADD')} onDispensar={() => setDispensados(d => [...d, a.id])} />)}</section>}
           <p className="small-note">Alagamento, chuva e rompimento de tubulação já estão em Danos por água, em todos os planos. Não precisa contratar à parte.</p>

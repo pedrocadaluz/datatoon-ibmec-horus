@@ -100,7 +100,7 @@ A recomendação é **inicial**: usa só os dados que o banco já tem. As pergun
 **Perguntas de confirmação:**
 
 -   1) A área construída do imóvel fica entre 202 e 345 m²? (Sim / Menor / Maior / Não sei) [por quê: área define o custo de reconstrução]
--   2) Confirmo que o imóvel fica em área urbana, tem paredes de alvenaria, não está em obra estrutural e não é tombado. (Sim / Não — o atendimento segue com o gerente)
+-   2) Confirmo que o imóvel fica em área urbana, fora de comunidade carente e sem ligação com atividade rural, tem paredes de alvenaria e não está em construção, reconstrução nem obra estrutural. Ele também não é tombado, desapropriado nem condenado, e o endereço ainda não tem seguro residencial da BB Seguros. (Sim / Não — o atendimento segue com o gerente)
 
 | Cobertura | Mín (R$) | Máx (R$) | Confiança |
 |---|---|---|---|
@@ -121,7 +121,7 @@ A recomendação é **inicial**: usa só os dados que o banco já tem. As pergun
 **Perguntas de confirmação:**
 
 -   1) Somando móveis, eletrônicos e eletrodomésticos, quanto valem os bens neste imóvel? Estimamos entre R$ 14.000 e R$ 28.000. (Menos que isso / Nessa faixa / Mais que isso / Não sei) [por quê: valor dos bens define a necessidade de cobertura de roubo e a faixa de incêndio]
--   2) Confirmo que o imóvel fica em área urbana, tem paredes de alvenaria, não está em obra estrutural e não é tombado. (Sim / Não — o atendimento segue com o gerente)
+-   2) Confirmo que o imóvel fica em área urbana, fora de comunidade carente e sem ligação com atividade rural, tem paredes de alvenaria e não está em construção, reconstrução nem obra estrutural. Ele também não é tombado, desapropriado nem condenado, e o endereço ainda não tem seguro residencial da BB Seguros. (Sim / Não — o atendimento segue com o gerente)
 
 | Cobertura | Mín (R$) | Máx (R$) | Confiança |
 |---|---|---|---|
@@ -144,7 +144,7 @@ A recomendação é **inicial**: usa só os dados que o banco já tem. As pergun
 -   1) Há obra ou reforma em andamento no imóvel? (Não / Reforma pequena, como pintura ou piso / Obra estrutural ou ampliação) [por quê: define a elegibilidade: imóvel em reforma ou construção fica fora da cobertura (CG 7.1 w/x)]
 -   2) Este imóvel está alugado para outra pessoa? Identificamos um crédito mensal de cerca de R$ 8.350. (Sim, está alugado / Não, eu moro nele / Não, está vazio) [por quê: muda o plano: quem recebe aluguel precisa da cobertura de perda de aluguel]
 -   3) A área construída do imóvel fica entre 130 e 221 m²? (Sim / Menor / Maior / Não sei) [por quê: área define o custo de reconstrução]
--   4) Confirmo que o imóvel fica em área urbana, tem paredes de alvenaria, não está em obra estrutural e não é tombado. (Sim / Não — o atendimento segue com o gerente)
+-   4) Confirmo que o imóvel fica em área urbana, fora de comunidade carente e sem ligação com atividade rural, tem paredes de alvenaria e não está em construção, reconstrução nem obra estrutural. Ele também não é tombado, desapropriado nem condenado, e o endereço ainda não tem seguro residencial da BB Seguros. (Sim / Não — o atendimento segue com o gerente)
 
 | Cobertura | Mín (R$) | Máx (R$) | Confiança |
 |---|---|---|---|

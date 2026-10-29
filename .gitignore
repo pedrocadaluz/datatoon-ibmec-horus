@@ -225,7 +225,11 @@ dados_brutos/
 *.xlsx
 Seguro_Residencial_Desenvolvimento/
 Seguro_Residencial_Teste_Comum/
+Seguro_Residencial_DadosSinteticos/
 DatathonBBDW-GuiaDosTimes.pdf
+# Materiais recebidos da organização (guia, apresentações e bases compactadas)
+doc/
+*.zip
 
 # Material de trabalho dos agentes (briefs e referências), não é entrega
 _referencias_frontend/

@@ -137,8 +137,10 @@ def enunciado(campo: str, r: pd.Series) -> str:
     if campo == "padrao_construtivo":
         return "Como é o acabamento do imóvel?"
     if campo == "declaracao_unica":
-        return ("Confirmo que o imóvel fica em área urbana, tem paredes de alvenaria, não está em obra "
-                "estrutural e não é tombado.")
+        # Restrições de aceitação do guia (9.1) que a base não permite verificar.
+        return ("Confirmo que o imóvel fica em área urbana, fora de comunidade carente e sem ligação com atividade rural, "
+                "tem paredes de alvenaria e não está em construção, reconstrução nem obra estrutural. Ele também não é "
+                "tombado, desapropriado nem condenado, e o endereço ainda não tem seguro residencial da BB Seguros.")
     raise ValueError(campo)
 
 

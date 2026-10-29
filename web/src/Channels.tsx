@@ -5,6 +5,7 @@ import { campoPergunta, confianca, json, nomes, texto, valorCampo } from './form
 import { Selo } from './House'
 import { Icon } from './Icons'
 
+/** Ficha técnica: cada dado da Casa Gêmea com selo, evidência e conflitos da inferência. */
 export function Manager({ data }: { data: Resultado }) {
   const [signals, setSignals] = useState<string[]>([])
   const [error, setError] = useState('')
@@ -15,16 +16,18 @@ export function Manager({ data }: { data: Resultado }) {
       .then(s => setSignals(s.inconsistencias)).catch(e => { if (!control.signal.aborted) setError(e.message) })
     return () => control.abort()
   }, [data.imovel_id])
-  return <div className="manager-stack">
-    <section className="card"><span className="eyebrow">Ficha técnica / Gerente</span><h2>Cada dado, com sua evidência.</h2><p className="muted">Os mesmos sinais e a mesma recomendação da visão Cliente.</p>
+  return <section className="card"><span className="eyebrow">Ficha técnica / Gerente</span><h2>Cada dado, com sua evidência.</h2><p className="muted">Os mesmos sinais e a mesma recomendação da visão Cliente.</p>
       <div className="manager-fields">{Object.keys(nomes).map(key => {
         const campo = data.casa_gemea[key as keyof typeof data.casa_gemea] as Campo
         return <article key={key}><div className="manager-field-heading"><span>{nomes[key]}</span><Selo campo={campo} /></div><strong>{valorCampo(key, campo, data.casa_gemea)}</strong><p>{texto(campo.evidencia)}</p></article>
       })}</div>
       <div className="conflicts"><h3>Sinais em conflito na inferência inicial</h3>{error ? <p role="alert">{texto(error)}</p> : signals.length ? <ul>{signals.map((s, i) => <li key={i}>{texto(s)}</li>)}</ul> : <p>Nenhum conflito registrado nesta ficha.</p>}<p className="small-note">As confirmações atuais aparecem nos selos acima.</p></div>
     </section>
-    <section className="card"><span className="eyebrow">Ordem de impacto</span><h2>Por que perguntar, e por que agora?</h2>{data.proximas_perguntas.length ? <ol className="question-queue">{data.proximas_perguntas.map(q => <li key={q.id}><span className="impact-label">{texto(q.impacto)}</span><h3>{texto(q.pergunta)}</h3>{campoPergunta(q.id, data.casa_gemea) && <Selo campo={campoPergunta(q.id, data.casa_gemea)!} />}<p>{texto(q.motivo)}</p><span className="small-note">{q.opcoes.map(o => texto(o.rotulo)).join(' / ')}</span></li>)}</ol> : <p>O motor não selecionou mais perguntas para este caso.</p>}</section>
-  </div>
+}
+
+/** Fila de perguntas na ordem de impacto, com o motivo de cada uma. */
+export function ManagerQueue({ data }: { data: Resultado }) {
+  return <section className="card"><span className="eyebrow">Ordem de impacto</span><h2>Por que perguntar, e por que agora?</h2>{data.proximas_perguntas.length ? <ol className="question-queue">{data.proximas_perguntas.map(q => <li key={q.id}><span className="impact-label">{texto(q.impacto)}</span><h3>{texto(q.pergunta)}</h3>{campoPergunta(q.id, data.casa_gemea) && <Selo campo={campoPergunta(q.id, data.casa_gemea)!} />}<p>{texto(q.motivo)}</p><span className="small-note">{q.opcoes.map(o => texto(o.rotulo)).join(' / ')}</span></li>)}</ol> : <p>O motor não selecionou mais perguntas para este caso.</p>}</section>
 }
 
 export function Agent({ data, answers, busy, onApply }: { data: Resultado; answers: Respostas; busy: boolean; onApply: (value: string) => Promise<void> }) {

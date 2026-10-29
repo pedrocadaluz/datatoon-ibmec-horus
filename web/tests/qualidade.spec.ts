@@ -1,19 +1,26 @@
-import { revelar, abrirValor } from './ajudas'
+import { entrar, revelar, abrirValor } from './ajudas'
 import { test, expect } from '@playwright/test'
 import AxeBuilder from '@axe-core/playwright'
 
 test('acessibilidade AA nas quatro visões e no celular', async ({ page }) => {
   await page.emulateMedia({ reducedMotion: 'reduce' })
   await page.goto('/')
+  const entrada = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa', 'wcag21aa']).analyze()
+  expect(entrada.violations.map(v => ({ id: v.id, impact: v.impact, nodes: v.nodes.map(n => n.target) }))).toEqual([])
+  await entrar(page)
   await revelar(page)
   await expect(page.getByTestId('plano-atual')).toHaveText('Total')
   for (const canal of ['Cliente', 'Gerente', 'SAC', 'Agente']) {
-    await page.getByRole('button', { name: canal, exact: true }).click()
+    await entrar(page, canal)
     const result = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa', 'wcag21aa']).analyze()
     expect(result.violations.map(v => ({ id: v.id, impact: v.impact, nodes: v.nodes.map(n => n.target) }))).toEqual([])
   }
+  await entrar(page, 'Cliente')
+  await page.getByRole('button', { name: 'Ver relatório completo' }).click()
+  const relatorio = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa', 'wcag21aa']).analyze()
+  expect(relatorio.violations.map(v => ({ id: v.id, impact: v.impact, nodes: v.nodes.map(n => n.target) }))).toEqual([])
   await page.setViewportSize({ width: 390, height: 844 })
-  await page.getByRole('button', { name: 'Cliente', exact: true }).click()
+  await entrar(page, 'Cliente')
   const result = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa', 'wcag21aa']).analyze()
   expect(result.violations.map(v => ({ id: v.id, impact: v.impact, nodes: v.nodes.map(n => n.target) }))).toEqual([])
 })
@@ -21,24 +28,31 @@ test('acessibilidade AA nas quatro visões e no celular', async ({ page }) => {
 test('justificativa, contador e aluguel usam os campos reais do motor', async ({ page, request }) => {
   const result = await (await request.post('/api/recomendar', { data: { imovel_id: 'IMO_CASO_00003_01', respostas: {} } })).json()
   await page.goto('/')
-  await expect(page.getByTestId('perguntas-evitadas')).toContainText(`${result.jornada.perguntas_evitadas} de 8 perguntas evitadas`)
-  await revelar(page)
+  await entrar(page)
+  await page.getByRole('button', { name: 'Ver relatório completo' }).click()
+  await expect(page.locator('#relatorio-titulo')).toHaveText('Sua recomendação até agora.')
+  // O relatório do cliente não mostra termos do motor; o Gerente continua vendo tudo.
+  await expect(page.locator('#recomendacao')).not.toContainText('Confiança')
+  await expect(page.locator('#recomendacao')).not.toContainText('CG ')
+  await expect(page.locator('#recomendacao')).not.toContainText('o cliente')
+  await expect(page.getByTestId('comparacao-planos')).toContainText('Por que o Total e não os outros')
+  await expect(page.getByTestId('por-que-nao-PRATICO')).toContainText('Perda ou pagamento de aluguel')
+  await expect(page.getByTestId('por-que-nao-ESSENCIAL')).toContainText('Roubo e furto com arrombamento')
+  await entrar(page, 'Gerente')
   await expect(page.locator('.short-reason')).toContainText(result.recomendacao.justificativa_curta.replace(/[\u2013\u2014]/g, ', '))
   await expect(page.locator('.rental-highlight strong').first()).toContainText('R$')
-  await expect(page.locator('.why-plan')).not.toBeVisible()
-  await page.locator('.reason-details > summary').click()
-  await expect(page.locator('.why-plan')).toBeVisible()
   await page.locator('.all-coverages > summary').click()
   const rc = result.coberturas.find((c: { cobertura: string }) => c.cobertura === 'RESPONSABILIDADE_CIVIL_FAMILIAR')
   await expect(page.locator('.rc-rule')).toHaveText(rc.regra.replace(/[\u2013\u2014]/g, ', '))
+  await entrar(page, 'Cliente')
   const list = await (await request.get('/api/imoveis')).json()
   for (const item of list.imoveis) {
     const data = await (await request.post('/api/recomendar', { data: { imovel_id: item.imovel_id, respostas: {} } })).json()
     const larga = data.coberturas.find((c: { faixa_valor_min: number; faixa_valor_max: number }) => c.faixa_valor_max / c.faixa_valor_min > 4)
     if (larga) {
-      await page.getByLabel('Imóvel do Teste Comum').selectOption(item.imovel_id)
+      await entrar(page, 'Cliente', item.imovel_id)
       await expect(page.getByTestId('caso-atual')).toContainText(item.imovel_id)
-      await revelar(page)
+      if (await page.getByRole('button', { name: 'Ver relatório completo' }).isVisible()) await page.getByRole('button', { name: 'Ver relatório completo' }).click()
       await page.locator('.all-coverages > summary').click()
       await page.locator(`[data-cobertura="${larga.cobertura}"] > summary`).click()
       await expect(page.locator('.wide-range').first()).toHaveText('Faixa larga: confirme para estreitar')
@@ -51,6 +65,7 @@ test('justificativa, contador e aluguel usam os campos reais do motor', async ({
 
 test('apresentação por teclado, zoom e erro de rede preservam respostas', async ({ page }) => {
   await page.goto('/')
+  await entrar(page)
   await revelar(page)
   await expect(page.getByTestId('plano-atual')).toHaveText('Total')
   await page.keyboard.press('p')
@@ -77,21 +92,23 @@ test('apresentação por teclado, zoom e erro de rede preservam respostas', asyn
 
 test('valor exato não acompanha a troca de imóveis e SAC identifica a estimativa', async ({ page }) => {
   await page.goto('/')
+  await entrar(page)
   await revelar(page)
   await expect(page.getByTestId('plano-atual')).toHaveText('Total')
-  await page.getByLabel('Imóvel do Teste Comum').selectOption('IMO_CASO_00001_01')
+  await entrar(page, 'Cliente', 'IMO_CASO_00001_01')
   await abrirValor(page)
   await expect(page.getByLabel('Valor exato')).toBeVisible()
-  await page.getByLabel('Imóvel do Teste Comum').selectOption('IMO_CASO_00007_01')
+  await entrar(page, 'Cliente', 'IMO_CASO_00007_01')
   await expect(page.getByTestId('caso-atual')).toContainText('IMO_CASO_00007_01')
   await abrirValor(page)
   await page.getByLabel('Valor exato').fill('777')
-  await page.getByLabel('Imóvel do Teste Comum').selectOption('IMO_CASO_00001_01')
+  await entrar(page, 'Cliente', 'IMO_CASO_00001_01')
   await expect(page.getByTestId('caso-atual')).toContainText('IMO_CASO_00001_01')
   await expect(page.getByLabel('Valor exato')).toHaveCount(0)
   await abrirValor(page)
   await expect(page.getByLabel('Valor exato')).toHaveValue('')
-  await page.getByRole('button', { name: 'SAC', exact: true }).click()
+  await entrar(page, 'SAC')
+  await page.getByRole('button', { name: 'Iniciar roteiro de perguntas' }).click()
   await expect(page.getByTestId('metadados-pergunta')).toContainText('Estimado')
   await expect(page.getByTestId('metadados-pergunta')).toContainText('Confiança média')
   await page.screenshot({ path: 'evidencias/sac-estimativa.png', fullPage: true })
@@ -99,9 +116,10 @@ test('valor exato não acompanha a troca de imóveis e SAC identifica a estimati
 
 test('trocar de imóvel durante execução JSON descarta a resposta anterior', async ({ page }) => {
   await page.goto('/')
+  await entrar(page)
   await revelar(page)
   await expect(page.getByTestId('plano-atual')).toHaveText('Total')
-  await page.getByRole('button', { name: 'Agente', exact: true }).click()
+  await entrar(page, 'Agente')
   await page.getByLabel('Entrada JSON').fill(JSON.stringify({ versao_contrato: '1.0', imovel_id: 'IMO_CASO_00002_01', respostas: { obra: 'NAO' } }))
   let release!: () => void
   const gate = new Promise<void>(resolve => { release = resolve })
@@ -117,7 +135,7 @@ test('trocar de imóvel durante execução JSON descarta a resposta anterior', a
     } else await route.continue()
   })
   await page.getByRole('button', { name: 'Executar contrato' }).click()
-  await page.getByLabel('Imóvel do Teste Comum').selectOption('IMO_CASO_00001_01')
+  await entrar(page, 'Agente', 'IMO_CASO_00001_01')
   await expect(page.getByTestId('caso-atual')).toContainText('IMO_CASO_00001_01')
   release()
   await completed

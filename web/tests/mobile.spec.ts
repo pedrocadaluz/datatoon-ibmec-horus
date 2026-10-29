@@ -1,4 +1,4 @@
-import { revelar, abrirValor } from './ajudas'
+import { entrar, revelar, abrirValor } from './ajudas'
 import { test, expect, devices } from '@playwright/test'
 
 for (const device of ['Pixel 7', 'iPhone 14'] as const) {
@@ -8,10 +8,12 @@ for (const device of ['Pixel 7', 'iPhone 14'] as const) {
     test('jornada completa no app móvel com recomendação expansível', async ({ page }) => {
       await page.emulateMedia({ reducedMotion: 'reduce' })
       await page.goto('/')
-      await expect(page.getByRole('navigation', { name: 'Canal de atendimento' })).toHaveAttribute('data-mobile', 'true')
+      await entrar(page)
+      await expect(page.getByRole('region', { name: 'Sessão' })).toContainText('Cliente')
       await revelar(page)
       await expect(page.getByTestId('resumo-movel')).toContainText('Total')
-      await expect(page.getByTestId('metadados-pergunta').getByText('A confirmar', { exact: true })).toBeVisible()
+      // A visão Cliente não mostra selos na pergunta; eles ficam no painel da Casa Gêmea, no Gerente e no SAC.
+      await expect(page.getByTestId('metadados-pergunta')).toHaveCount(0)
       const unknown = await page.getByTestId('resposta-NAO_SEI').boundingBox()
       const summary = await page.getByTestId('resumo-movel').boundingBox()
       expect(unknown!.y + unknown!.height).toBeLessThanOrEqual(summary!.y)
@@ -40,12 +42,14 @@ for (const width of [360, 390, 430, 768, 1280]) {
     await page.setViewportSize({ width, height: 900 })
     await page.emulateMedia({ reducedMotion: 'reduce' })
     await page.goto('/')
+    await entrar(page)
     await expect(page.getByTestId('caso-atual')).toBeVisible()
     for (const name of ['Cliente', 'Gerente', 'SAC', 'Agente']) {
-      await page.getByRole('button', { name, exact: true }).click()
+      await entrar(page, name)
       expect(await page.evaluate(() => document.documentElement.scrollWidth > innerWidth), name).toBe(false)
       if (width === 390) await page.screenshot({ path: `evidencias/pwa-celular-${name.toLowerCase()}.png` })
     }
+    await page.getByRole('button', { name: 'Como usar' }).click()
     await page.getByRole('button', { name: 'Modo apresentação' }).click()
     await expect(page.locator('.presentation-bar')).toBeVisible()
     expect(await page.evaluate(() => document.documentElement.scrollWidth > innerWidth)).toBe(false)

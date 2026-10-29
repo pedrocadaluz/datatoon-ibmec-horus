@@ -72,7 +72,7 @@ def avaliar_elegibilidade(r: pd.Series) -> tuple[str, str]:
     if r["alerta_obra"] == "OBRA_ESTRUTURAL":
         return INELEGIVEL, "Cliente confirmou obra estrutural ou ampliação em andamento: imóveis em reforma ou construção estão fora da cobertura (CG 7.1 w/x). Pode ser contratado ao fim da obra."
     if r.get("declaracao_negada", False):
-        return ELEGIVEL_CONDICIONADO, "Cliente não confirmou a declaração de elegibilidade (área urbana, alvenaria, sem obra estrutural, não tombado): validar com o gerente."
+        return ELEGIVEL_CONDICIONADO, "Cliente não confirmou a declaração de elegibilidade (área urbana, fora de comunidade carente, sem vínculo rural, alvenaria, sem obra estrutural, não tombado, desapropriado nem condenado, sem outro seguro residencial BB no endereço): validar com o gerente."
     if r["tipo_imovel"] == "INDEFINIDO":
         return ELEGIVEL_CONDICIONADO, "Tipo de imóvel não identificado; confirmar se é casa, apartamento ou sobrado."
     if r["alerta_obra"] == "POSSIVEL_OBRA_RELEVANTE":
