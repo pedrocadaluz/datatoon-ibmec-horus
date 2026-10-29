@@ -53,19 +53,23 @@ export function Abertura({ onCotar }: { onCotar: () => void }) {
       <p>Montamos uma cópia da sua casa com o que o banco já sabe, perguntamos só o que muda o resultado e explicamos cada recomendação, inclusive por que não os outros planos.</p>
       <button className="abertura-cta" onClick={onCotar}>Faça sua cotação <Icon name="arrow" size={18} /></button>
     </div>
-    <svg className="abertura-arte" viewBox="0 0 500 290" aria-hidden="true">
-      <path d="m52 222 201-112 194 112-201 112Z" fill="#FFFFFF" opacity=".6" transform="translate(0,-34)" />
-      <path d="m104 162 149-83 140 81-149 84Z" fill="#FFF" stroke="#465EFF" strokeWidth="2.5" />
-      <path d="M104 162v67l140 81v-66Z" fill="#EDF0FF" stroke="#465EFF" strokeWidth="2.5" transform="translate(0,-22)" />
-      <path d="M244 244v66l149-83v-67Z" fill="#FFF" stroke="#465EFF" strokeWidth="2.5" transform="translate(0,-22)" />
-      <path d="m97 144 63-99 147 84-63 98Z" fill="#465EFF" stroke="#2F3FB0" strokeWidth="2.5" />
-      <path d="m160 45 156-27 88 126-97-15Z" fill="#7D8DFF" stroke="#2F3FB0" strokeWidth="2.5" />
-      <path d="m244 227 63-98 97 15-11 61-149 83Z" fill="#F9F7FF" stroke="#465EFF" strokeWidth="2.5" />
-      <path d="m135 179 33 19v35l-33-19Z" fill="#FCFC30" stroke="#2F3FB0" strokeWidth="2.5" />
-      <path d="m286 225 32-18v54l-32 18Z" fill="#FCFC30" stroke="#2F3FB0" strokeWidth="2.5" />
-      <path d="m345 192 26-15v31l-26 15Z" fill="#FCFC30" stroke="#2F3FB0" strokeWidth="2.5" />
-      <path d="M420 40c14 4 26 4 38-2v30c0 22-15 36-38 44-23-8-38-22-38-44V38c12 6 24 6 38 2Z" fill="#2F3FB0" />
-      <path d="m408 74 9 9 18-20" stroke="#FCFC30" strokeWidth="5" fill="none" strokeLinecap="round" strokeLinejoin="round" />
+    <svg className="abertura-arte" viewBox="0 0 861 935" aria-hidden="true">
+      <image href="/abertura-celular.png" width="861" height="935" />
+      {/* Casa Gêmea na tela do celular, com a mesma inclinação do aparelho. */}
+      <g transform="translate(378 418) rotate(17) scale(.8) translate(-250 -165)">
+        <path d="m52 222 201-112 194 112-201 112Z" fill="#FFFFFF" opacity=".18" transform="translate(0,-34)" />
+        <path d="m104 162 149-83 140 81-149 84Z" fill="#FFFFFF" stroke="#0A1FB8" strokeWidth="3" />
+        <path d="M104 162v67l140 81v-66Z" fill="#E6EAFF" stroke="#0A1FB8" strokeWidth="3" transform="translate(0,-22)" />
+        <path d="M244 244v66l149-83v-67Z" fill="#FFFFFF" stroke="#0A1FB8" strokeWidth="3" transform="translate(0,-22)" />
+        <path d="m97 144 63-99 147 84-63 98Z" fill="#FCFC30" stroke="#0A1FB8" strokeWidth="3" />
+        <path d="m160 45 156-27 88 126-97-15Z" fill="#FFF7A0" stroke="#0A1FB8" strokeWidth="3" />
+        <path d="m244 227 63-98 97 15-11 61-149 83Z" fill="#F4F6FF" stroke="#0A1FB8" strokeWidth="3" />
+        <path d="m135 179 33 19v35l-33-19Z" fill="#465EFF" stroke="#0A1FB8" strokeWidth="3" />
+        <path d="m286 225 32-18v54l-32 18Z" fill="#FCFC30" stroke="#0A1FB8" strokeWidth="3" />
+        <path d="m345 192 26-15v31l-26 15Z" fill="#465EFF" stroke="#0A1FB8" strokeWidth="3" />
+        <path d="M430 26c16 5 30 5 44-2v34c0 25-17 41-44 50-27-9-44-25-44-50V24c14 7 28 7 44 2Z" fill="#FCFC30" stroke="#0A1FB8" strokeWidth="3" />
+        <path d="m416 64 10 10 20-22" stroke="#0A1FB8" strokeWidth="6" fill="none" strokeLinecap="round" strokeLinejoin="round" />
+      </g>
     </svg>
   </section>
 }

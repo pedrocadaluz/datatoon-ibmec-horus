@@ -264,7 +264,7 @@ details.why-card[open] > summary { margin-bottom: 6px; }
 .abertura p { max-width: 560px; font-size: .9rem; line-height: 1.55; }
 .abertura-cta { display: inline-flex; align-items: center; gap: 10px; margin-top: 18px; min-height: 48px; padding: 10px 22px; border-radius: 4px; background: #FF6F68; color: #212529; font-weight: 800; font-size: .9rem; text-transform: uppercase; letter-spacing: .03em; transition: transform .18s, background .18s; }
 .abertura-cta:hover { background: #FF8A84; transform: translateY(-1px); }
-.abertura-arte { width: 100%; max-height: 240px; }
+.abertura-arte { width: 100%; max-height: 330px; margin: -40px 0 -50px; }
 @media (max-width: 767px) { .abertura { grid-template-columns: 1fr; padding: 24px 20px; margin-top: 10px; } .abertura h1 { font-size: 2rem; } .abertura-arte { display: none; } }
 .entrada-icone, .session-icon { background: #465EFF; color: #FFFFFF; }
 .entrada-perfil { border-top: 3px solid #465EFF; }
