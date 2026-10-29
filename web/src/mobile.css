@@ -42,7 +42,7 @@
 }
 
 @media (max-width: 767px) {
-  :root { --mobile-header: 64px; --bottom-nav: 64px; --summary-height: 100px; }
+  :root { --mobile-header: 64px; --bottom-nav: 0px; --summary-height: 100px; } /* sem barra de canais embaixo desde a tela de entrada */
   body { background: #F6F7FD; }
   .app { padding-bottom: env(safe-area-inset-bottom, 0px); }
   /* O espaço da barra fixa só existe quando o resumo do plano está na tela (não na entrada, no Gerente nem no SAC). */
