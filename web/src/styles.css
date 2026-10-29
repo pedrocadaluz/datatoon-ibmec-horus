@@ -59,7 +59,7 @@
   .prototype { font-size: .64rem; letter-spacing: .03em; background: var(--yellow); color: #30365A; padding: 4px 8px; border-radius: 3px; }
   .font-controls { display: flex; border-left: 1px solid var(--line); padding-left: 14px; }
   .font-controls button { min-width: 34px; font-size: .78rem; font-weight: 700; }
-  .presentation-toggle { display: flex; align-items: center; gap: 7px; border: 1px solid var(--line); border-radius: 4px; padding: 3px 10px; font-size: .72rem; font-weight: 600; }
+  .presentation-toggle { display: flex; align-items: center; justify-content: center; gap: 7px; border: 1px solid var(--line); border-radius: 4px; padding: 3px 10px; font-size: .72rem; font-weight: 600; }
   .presentation-toggle:hover, .presentation-toggle.active { background: var(--struct-deep); color: var(--on-struct); }
   .presentation-toggle kbd { font-family: inherit; font-size: .6rem; opacity: .8; border: 1px solid var(--line); border-radius: 2px; padding: 0 4px; }
   .topbar :focus-visible { outline-color: var(--yellow); }
