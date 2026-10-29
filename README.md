@@ -20,11 +20,13 @@ O mesmo motor serve a todos os canais: o cliente no app, o gerente na agência, 
 
 Desafio escolhido: **Seguro Residencial**.
 
-- Anna Clara Melo
-- Isabella Rodrigues
-- Ludmila Guedes
-- Milton Rodrigues
-- Pedro Arthur Miranda
+| Integrante | Papel |
+|---|---|
+| Anna Clara Melo | Design e front-end |
+| Isabella Aguiar Rodrigues | Design e auditoria |
+| Ludmila Guedes | Gestão do projeto |
+| Milton Rodrigues | Arquitetura da solução |
+| Pedro Arthur Miranda | Desenvolvimento web |
 
 ---
 
