@@ -241,7 +241,19 @@ details.why-card[open] > summary { margin-bottom: 6px; }
 .session-bar small { color: var(--muted); font-size: .7rem; }
 .session-case { font-size: .78rem; color: var(--muted); padding-left: 14px; border-left: 1px solid var(--line); }
 @media (max-width: 1000px) { .entrada-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
-@media (max-width: 767px) { .entrada-grid { grid-template-columns: 1fr; } .entrada-perfil { min-height: 0; } .session-case { border-left: 0; padding-left: 0; } }
+@media (max-width: 767px) { .session-case { border-left: 0; padding-left: 0; } }
+/* Celular: perfis em grade 2 × 2 (Cliente e Gerente em cima, SAC e Agente embaixo), cartões compactos. */
+@media (max-width: 767px) {
+  .entrada-perfis { gap: 12px; }
+  .entrada-imovel, .entrada-perfis { grid-template-columns: auto minmax(0, 1fr); }
+  .entrada-campo select { min-width: 0; width: 100%; }
+  .entrada-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+  .entrada-perfil { min-height: 0; padding: 14px 12px; gap: 2px; }
+  .entrada-icone { width: 36px; height: 36px; margin-bottom: 6px; }
+  .entrada-perfil strong { font-size: .98rem; }
+  .entrada-texto { display: none; }
+  .entrada-cta { padding-top: 8px; }
+}
 @media (max-width: 767px) {
   .session-bar { padding: 6px 10px; margin: 4px 0 8px; gap: 6px; flex-wrap: nowrap; }
   .session-bar > div { flex-wrap: nowrap; gap: 8px; min-width: 0; }
